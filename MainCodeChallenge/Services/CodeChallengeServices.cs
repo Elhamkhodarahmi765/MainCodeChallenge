@@ -37,13 +37,13 @@ namespace MainCodeChallenge.Services
 
         
 
-        public EnumRolePage GetActionToGoFromLoginPage(string username)
+        public Tbl_User GetActionToGoFromLoginPage(string username)
         {
             //search role in database
             byte  role =0;
             CodeChallengeEntities db = new CodeChallengeEntities();
             var q = db.Tbl_User.Where(x => x.UuserName.Equals(username)).SingleOrDefault();
-            return (EnumRolePage)q.Role;
+            return q;
         }
 
       

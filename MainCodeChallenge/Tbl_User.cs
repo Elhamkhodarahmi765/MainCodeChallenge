@@ -11,6 +11,7 @@ namespace MainCodeChallenge
 {
     using System;
     using System.Collections.Generic;
+    using Models;
     
     public partial class Tbl_User
     {
@@ -25,9 +26,16 @@ namespace MainCodeChallenge
         public string UHashPass { get; set; }
         public Nullable<bool> UActiveStatus { get; set; }
         public Nullable<byte> Role { get; set; }
+        
+
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_RealPerson> Tbl_RealPerson { get; set; }
         public virtual Tbl_Role Tbl_Role { get; set; }
+
+        public EnumRolePage getRole()
+        {
+            return (EnumRolePage) this.Role;
+        }
     }
 }

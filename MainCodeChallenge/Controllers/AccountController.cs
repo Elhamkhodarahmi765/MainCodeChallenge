@@ -39,9 +39,10 @@ namespace MainCodeChallenge.Controllers
             {
                 //Q Mr Blukian
                 FormsAuthentication.SetAuthCookie(model.user, false);
-                EnumRolePage actionName = service.GetActionToGoFromLoginPage(model.user);
-                Session["UserRole"]=actionName.ToString();
-                return RedirectToAction(actionName.ToString());
+                var user = service.GetActionToGoFromLoginPage(model.user);
+                Session["UserRole"] = user.getRole().ToString();
+                Session["UserID"] = user.Uid;
+                return RedirectToAction(user.getRole().ToString());
             }
 
             ViewBag.ErrorMessage = "The username or password is incorrect.";
@@ -65,6 +66,8 @@ namespace MainCodeChallenge.Controllers
         [RestrictActionToRole(Roles = new string[] { "ProfilePage" })]
         public ActionResult ProfilePage()
         {
+            var user  = HttpContext.Session["UserID"].ToString();
+
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetAllChallengeApprovalStatusCount();
             return View(challengeApprovalStatus);
         }

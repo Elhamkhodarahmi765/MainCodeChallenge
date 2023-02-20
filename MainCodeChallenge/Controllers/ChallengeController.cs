@@ -34,10 +34,9 @@ namespace MainCodeChallenge.Controllers
                 
             }
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetChallengeDetailsById(Qid);
-            ViewData["challengeApprovalStatus"] = challengeApprovalStatus;
             List<Example> example = service.GetExampleByChallengeId(Qid);
             ViewData["ExampleChallenge"] = example;
-            return View();
+            return View(challengeApprovalStatus.First());
         }
     }
 }
