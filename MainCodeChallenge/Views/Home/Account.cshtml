@@ -1,0 +1,46 @@
+﻿@model MainCodeChallenge.Models.Account
+
+@{
+    ViewBag.Title = "Account Page";
+}
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/Content/StyleLogin.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KasraCodeChallenge-Login or Sign up</title>
+    <!-- <link rel="stylesheet" href="style2.css"> -->
+</head>
+<body>
+    <main>
+        <div class="row">
+            <div class="colm-logo">
+                @* <img src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg" alt="Logo">*@
+                <h1>Kasra Code Challenge</h1>
+            </div>
+            <div class="colm-form">
+                <div class="form-container">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, null))
+                    {
+                    @Html.TextBoxFor(m => m.user, new { placeholder = "UserName" })
+                    @Html.ValidationMessageFor(m => m.user)
+                    @*<input type="text" placeholder="Email address or phone number">*@
+                    @Html.PasswordFor(m => m.password, new { placeholder = "password" })
+                    @Html.ValidationMessageFor(m => m.password)
+                    @ViewBag.ErrorMessages
+                    @*<input type="password" placeholder="Password">*@
+
+                    <input class="btn-login" type="submit" value="Login" />
+                    @* <a href="#">Forgotten password?</a>*@
+                    @*<button class="btn-new">Create new Account</button>*@
+                    }
+                </div>
+
+            </div>
+        </div>
+    </main>
+   
+</body>
+</html>

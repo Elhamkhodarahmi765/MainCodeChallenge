@@ -1,0 +1,1045 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CodeChallengeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_ApprovalStatus">
+          <Key>
+            <PropertyRef Name="SId" />
+          </Key>
+          <Property Name="SId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SQId" Type="int" />
+          <Property Name="SQPid" Type="int" />
+          <Property Name="SQStatus" Type="tinyint" />
+          <Property Name="SQDate" Type="datetime" />
+          <Property Name="SQSHDate" Type="nchar" MaxLength="10" />
+          <Property Name="ApprovalStatus" Type="tinyint" />
+          <Property Name="ApprovalDate" Type="datetime" />
+          <Property Name="ApprovalSHDate" Type="nchar" MaxLength="10" />
+          <Property Name="ApprovalPID" Type="int" />
+          <Property Name="SAnswerLanguage" Type="int" />
+          <Property Name="SFileAddress" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Tbl_Category">
+          <Key>
+            <PropertyRef Name="CT_Id" />
+          </Key>
+          <Property Name="CT_Id" Type="tinyint" Nullable="false" />
+          <Property Name="CT_Name" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Tbl_Challenge">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QpersonOwner" Type="int" />
+          <Property Name="QName" Type="nvarchar" MaxLength="200" />
+          <Property Name="QDescription" Type="nvarchar(max)" />
+          <Property Name="QLevel" Type="int" />
+          <Property Name="QCId" Type="tinyint" />
+          <Property Name="QStatus" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Tbl_Example">
+          <Key>
+            <PropertyRef Name="EXId" />
+          </Key>
+          <Property Name="EXId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EXName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EXInputModel" Type="nvarchar" MaxLength="500" />
+          <Property Name="EXOutputModel" Type="nvarchar" MaxLength="500" />
+          <Property Name="EXQId" Type="int" />
+        </EntityType>
+        <EntityType Name="Tbl_Language">
+          <Key>
+            <PropertyRef Name="Lid" />
+          </Key>
+          <Property Name="Lid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lname" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tbl_Level">
+          <Key>
+            <PropertyRef Name="LId" />
+          </Key>
+          <Property Name="LId" Type="int" Nullable="false" />
+          <Property Name="LName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LDescription" Type="nvarchar" MaxLength="200" />
+          <Property Name="LOrder" Type="int" />
+          <Property Name="LPointsRequired" Type="int" />
+          <Property Name="LPointReceived" Type="int" />
+        </EntityType>
+        <EntityType Name="Tbl_RealPerson">
+          <Key>
+            <PropertyRef Name="RP_id" />
+          </Key>
+          <Property Name="RP_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RP_Userid" Type="int" />
+          <Property Name="RP_PersonelId" Type="nchar" MaxLength="10" />
+          <Property Name="RP_FName" Type="nvarchar" MaxLength="50" />
+          <Property Name="RP_LName" Type="nvarchar" MaxLength="50" />
+          <Property Name="RP_PhoneNumber" Type="nchar" MaxLength="11" />
+          <Property Name="RP_EmailAddress" Type="nvarchar" MaxLength="320" />
+          <Property Name="RP_Role" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Tbl_Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="tinyint" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoleDescription" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'CodeChallenge.dbo.Tbl_Status' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Tbl_Status">
+          <Property Name="StatusId" Type="int" />
+          <Property Name="StatusName" Type="nvarchar" MaxLength="50" />
+        </EntityType>-->
+        <EntityType Name="Tbl_User">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UuserName" Type="nvarchar" MaxLength="20" />
+          <Property Name="UHashPass" Type="varchar" MaxLength="60" />
+          <Property Name="UActiveStatus" Type="bit" />
+          <Property Name="Role" Type="tinyint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CodeChallenge.dbo.View_ApprovalStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_ApprovalStatus">
+          <Key>
+            <PropertyRef Name="SId" />
+          </Key>
+          <Property Name="SId" Type="int" Nullable="false" />
+          <Property Name="SQId" Type="int" />
+          <Property Name="SQPid" Type="int" />
+          <Property Name="SQStatus" Type="tinyint" />
+          <Property Name="SQDate" Type="datetime" />
+          <Property Name="SQSHDate" Type="nchar" MaxLength="10" />
+          <Property Name="ApprovalStatus" Type="tinyint" />
+          <Property Name="ApprovalDate" Type="datetime" />
+          <Property Name="ApprovalSHDate" Type="nchar" MaxLength="10" />
+          <Property Name="ApprovalPID" Type="int" />
+          <Property Name="SAnswerLanguage" Type="int" />
+          <Property Name="SFileAddress" Type="nvarchar" MaxLength="500" />
+          <Property Name="SQP_Userid" Type="int" />
+          <Property Name="SQPName" Type="nvarchar" MaxLength="101" />
+          <Property Name="SQA_Userid" Type="int" />
+          <Property Name="SQAName" Type="nvarchar" MaxLength="101" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CodeChallenge.dbo.View_Challenge' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Challenge">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="int" Nullable="false" />
+          <Property Name="QpersonOwner" Type="int" />
+          <Property Name="QName" Type="nchar" MaxLength="10" />
+          <Property Name="QDescription" Type="nvarchar(max)" />
+          <Property Name="QLevel" Type="int" />
+          <Property Name="QCId" Type="tinyint" />
+          <Property Name="QStatus" Type="tinyint" />
+          <Property Name="POwnerUserId" Type="int" />
+          <Property Name="POwnerName" Type="nvarchar" MaxLength="101" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_ChallengeApprovalStatus">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="int" Nullable="false" />
+          <Property Name="QpersonOwner" Type="int" />
+          <Property Name="QName" Type="nchar" MaxLength="10" />
+          <Property Name="QDescription" Type="nvarchar(max)" />
+          <Property Name="QLevel" Type="int" />
+          <Property Name="QCId" Type="tinyint" />
+          <Property Name="QStatus" Type="tinyint" />
+          <Property Name="SId" Type="int" />
+          <Property Name="SQId" Type="int" />
+          <Property Name="SQPid" Type="int" />
+          <Property Name="SQStatus" Type="tinyint" />
+          <Property Name="SQDate" Type="datetime" />
+          <Property Name="SQSHDate" Type="nchar" MaxLength="10" />
+          <Property Name="ApprovalStatus" Type="tinyint" />
+          <Property Name="ApprovalDate" Type="datetime" />
+          <Property Name="ApprovalSHDate" Type="nchar" MaxLength="10" />
+          <Property Name="ApprovalPID" Type="int" />
+          <Property Name="SAnswerLanguage" Type="int" />
+          <Property Name="SFileAddress" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCount' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_ChallengeApprovalStatusCount">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="int" Nullable="false" />
+          <Property Name="QpersonOwner" Type="int" />
+          <Property Name="QName" Type="nchar" MaxLength="10" />
+          <Property Name="QDescription" Type="nvarchar(max)" />
+          <Property Name="QLevel" Type="int" />
+          <Property Name="QCId" Type="tinyint" />
+          <Property Name="QStatus" Type="tinyint" />
+          <Property Name="POwnerUserId" Type="int" />
+          <Property Name="POwnerName" Type="nvarchar" MaxLength="101" />
+          <Property Name="CountOfA" Type="int" />
+        </EntityType>
+        <Association Name="FK_ApprovalStatusChallenge">
+          <End Role="Tbl_Challenge" Type="Self.Tbl_Challenge" Multiplicity="0..1" />
+          <End Role="Tbl_ApprovalStatus" Type="Self.Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Challenge">
+              <PropertyRef Name="Qid" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="SQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalStatusLanguage">
+          <End Role="Tbl_Language" Type="Self.Tbl_Language" Multiplicity="0..1" />
+          <End Role="Tbl_ApprovalStatus" Type="Self.Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Language">
+              <PropertyRef Name="Lid" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="SAnswerLanguage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalStatusRealPerson">
+          <End Role="Tbl_RealPerson" Type="Self.Tbl_RealPerson" Multiplicity="0..1" />
+          <End Role="Tbl_ApprovalStatus" Type="Self.Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_id" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="SQPid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalStatusRealPerson2">
+          <End Role="Tbl_RealPerson" Type="Self.Tbl_RealPerson" Multiplicity="0..1" />
+          <End Role="Tbl_ApprovalStatus" Type="Self.Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_id" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="ApprovalPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChallengeCategory">
+          <End Role="Tbl_Category" Type="Self.Tbl_Category" Multiplicity="0..1" />
+          <End Role="Tbl_Challenge" Type="Self.Tbl_Challenge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="CT_Id" />
+            </Principal>
+            <Dependent Role="Tbl_Challenge">
+              <PropertyRef Name="QCId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChallengeLevel">
+          <End Role="Tbl_Level" Type="Self.Tbl_Level" Multiplicity="0..1" />
+          <End Role="Tbl_Challenge" Type="Self.Tbl_Challenge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Level">
+              <PropertyRef Name="LId" />
+            </Principal>
+            <Dependent Role="Tbl_Challenge">
+              <PropertyRef Name="QLevel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChallengeRealPerson">
+          <End Role="Tbl_RealPerson" Type="Self.Tbl_RealPerson" Multiplicity="0..1" />
+          <End Role="Tbl_Challenge" Type="Self.Tbl_Challenge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_id" />
+            </Principal>
+            <Dependent Role="Tbl_Challenge">
+              <PropertyRef Name="QpersonOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExampleChallenge">
+          <End Role="Tbl_Challenge" Type="Self.Tbl_Challenge" Multiplicity="0..1" />
+          <End Role="Tbl_Example" Type="Self.Tbl_Example" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Challenge">
+              <PropertyRef Name="Qid" />
+            </Principal>
+            <Dependent Role="Tbl_Example">
+              <PropertyRef Name="EXQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealPersonRole">
+          <End Role="Tbl_Role" Type="Self.Tbl_Role" Multiplicity="0..1" />
+          <End Role="Tbl_RealPerson" Type="Self.Tbl_RealPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealPersonUser">
+          <End Role="Tbl_User" Type="Self.Tbl_User" Multiplicity="0..1" />
+          <End Role="Tbl_RealPerson" Type="Self.Tbl_RealPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_User">
+              <PropertyRef Name="Uid" />
+            </Principal>
+            <Dependent Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole">
+          <End Role="Tbl_Role" Type="Self.Tbl_Role" Multiplicity="0..1" />
+          <End Role="Tbl_User" Type="Self.Tbl_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Tbl_User">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CodeChallengeModelStoreContainer">
+          <EntitySet Name="Tbl_ApprovalStatus" EntityType="Self.Tbl_ApprovalStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Category" EntityType="Self.Tbl_Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Challenge" EntityType="Self.Tbl_Challenge" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Example" EntityType="Self.Tbl_Example" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Language" EntityType="Self.Tbl_Language" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Level" EntityType="Self.Tbl_Level" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_RealPerson" EntityType="Self.Tbl_RealPerson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Role" EntityType="Self.Tbl_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_User" EntityType="Self.Tbl_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_ApprovalStatus" EntityType="Self.View_ApprovalStatus" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_ApprovalStatus].[SId] AS [SId], 
+    [View_ApprovalStatus].[SQId] AS [SQId], 
+    [View_ApprovalStatus].[SQPid] AS [SQPid], 
+    [View_ApprovalStatus].[SQStatus] AS [SQStatus], 
+    [View_ApprovalStatus].[SQDate] AS [SQDate], 
+    [View_ApprovalStatus].[SQSHDate] AS [SQSHDate], 
+    [View_ApprovalStatus].[ApprovalStatus] AS [ApprovalStatus], 
+    [View_ApprovalStatus].[ApprovalDate] AS [ApprovalDate], 
+    [View_ApprovalStatus].[ApprovalSHDate] AS [ApprovalSHDate], 
+    [View_ApprovalStatus].[ApprovalPID] AS [ApprovalPID], 
+    [View_ApprovalStatus].[SAnswerLanguage] AS [SAnswerLanguage], 
+    [View_ApprovalStatus].[SFileAddress] AS [SFileAddress], 
+    [View_ApprovalStatus].[SQP_Userid] AS [SQP_Userid], 
+    [View_ApprovalStatus].[SQPName] AS [SQPName], 
+    [View_ApprovalStatus].[SQA_Userid] AS [SQA_Userid], 
+    [View_ApprovalStatus].[SQAName] AS [SQAName]
+    FROM [dbo].[View_ApprovalStatus] AS [View_ApprovalStatus]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_Challenge" EntityType="Self.View_Challenge" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Challenge].[Qid] AS [Qid], 
+    [View_Challenge].[QpersonOwner] AS [QpersonOwner], 
+    [View_Challenge].[QName] AS [QName], 
+    [View_Challenge].[QDescription] AS [QDescription], 
+    [View_Challenge].[QLevel] AS [QLevel], 
+    [View_Challenge].[QCId] AS [QCId], 
+    [View_Challenge].[QStatus] AS [QStatus], 
+    [View_Challenge].[POwnerUserId] AS [POwnerUserId], 
+    [View_Challenge].[POwnerName] AS [POwnerName]
+    FROM [dbo].[View_Challenge] AS [View_Challenge]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_ChallengeApprovalStatus" EntityType="Self.View_ChallengeApprovalStatus" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_ChallengeApprovalStatus].[Qid] AS [Qid], 
+    [View_ChallengeApprovalStatus].[QpersonOwner] AS [QpersonOwner], 
+    [View_ChallengeApprovalStatus].[QName] AS [QName], 
+    [View_ChallengeApprovalStatus].[QDescription] AS [QDescription], 
+    [View_ChallengeApprovalStatus].[QLevel] AS [QLevel], 
+    [View_ChallengeApprovalStatus].[QCId] AS [QCId], 
+    [View_ChallengeApprovalStatus].[QStatus] AS [QStatus], 
+    [View_ChallengeApprovalStatus].[SId] AS [SId], 
+    [View_ChallengeApprovalStatus].[SQId] AS [SQId], 
+    [View_ChallengeApprovalStatus].[SQPid] AS [SQPid], 
+    [View_ChallengeApprovalStatus].[SQStatus] AS [SQStatus], 
+    [View_ChallengeApprovalStatus].[SQDate] AS [SQDate], 
+    [View_ChallengeApprovalStatus].[SQSHDate] AS [SQSHDate], 
+    [View_ChallengeApprovalStatus].[ApprovalStatus] AS [ApprovalStatus], 
+    [View_ChallengeApprovalStatus].[ApprovalDate] AS [ApprovalDate], 
+    [View_ChallengeApprovalStatus].[ApprovalSHDate] AS [ApprovalSHDate], 
+    [View_ChallengeApprovalStatus].[ApprovalPID] AS [ApprovalPID], 
+    [View_ChallengeApprovalStatus].[SAnswerLanguage] AS [SAnswerLanguage], 
+    [View_ChallengeApprovalStatus].[SFileAddress] AS [SFileAddress]
+    FROM [dbo].[View_ChallengeApprovalStatus] AS [View_ChallengeApprovalStatus]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_ChallengeApprovalStatusCount" EntityType="Self.View_ChallengeApprovalStatusCount" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_ChallengeApprovalStatusCount].[Qid] AS [Qid], 
+    [View_ChallengeApprovalStatusCount].[QpersonOwner] AS [QpersonOwner], 
+    [View_ChallengeApprovalStatusCount].[QName] AS [QName], 
+    [View_ChallengeApprovalStatusCount].[QDescription] AS [QDescription], 
+    [View_ChallengeApprovalStatusCount].[QLevel] AS [QLevel], 
+    [View_ChallengeApprovalStatusCount].[QCId] AS [QCId], 
+    [View_ChallengeApprovalStatusCount].[QStatus] AS [QStatus], 
+    [View_ChallengeApprovalStatusCount].[POwnerUserId] AS [POwnerUserId], 
+    [View_ChallengeApprovalStatusCount].[POwnerName] AS [POwnerName], 
+    [View_ChallengeApprovalStatusCount].[CountOfA] AS [CountOfA]
+    FROM [dbo].[View_ChallengeApprovalStatusCount] AS [View_ChallengeApprovalStatusCount]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ApprovalStatusChallenge" Association="Self.FK_ApprovalStatusChallenge">
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalStatusLanguage" Association="Self.FK_ApprovalStatusLanguage">
+            <End Role="Tbl_Language" EntitySet="Tbl_Language" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalStatusRealPerson" Association="Self.FK_ApprovalStatusRealPerson">
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalStatusRealPerson2" Association="Self.FK_ApprovalStatusRealPerson2">
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChallengeCategory" Association="Self.FK_ChallengeCategory">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChallengeLevel" Association="Self.FK_ChallengeLevel">
+            <End Role="Tbl_Level" EntitySet="Tbl_Level" />
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChallengeRealPerson" Association="Self.FK_ChallengeRealPerson">
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExampleChallenge" Association="Self.FK_ExampleChallenge">
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+            <End Role="Tbl_Example" EntitySet="Tbl_Example" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealPersonRole" Association="Self.FK_RealPersonRole">
+            <End Role="Tbl_Role" EntitySet="Tbl_Role" />
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealPersonUser" Association="Self.FK_RealPersonUser">
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole" Association="Self.FK_UserRole">
+            <End Role="Tbl_Role" EntitySet="Tbl_Role" />
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CodeChallengeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CodeChallengeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tbl_ApprovalStatus" EntityType="CodeChallengeModel.Tbl_ApprovalStatus" />
+          <EntitySet Name="Tbl_Category" EntityType="CodeChallengeModel.Tbl_Category" />
+          <EntitySet Name="Tbl_Example" EntityType="CodeChallengeModel.Tbl_Example" />
+          <EntitySet Name="Tbl_Language" EntityType="CodeChallengeModel.Tbl_Language" />
+          <EntitySet Name="Tbl_RealPerson" EntityType="CodeChallengeModel.Tbl_RealPerson" />
+          <EntitySet Name="Tbl_Role" EntityType="CodeChallengeModel.Tbl_Role" />
+          <EntitySet Name="Tbl_User" EntityType="CodeChallengeModel.Tbl_User" />
+          <EntitySet Name="View_ApprovalStatus" EntityType="CodeChallengeModel.View_ApprovalStatus" />
+          <EntitySet Name="View_Challenge" EntityType="CodeChallengeModel.View_Challenge" />
+          <EntitySet Name="View_ChallengeApprovalStatus" EntityType="CodeChallengeModel.View_ChallengeApprovalStatus" />
+          <AssociationSet Name="FK_ApprovalStatusLanguage" Association="CodeChallengeModel.FK_ApprovalStatusLanguage">
+            <End Role="Tbl_Language" EntitySet="Tbl_Language" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalStatusRealPerson" Association="CodeChallengeModel.FK_ApprovalStatusRealPerson">
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalStatusRealPerson2" Association="CodeChallengeModel.FK_ApprovalStatusRealPerson2">
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealPersonRole" Association="CodeChallengeModel.FK_RealPersonRole">
+            <End Role="Tbl_Role" EntitySet="Tbl_Role" />
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RealPersonUser" Association="CodeChallengeModel.FK_RealPersonUser">
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole" Association="CodeChallengeModel.FK_UserRole">
+            <End Role="Tbl_Role" EntitySet="Tbl_Role" />
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+          </AssociationSet>
+          <EntitySet Name="View_ChallengeApprovalStatusCount" EntityType="CodeChallengeModel.View_ChallengeApprovalStatusCount" />
+          <EntitySet Name="Tbl_Challenge" EntityType="CodeChallengeModel.Tbl_Challenge" />
+          <EntitySet Name="Tbl_Level" EntityType="CodeChallengeModel.Tbl_Level" />
+          <AssociationSet Name="FK_ApprovalStatusChallenge" Association="CodeChallengeModel.FK_ApprovalStatusChallenge">
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+            <End Role="Tbl_ApprovalStatus" EntitySet="Tbl_ApprovalStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChallengeCategory" Association="CodeChallengeModel.FK_ChallengeCategory">
+            <End Role="Tbl_Category" EntitySet="Tbl_Category" />
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChallengeLevel" Association="CodeChallengeModel.FK_ChallengeLevel">
+            <End Role="Tbl_Level" EntitySet="Tbl_Level" />
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChallengeRealPerson" Association="CodeChallengeModel.FK_ChallengeRealPerson">
+            <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExampleChallenge" Association="CodeChallengeModel.FK_ExampleChallenge">
+            <End Role="Tbl_Challenge" EntitySet="Tbl_Challenge" />
+            <End Role="Tbl_Example" EntitySet="Tbl_Example" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Tbl_ApprovalStatus">
+          <Key>
+            <PropertyRef Name="SId" />
+          </Key>
+          <Property Name="SId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SQId" Type="Int32" />
+          <Property Name="SQPid" Type="Int32" />
+          <Property Name="SQStatus" Type="Byte" />
+          <Property Name="SQDate" Type="DateTime" Precision="3" />
+          <Property Name="SQSHDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ApprovalStatus" Type="Byte" />
+          <Property Name="ApprovalDate" Type="DateTime" Precision="3" />
+          <Property Name="ApprovalSHDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ApprovalPID" Type="Int32" />
+          <Property Name="SAnswerLanguage" Type="Int32" />
+          <Property Name="SFileAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Language" Relationship="CodeChallengeModel.FK_ApprovalStatusLanguage" FromRole="Tbl_ApprovalStatus" ToRole="Tbl_Language" />
+          <NavigationProperty Name="Tbl_RealPerson" Relationship="CodeChallengeModel.FK_ApprovalStatusRealPerson" FromRole="Tbl_ApprovalStatus" ToRole="Tbl_RealPerson" />
+          <NavigationProperty Name="Tbl_RealPerson1" Relationship="CodeChallengeModel.FK_ApprovalStatusRealPerson2" FromRole="Tbl_ApprovalStatus" ToRole="Tbl_RealPerson" />
+          <NavigationProperty Name="Tbl_Challenge" Relationship="CodeChallengeModel.FK_ApprovalStatusChallenge" FromRole="Tbl_ApprovalStatus" ToRole="Tbl_Challenge" />
+        </EntityType>
+        <EntityType Name="Tbl_Category">
+          <Key>
+            <PropertyRef Name="CT_Id" />
+          </Key>
+          <Property Name="CT_Id" Type="Byte" Nullable="false" />
+          <Property Name="CT_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Challenge" Relationship="CodeChallengeModel.FK_ChallengeCategory" FromRole="Tbl_Category" ToRole="Tbl_Challenge" />
+        </EntityType>
+        <EntityType Name="Tbl_Example">
+          <Key>
+            <PropertyRef Name="EXId" />
+          </Key>
+          <Property Name="EXId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EXName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EXInputModel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EXOutputModel" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EXQId" Type="Int32" />
+          <NavigationProperty Name="Tbl_Challenge" Relationship="CodeChallengeModel.FK_ExampleChallenge" FromRole="Tbl_Example" ToRole="Tbl_Challenge" />
+        </EntityType>
+        <EntityType Name="Tbl_Language">
+          <Key>
+            <PropertyRef Name="Lid" />
+          </Key>
+          <Property Name="Lid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_ApprovalStatus" Relationship="CodeChallengeModel.FK_ApprovalStatusLanguage" FromRole="Tbl_Language" ToRole="Tbl_ApprovalStatus" />
+        </EntityType>
+        <EntityType Name="Tbl_RealPerson">
+          <Key>
+            <PropertyRef Name="RP_id" />
+          </Key>
+          <Property Name="RP_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RP_Userid" Type="Int32" />
+          <Property Name="RP_PersonelId" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="RP_FName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RP_LName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RP_PhoneNumber" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="RP_EmailAddress" Type="String" MaxLength="320" FixedLength="false" Unicode="true" />
+          <Property Name="RP_Role" Type="Byte" />
+          <NavigationProperty Name="Tbl_ApprovalStatus" Relationship="CodeChallengeModel.FK_ApprovalStatusRealPerson" FromRole="Tbl_RealPerson" ToRole="Tbl_ApprovalStatus" />
+          <NavigationProperty Name="Tbl_ApprovalStatus1" Relationship="CodeChallengeModel.FK_ApprovalStatusRealPerson2" FromRole="Tbl_RealPerson" ToRole="Tbl_ApprovalStatus" />
+          <NavigationProperty Name="Tbl_Role" Relationship="CodeChallengeModel.FK_RealPersonRole" FromRole="Tbl_RealPerson" ToRole="Tbl_Role" />
+          <NavigationProperty Name="Tbl_User" Relationship="CodeChallengeModel.FK_RealPersonUser" FromRole="Tbl_RealPerson" ToRole="Tbl_User" />
+          <NavigationProperty Name="Tbl_Challenge" Relationship="CodeChallengeModel.FK_ChallengeRealPerson" FromRole="Tbl_RealPerson" ToRole="Tbl_Challenge" />
+        </EntityType>
+        <EntityType Name="Tbl_Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Byte" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_RealPerson" Relationship="CodeChallengeModel.FK_RealPersonRole" FromRole="Tbl_Role" ToRole="Tbl_RealPerson" />
+          <NavigationProperty Name="Tbl_User" Relationship="CodeChallengeModel.FK_UserRole" FromRole="Tbl_Role" ToRole="Tbl_User" />
+        </EntityType>
+        <EntityType Name="Tbl_User">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UuserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UHashPass" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="UActiveStatus" Type="Boolean" />
+          <Property Name="Role" Type="Byte" />
+          <NavigationProperty Name="Tbl_RealPerson" Relationship="CodeChallengeModel.FK_RealPersonUser" FromRole="Tbl_User" ToRole="Tbl_RealPerson" />
+          <NavigationProperty Name="Tbl_Role" Relationship="CodeChallengeModel.FK_UserRole" FromRole="Tbl_User" ToRole="Tbl_Role" />
+        </EntityType>
+        <EntityType Name="View_ApprovalStatus">
+          <Key>
+            <PropertyRef Name="SId" />
+          </Key>
+          <Property Name="SId" Type="Int32" Nullable="false" />
+          <Property Name="SQId" Type="Int32" />
+          <Property Name="SQPid" Type="Int32" />
+          <Property Name="SQStatus" Type="Byte" />
+          <Property Name="SQDate" Type="DateTime" Precision="3" />
+          <Property Name="SQSHDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ApprovalStatus" Type="Byte" />
+          <Property Name="ApprovalDate" Type="DateTime" Precision="3" />
+          <Property Name="ApprovalSHDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ApprovalPID" Type="Int32" />
+          <Property Name="SAnswerLanguage" Type="Int32" />
+          <Property Name="SFileAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SQP_Userid" Type="Int32" />
+          <Property Name="SQPName" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="SQA_Userid" Type="Int32" />
+          <Property Name="SQAName" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_Challenge">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="Int32" Nullable="false" />
+          <Property Name="QpersonOwner" Type="Int32" />
+          <Property Name="QName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="QDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QLevel" Type="Int32" />
+          <Property Name="QCId" Type="Byte" />
+          <Property Name="QStatus" Type="Byte" />
+          <Property Name="POwnerUserId" Type="Int32" />
+          <Property Name="POwnerName" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_ChallengeApprovalStatus">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="Int32" Nullable="false" />
+          <Property Name="QpersonOwner" Type="Int32" />
+          <Property Name="QName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="QDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QLevel" Type="Int32" />
+          <Property Name="QCId" Type="Byte" />
+          <Property Name="QStatus" Type="Byte" />
+          <Property Name="SId" Type="Int32" />
+          <Property Name="SQId" Type="Int32" />
+          <Property Name="SQPid" Type="Int32" />
+          <Property Name="SQStatus" Type="Byte" />
+          <Property Name="SQDate" Type="DateTime" Precision="3" />
+          <Property Name="SQSHDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ApprovalStatus" Type="Byte" />
+          <Property Name="ApprovalDate" Type="DateTime" Precision="3" />
+          <Property Name="ApprovalSHDate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ApprovalPID" Type="Int32" />
+          <Property Name="SAnswerLanguage" Type="Int32" />
+          <Property Name="SFileAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_ApprovalStatusLanguage">
+          <End Type="CodeChallengeModel.Tbl_Language" Role="Tbl_Language" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_ApprovalStatus" Role="Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Language">
+              <PropertyRef Name="Lid" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="SAnswerLanguage" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalStatusRealPerson">
+          <End Type="CodeChallengeModel.Tbl_RealPerson" Role="Tbl_RealPerson" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_ApprovalStatus" Role="Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_id" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="SQPid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalStatusRealPerson2">
+          <End Type="CodeChallengeModel.Tbl_RealPerson" Role="Tbl_RealPerson" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_ApprovalStatus" Role="Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_id" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="ApprovalPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealPersonRole">
+          <End Type="CodeChallengeModel.Tbl_Role" Role="Tbl_Role" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_RealPerson" Role="Tbl_RealPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RealPersonUser">
+          <End Type="CodeChallengeModel.Tbl_User" Role="Tbl_User" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_RealPerson" Role="Tbl_RealPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_User">
+              <PropertyRef Name="Uid" />
+            </Principal>
+            <Dependent Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_Userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole">
+          <End Type="CodeChallengeModel.Tbl_Role" Role="Tbl_Role" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_User" Role="Tbl_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Tbl_User">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="View_ChallengeApprovalStatusCount">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="Int32" Nullable="false" />
+          <Property Name="QpersonOwner" Type="Int32" />
+          <Property Name="QName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="QDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QLevel" Type="Int32" />
+          <Property Name="QCId" Type="Byte" />
+          <Property Name="QStatus" Type="Byte" />
+          <Property Name="POwnerUserId" Type="Int32" />
+          <Property Name="POwnerName" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="CountOfA" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Tbl_Challenge">
+          <Key>
+            <PropertyRef Name="Qid" />
+          </Key>
+          <Property Name="Qid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QpersonOwner" Type="Int32" />
+          <Property Name="QName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="QDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QLevel" Type="Int32" />
+          <Property Name="QCId" Type="Byte" />
+          <Property Name="QStatus" Type="Byte" />
+          <NavigationProperty Name="Tbl_ApprovalStatus" Relationship="CodeChallengeModel.FK_ApprovalStatusChallenge" FromRole="Tbl_Challenge" ToRole="Tbl_ApprovalStatus" />
+          <NavigationProperty Name="Tbl_Category" Relationship="CodeChallengeModel.FK_ChallengeCategory" FromRole="Tbl_Challenge" ToRole="Tbl_Category" />
+          <NavigationProperty Name="Tbl_Level" Relationship="CodeChallengeModel.FK_ChallengeLevel" FromRole="Tbl_Challenge" ToRole="Tbl_Level" />
+          <NavigationProperty Name="Tbl_RealPerson" Relationship="CodeChallengeModel.FK_ChallengeRealPerson" FromRole="Tbl_Challenge" ToRole="Tbl_RealPerson" />
+          <NavigationProperty Name="Tbl_Example" Relationship="CodeChallengeModel.FK_ExampleChallenge" FromRole="Tbl_Challenge" ToRole="Tbl_Example" />
+        </EntityType>
+        <EntityType Name="Tbl_Level">
+          <Key>
+            <PropertyRef Name="LId" />
+          </Key>
+          <Property Name="LId" Type="Int32" Nullable="false" />
+          <Property Name="LName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LOrder" Type="Int32" />
+          <Property Name="LPointsRequired" Type="Int32" />
+          <Property Name="LPointReceived" Type="Int32" />
+          <NavigationProperty Name="Tbl_Challenge" Relationship="CodeChallengeModel.FK_ChallengeLevel" FromRole="Tbl_Level" ToRole="Tbl_Challenge" />
+        </EntityType>
+        <Association Name="FK_ApprovalStatusChallenge">
+          <End Type="CodeChallengeModel.Tbl_Challenge" Role="Tbl_Challenge" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_ApprovalStatus" Role="Tbl_ApprovalStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Challenge">
+              <PropertyRef Name="Qid" />
+            </Principal>
+            <Dependent Role="Tbl_ApprovalStatus">
+              <PropertyRef Name="SQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChallengeCategory">
+          <End Type="CodeChallengeModel.Tbl_Category" Role="Tbl_Category" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_Challenge" Role="Tbl_Challenge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Category">
+              <PropertyRef Name="CT_Id" />
+            </Principal>
+            <Dependent Role="Tbl_Challenge">
+              <PropertyRef Name="QCId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChallengeLevel">
+          <End Type="CodeChallengeModel.Tbl_Level" Role="Tbl_Level" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_Challenge" Role="Tbl_Challenge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Level">
+              <PropertyRef Name="LId" />
+            </Principal>
+            <Dependent Role="Tbl_Challenge">
+              <PropertyRef Name="QLevel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChallengeRealPerson">
+          <End Type="CodeChallengeModel.Tbl_RealPerson" Role="Tbl_RealPerson" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_Challenge" Role="Tbl_Challenge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_RealPerson">
+              <PropertyRef Name="RP_id" />
+            </Principal>
+            <Dependent Role="Tbl_Challenge">
+              <PropertyRef Name="QpersonOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExampleChallenge">
+          <End Type="CodeChallengeModel.Tbl_Challenge" Role="Tbl_Challenge" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_Example" Role="Tbl_Example" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Challenge">
+              <PropertyRef Name="Qid" />
+            </Principal>
+            <Dependent Role="Tbl_Example">
+              <PropertyRef Name="EXQId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CodeChallengeModelStoreContainer" CdmEntityContainer="CodeChallengeEntities">
+          <EntitySetMapping Name="Tbl_ApprovalStatus">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_ApprovalStatus">
+              <MappingFragment StoreEntitySet="Tbl_ApprovalStatus">
+                <ScalarProperty Name="SFileAddress" ColumnName="SFileAddress" />
+                <ScalarProperty Name="SAnswerLanguage" ColumnName="SAnswerLanguage" />
+                <ScalarProperty Name="ApprovalPID" ColumnName="ApprovalPID" />
+                <ScalarProperty Name="ApprovalSHDate" ColumnName="ApprovalSHDate" />
+                <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+                <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+                <ScalarProperty Name="SQSHDate" ColumnName="SQSHDate" />
+                <ScalarProperty Name="SQDate" ColumnName="SQDate" />
+                <ScalarProperty Name="SQStatus" ColumnName="SQStatus" />
+                <ScalarProperty Name="SQPid" ColumnName="SQPid" />
+                <ScalarProperty Name="SQId" ColumnName="SQId" />
+                <ScalarProperty Name="SId" ColumnName="SId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Category">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_Category">
+              <MappingFragment StoreEntitySet="Tbl_Category">
+                <ScalarProperty Name="CT_Name" ColumnName="CT_Name" />
+                <ScalarProperty Name="CT_Id" ColumnName="CT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Example">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_Example">
+              <MappingFragment StoreEntitySet="Tbl_Example">
+                <ScalarProperty Name="EXQId" ColumnName="EXQId" />
+                <ScalarProperty Name="EXOutputModel" ColumnName="EXOutputModel" />
+                <ScalarProperty Name="EXInputModel" ColumnName="EXInputModel" />
+                <ScalarProperty Name="EXName" ColumnName="EXName" />
+                <ScalarProperty Name="EXId" ColumnName="EXId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Language">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_Language">
+              <MappingFragment StoreEntitySet="Tbl_Language">
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="Lid" ColumnName="Lid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_RealPerson">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_RealPerson">
+              <MappingFragment StoreEntitySet="Tbl_RealPerson">
+                <ScalarProperty Name="RP_Role" ColumnName="RP_Role" />
+                <ScalarProperty Name="RP_EmailAddress" ColumnName="RP_EmailAddress" />
+                <ScalarProperty Name="RP_PhoneNumber" ColumnName="RP_PhoneNumber" />
+                <ScalarProperty Name="RP_LName" ColumnName="RP_LName" />
+                <ScalarProperty Name="RP_FName" ColumnName="RP_FName" />
+                <ScalarProperty Name="RP_PersonelId" ColumnName="RP_PersonelId" />
+                <ScalarProperty Name="RP_Userid" ColumnName="RP_Userid" />
+                <ScalarProperty Name="RP_id" ColumnName="RP_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Role">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_Role">
+              <MappingFragment StoreEntitySet="Tbl_Role">
+                <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_User">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_User">
+              <MappingFragment StoreEntitySet="Tbl_User">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="UActiveStatus" ColumnName="UActiveStatus" />
+                <ScalarProperty Name="UHashPass" ColumnName="UHashPass" />
+                <ScalarProperty Name="UuserName" ColumnName="UuserName" />
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_ApprovalStatus">
+            <EntityTypeMapping TypeName="CodeChallengeModel.View_ApprovalStatus">
+              <MappingFragment StoreEntitySet="View_ApprovalStatus">
+                <ScalarProperty Name="SQAName" ColumnName="SQAName" />
+                <ScalarProperty Name="SQA_Userid" ColumnName="SQA_Userid" />
+                <ScalarProperty Name="SQPName" ColumnName="SQPName" />
+                <ScalarProperty Name="SQP_Userid" ColumnName="SQP_Userid" />
+                <ScalarProperty Name="SFileAddress" ColumnName="SFileAddress" />
+                <ScalarProperty Name="SAnswerLanguage" ColumnName="SAnswerLanguage" />
+                <ScalarProperty Name="ApprovalPID" ColumnName="ApprovalPID" />
+                <ScalarProperty Name="ApprovalSHDate" ColumnName="ApprovalSHDate" />
+                <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+                <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+                <ScalarProperty Name="SQSHDate" ColumnName="SQSHDate" />
+                <ScalarProperty Name="SQDate" ColumnName="SQDate" />
+                <ScalarProperty Name="SQStatus" ColumnName="SQStatus" />
+                <ScalarProperty Name="SQPid" ColumnName="SQPid" />
+                <ScalarProperty Name="SQId" ColumnName="SQId" />
+                <ScalarProperty Name="SId" ColumnName="SId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Challenge">
+            <EntityTypeMapping TypeName="CodeChallengeModel.View_Challenge">
+              <MappingFragment StoreEntitySet="View_Challenge">
+                <ScalarProperty Name="POwnerName" ColumnName="POwnerName" />
+                <ScalarProperty Name="POwnerUserId" ColumnName="POwnerUserId" />
+                <ScalarProperty Name="QStatus" ColumnName="QStatus" />
+                <ScalarProperty Name="QCId" ColumnName="QCId" />
+                <ScalarProperty Name="QLevel" ColumnName="QLevel" />
+                <ScalarProperty Name="QDescription" ColumnName="QDescription" />
+                <ScalarProperty Name="QName" ColumnName="QName" />
+                <ScalarProperty Name="QpersonOwner" ColumnName="QpersonOwner" />
+                <ScalarProperty Name="Qid" ColumnName="Qid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_ChallengeApprovalStatus">
+            <EntityTypeMapping TypeName="CodeChallengeModel.View_ChallengeApprovalStatus">
+              <MappingFragment StoreEntitySet="View_ChallengeApprovalStatus">
+                <ScalarProperty Name="SFileAddress" ColumnName="SFileAddress" />
+                <ScalarProperty Name="SAnswerLanguage" ColumnName="SAnswerLanguage" />
+                <ScalarProperty Name="ApprovalPID" ColumnName="ApprovalPID" />
+                <ScalarProperty Name="ApprovalSHDate" ColumnName="ApprovalSHDate" />
+                <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+                <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+                <ScalarProperty Name="SQSHDate" ColumnName="SQSHDate" />
+                <ScalarProperty Name="SQDate" ColumnName="SQDate" />
+                <ScalarProperty Name="SQStatus" ColumnName="SQStatus" />
+                <ScalarProperty Name="SQPid" ColumnName="SQPid" />
+                <ScalarProperty Name="SQId" ColumnName="SQId" />
+                <ScalarProperty Name="SId" ColumnName="SId" />
+                <ScalarProperty Name="QStatus" ColumnName="QStatus" />
+                <ScalarProperty Name="QCId" ColumnName="QCId" />
+                <ScalarProperty Name="QLevel" ColumnName="QLevel" />
+                <ScalarProperty Name="QDescription" ColumnName="QDescription" />
+                <ScalarProperty Name="QName" ColumnName="QName" />
+                <ScalarProperty Name="QpersonOwner" ColumnName="QpersonOwner" />
+                <ScalarProperty Name="Qid" ColumnName="Qid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_ChallengeApprovalStatusCount">
+            <EntityTypeMapping TypeName="CodeChallengeModel.View_ChallengeApprovalStatusCount">
+              <MappingFragment StoreEntitySet="View_ChallengeApprovalStatusCount">
+                <ScalarProperty Name="CountOfA" ColumnName="CountOfA" />
+                <ScalarProperty Name="POwnerName" ColumnName="POwnerName" />
+                <ScalarProperty Name="POwnerUserId" ColumnName="POwnerUserId" />
+                <ScalarProperty Name="QStatus" ColumnName="QStatus" />
+                <ScalarProperty Name="QCId" ColumnName="QCId" />
+                <ScalarProperty Name="QLevel" ColumnName="QLevel" />
+                <ScalarProperty Name="QDescription" ColumnName="QDescription" />
+                <ScalarProperty Name="QName" ColumnName="QName" />
+                <ScalarProperty Name="QpersonOwner" ColumnName="QpersonOwner" />
+                <ScalarProperty Name="Qid" ColumnName="Qid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Challenge">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_Challenge">
+              <MappingFragment StoreEntitySet="Tbl_Challenge">
+                <ScalarProperty Name="QStatus" ColumnName="QStatus" />
+                <ScalarProperty Name="QCId" ColumnName="QCId" />
+                <ScalarProperty Name="QLevel" ColumnName="QLevel" />
+                <ScalarProperty Name="QDescription" ColumnName="QDescription" />
+                <ScalarProperty Name="QName" ColumnName="QName" />
+                <ScalarProperty Name="QpersonOwner" ColumnName="QpersonOwner" />
+                <ScalarProperty Name="Qid" ColumnName="Qid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Level">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_Level">
+              <MappingFragment StoreEntitySet="Tbl_Level">
+                <ScalarProperty Name="LPointReceived" ColumnName="LPointReceived" />
+                <ScalarProperty Name="LPointsRequired" ColumnName="LPointsRequired" />
+                <ScalarProperty Name="LOrder" ColumnName="LOrder" />
+                <ScalarProperty Name="LDescription" ColumnName="LDescription" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="LId" ColumnName="LId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

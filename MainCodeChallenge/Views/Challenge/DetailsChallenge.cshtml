@@ -1,0 +1,57 @@
+﻿
+
+@{
+
+    ViewBag.Title = "DetailsChallenge";
+    IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus> challengeApprovalStatus = ViewData["challengeApprovalStatus"] as IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus>;
+    IEnumerable<MainCodeChallenge.Models.Example> example = ViewData["ExampleChallenge"] as IEnumerable<MainCodeChallenge.Models.Example>;
+    WebGrid gridch = new WebGrid(challengeApprovalStatus, canSort: true, canPage: true);
+    WebGrid gridD = new WebGrid(example, canSort: true, canPage: true);
+
+}
+
+<h2>DetailsChallenge</h2>
+
+
+<style>
+    table, th, td {
+        border: solid 1px #bbbbbb;
+        padding: 2px;
+    }
+</style>
+
+
+<h3>Challenge</h3>
+
+<br />
+@gridch.GetHtml(
+columns: new[]
+
+{
+    gridch.Column(columnName:"Qid",header:"Question ID"),
+    gridch.Column(columnName:"QName", header:"Question Name"),
+    gridch.Column(columnName:"QDescription", header:"Question Description"),
+    gridch.Column(columnName:"POwnerName",header:"Question Owner"),
+    gridch.Column(columnName:"QLevel",header:"Question Level"),
+    gridch.Column(columnName:"LPointsRequired",header:"QPoints Required"),
+    gridch.Column(columnName:"CountOfA",header:"Number of volunteers"),
+    gridch.Column(header: "Action",
+    format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallenge","Challenge",new { id = item.Qid }  ) +
+    " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "))
+}
+)
+
+<br />
+<h3>Example</h3>
+<br />
+
+@gridD.GetHtml(
+columns: new[]
+
+{
+    gridD.Column(columnName:"EXName",header:"Example Name"),
+    gridD.Column(columnName:"EXInputModel", header:"Question Name"),
+    gridD.Column(columnName:"EXOutputModel", header:"Question Description"),
+    
+}
+)

@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus>
+
+@{
+    ViewBag.Title = "AdminPage";
+    WebGrid grid = new WebGrid(Model, canSort: true, canPage: true, rowsPerPage: 5);
+}
+<style>
+    table, th, td {
+        border: solid 1px #bbbbbb;
+        border-collapse: collapse;
+        padding: 2px;
+    }
+</style>
+<h2>AdminPage</h2>
+<br />
+@grid.GetHtml(
+columns: new[]
+
+{
+        grid.Column(columnName:"Qid",header:"Question ID"),
+        grid.Column(columnName:"QName", header:"Question Name"),
+        grid.Column(columnName:"QDescription", header:"Question Description",format: @<text>@item.QDescription.Substring(0, 180) .... </text>),
+        grid.Column(columnName:"POwnerName",header:"Question Owner"),
+        grid.Column(columnName:"QLevel",header:"Question Level"),
+        grid.Column(columnName:"LPointsRequired",header:"QPoints Required"),
+        grid.Column(columnName:"CountOfA",header:"Number of volunteers")
+
+}
+)
+
+
