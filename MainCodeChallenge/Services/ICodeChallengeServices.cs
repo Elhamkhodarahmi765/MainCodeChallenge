@@ -11,7 +11,7 @@ namespace MainCodeChallenge.Services
     public interface ICodeChallengeServices
     {
         bool Authenticate(string username, string password);
-        EnumRolePage GetActionToGoFromLoginPage(string username);
+        Tbl_User GetActionToGoFromLoginPage(string username);
         List<ChallengeApprovalStatus> GetAllChallengeApprovalStatusCount();
         List<ChallengeApprovalStatus> GetChallengeDetailsById(int Id);
         List<Example> GetExampleByChallengeId(int Id);

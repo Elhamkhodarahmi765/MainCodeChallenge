@@ -1,4 +1,4 @@
-﻿
+﻿@model MainCodeChallenge.Models.ChallengeApprovalStatus
 
 @{
 
@@ -10,48 +10,111 @@
 
 }
 
-<h2>DetailsChallenge</h2>
+<h1>DetailsChallenge</h1>
 
 
 <style>
     table, th, td {
-        border: solid 1px #bbbbbb;
         padding: 2px;
+    }
+    .center {
+        margin: auto;
+        width: 90%;
+        /*border: 3px solid #4682B4;*/
+        padding: 10px;
+    }
+    .float-container {
+        border: 3px solid #fff;
+        padding: 20px;
+    }
+
+    .float-child {
+        width: 50%;
+        float: left;
+        padding: 20px;
+        border: 2px solid red;
+    }
+    .gradientButton {
+        color: white;
+        text-transform: uppercase;
+        width: 100px;
+        line-height: 50px;
+        border-radius: 5px;
+        background: #00B000;
+        text-align: center;
+        box-shadow: inset 0 0 25px rgba(0,0,0,.25)
+    }
+
+   .gradientButton:hover {
+        /*text-shadow: 1px 1px #336633;*/
+        background: linear-gradient(to bottom right, LawnGreen 5%, green 80%);
+   }
+    .blueBackground {
+        background-color:#F0F8FF 
     }
 </style>
 
 
-<h3>Challenge</h3>
 
-<br />
-@gridch.GetHtml(
-columns: new[]
 
-{
-    gridch.Column(columnName:"Qid",header:"Question ID"),
-    gridch.Column(columnName:"QName", header:"Question Name"),
-    gridch.Column(columnName:"QDescription", header:"Question Description"),
-    gridch.Column(columnName:"POwnerName",header:"Question Owner"),
-    gridch.Column(columnName:"QLevel",header:"Question Level"),
-    gridch.Column(columnName:"LPointsRequired",header:"QPoints Required"),
-    gridch.Column(columnName:"CountOfA",header:"Number of volunteers"),
-    gridch.Column(header: "Action",
-    format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallenge","Challenge",new { id = item.Qid }  ) +
-    " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "))
-}
-)
+<div class="center">
+    <table width="100%">
+        <tr>
+            <td>
+                <h2>@Model.QName </h2>
+            </td>
+            <td style="direction:rtl">
+                <div class="gradientButton"> Pick up / @Model.LPointsRequired</div>
+            </td>
+        </tr>
+    </table>
+    <h3>@Model.CT_Name / Difficulty: <span> @Model.QLevel.ToString() </span> </h3>
+    <h3>Question Owner: @Model.POwnerName / Number of volunteers: @Model.CountOfA  </h3>
+    <br />
+    <p>
+        @Model.QDescription
+    </p>
+    <br />
+    <h3>
+        Examples
+    </h3>
 
-<br />
-<h3>Example</h3>
-<br />
+    <table style="width:100%">
 
-@gridD.GetHtml(
-columns: new[]
+        @foreach (var item in example)
+        {
+        <tr>
+            <td>
+                Input:
+            </td>
+        </tr>
+        <tr>
+            <td class="blueBackground">
+                &nbsp;&nbsp;&nbsp;&nbsp; @item.EXInputModel
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Output:
+            </td>
+        </tr>
+        <tr>
+            <td class="blueBackground">
+                &nbsp;&nbsp;&nbsp;&nbsp; @item.EXOutputModel
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <br />
+            </td>
+        </tr>
+        }
+    </table>
 
-{
-    gridD.Column(columnName:"EXName",header:"Example Name"),
-    gridD.Column(columnName:"EXInputModel", header:"Question Name"),
-    gridD.Column(columnName:"EXOutputModel", header:"Question Description"),
-    
-}
-)
+
+    <br />
+</div>
+
+
+
+
