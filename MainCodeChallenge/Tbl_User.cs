@@ -9,16 +9,18 @@
 
 namespace MainCodeChallenge
 {
+    using MainCodeChallenge.Models;
     using System;
     using System.Collections.Generic;
-    using Models;
     
     public partial class Tbl_User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Tbl_User()
         {
+            this.Tbl_PointIncDec = new HashSet<Tbl_PointIncDec>();
             this.Tbl_RealPerson = new HashSet<Tbl_RealPerson>();
+            this.Tbl_RealPesronPoint = new HashSet<Tbl_RealPesronPoint>();
         }
     
         public int Uid { get; set; }
@@ -26,16 +28,18 @@ namespace MainCodeChallenge
         public string UHashPass { get; set; }
         public Nullable<bool> UActiveStatus { get; set; }
         public Nullable<byte> Role { get; set; }
-        
-
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_PointIncDec> Tbl_PointIncDec { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_RealPerson> Tbl_RealPerson { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_RealPesronPoint> Tbl_RealPesronPoint { get; set; }
         public virtual Tbl_Role Tbl_Role { get; set; }
 
         public EnumRolePage getRole()
         {
-            return (EnumRolePage) this.Role;
+            return (EnumRolePage)this.Role;
         }
     }
 }

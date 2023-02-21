@@ -19,6 +19,7 @@ namespace MainCodeChallenge
         {
             this.Tbl_ApprovalStatus = new HashSet<Tbl_ApprovalStatus>();
             this.Tbl_Example = new HashSet<Tbl_Example>();
+            this.Tbl_PointIncDec = new HashSet<Tbl_PointIncDec>();
         }
     
         public int Qid { get; set; }
@@ -28,6 +29,9 @@ namespace MainCodeChallenge
         public Nullable<int> QLevel { get; set; }
         public Nullable<byte> QCId { get; set; }
         public Nullable<byte> QStatus { get; set; }
+        public Nullable<int> QRpoint { get; set; }
+        public Nullable<int> QApoint { get; set; }
+        public Nullable<double> Qfactor { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_ApprovalStatus> Tbl_ApprovalStatus { get; set; }
@@ -36,5 +40,7 @@ namespace MainCodeChallenge
         public virtual Tbl_RealPerson Tbl_RealPerson { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_Example> Tbl_Example { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_PointIncDec> Tbl_PointIncDec { get; set; }
     }
 }

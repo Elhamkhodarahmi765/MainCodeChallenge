@@ -50,9 +50,6 @@ namespace MainCodeChallenge.Controllers
 
         }
 
-
-
-
         [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
         public ActionResult AdminPage()
         {
@@ -61,21 +58,13 @@ namespace MainCodeChallenge.Controllers
         }
 
 
-
-
         [RestrictActionToRole(Roles = new string[] { "ProfilePage" })]
         public ActionResult ProfilePage()
         {
             var user  = HttpContext.Session["UserID"].ToString();
-
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetAllChallengeApprovalStatusCount();
             return View(challengeApprovalStatus);
         }
-
-
-
-
-
 
         [AllowAnonymous]
         public ActionResult ErrorPage()

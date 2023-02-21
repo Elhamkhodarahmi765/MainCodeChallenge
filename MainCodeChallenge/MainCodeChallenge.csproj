@@ -177,7 +177,13 @@
     <Compile Include="Tbl_Level.cs">
       <DependentUpon>ModelCodeChallenge.tt</DependentUpon>
     </Compile>
+    <Compile Include="Tbl_PointIncDec.cs">
+      <DependentUpon>ModelCodeChallenge.tt</DependentUpon>
+    </Compile>
     <Compile Include="Tbl_RealPerson.cs">
+      <DependentUpon>ModelCodeChallenge.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tbl_RealPesronPoint.cs">
       <DependentUpon>ModelCodeChallenge.tt</DependentUpon>
     </Compile>
     <Compile Include="Tbl_Role.cs">
