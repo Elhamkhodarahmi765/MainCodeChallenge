@@ -39,8 +39,6 @@ namespace MainCodeChallenge.Services
 
         public Tbl_User GetActionToGoFromLoginPage(string username)
         {
-            //search role in database
-            byte  role =0;
             CodeChallengeEntities db = new CodeChallengeEntities();
             var q = db.Tbl_User.Where(x => x.UuserName.Equals(username)).SingleOrDefault();
             return q;
@@ -155,5 +153,123 @@ namespace MainCodeChallenge.Services
 
             return example.Where(c => c.EXQId == Id).ToList();
         }
+
+        public  UserInfo  GetUserInfoByUId(int UID)
+        {
+            CodeChallengeEntities db=new CodeChallengeEntities();
+            List<UserInfo> userInfo = (from u in db.Tbl_RealPerson
+                                 join p in db.Tbl_RealPesronPoint on u.RP_Userid equals p.PUserId into RealPersonPoint
+                                 from p2 in RealPersonPoint.DefaultIfEmpty()
+                                 select new UserInfo 
+                                 {
+                                        Uid=u.RP_id,
+                                        PersonelId=u.RP_PersonelId,
+                                        EmailAddress=u.RP_EmailAddress,
+                                        PhoneNumber=u.RP_PhoneNumber,
+                                        role=(EnumRoleS)u.RP_Role,
+                                        rolePage=(EnumRolePage)u.RP_Role,
+                                        //RealPersonFullname=u.getRealPersonFullname(),
+                                        RealPersonFullname = u.RP_FName + " " + u.RP_LName,
+                                        Ppoint =(int?)p2.PPoint ?? 0,
+                                        RP_id=u.RP_id
+
+                                 }).ToList();
+            return userInfo.First();
+            //Q Bluekian
+        }
+
+
+        public int GetPointById(int Uid)
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var pointperson = (from a in db.Tbl_RealPesronPoint
+                                  where a.PUserId  == Uid
+                                  select new
+                                  {
+                                      point=a.PPoint
+                                  }).ToList();
+            return (int?)pointperson.First().point ?? 0;
+        }
+
+
+
+
+
+
+       public bool GetAllChallengeApprovalStatusPerson(int Qid, int Uid)
+       {
+            UserInfo userInfo = GetUserInfoByUId(Uid);
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
+                       where a.SQId == Qid && a.SQPid == userInfo.Uid
+                                  select new
+                       {
+                          Qid=a.SQId
+                       }).ToList();
+            
+            if(ApprovalStatus.Count!=0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+       }
+
+        public bool PickUpChallenge(int Qid, int Uid)
+        {
+            UserInfo userInfo = GetUserInfoByUId(Uid);
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
+                                  where a.SQId == Qid && a.SQPid == userInfo.Uid
+                                  select new
+                                  {
+                                      Qid = a.SQId
+                                  }).ToList();
+
+            if (ApprovalStatus.Count != 0)
+            {
+                return false;
+            }
+            else
+            {
+                UserInfo userinfo = GetUserInfoByUId(Uid);
+                if(IsItPossibleToPickUp(Qid,Uid))
+                {
+                    Tbl_ApprovalStatus Aps = new Tbl_ApprovalStatus();
+                    Aps.SQId=Qid;
+                    Aps.SQPid= userinfo.RP_id;
+                    Aps.SQStatus = (int)EnumSQStatus.PickUp ;
+                    Aps.SQDate = DateTime.Now;
+                    db.Tbl_ApprovalStatus.Add(Aps);
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+
+        }
+
+        public bool IsItPossibleToPickUp(int Qid, int Uid)
+        {
+            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).First();
+            if(ChallengeApprovalStatus.QRpoint <= GetPointById(Uid))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
     }
 }

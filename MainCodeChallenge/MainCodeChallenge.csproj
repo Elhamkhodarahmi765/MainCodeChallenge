@@ -151,9 +151,11 @@
       <DependentUpon>ModelCodeChallenge.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\ChallengeApprovalStatusP.cs" />
     <Compile Include="Models\ChallengeApprovalStatus.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Example.cs" />
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CodeChallengeRepository.cs" />
     <Compile Include="Repositories\ICodeChallengeRepository.cs" />
@@ -216,6 +218,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\Bexit.png" />
     <Content Include="ModelCodeChallenge.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelCodeChallenge.Context.cs</LastGenOutput>

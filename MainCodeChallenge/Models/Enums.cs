@@ -30,4 +30,16 @@ namespace MainCodeChallenge.Models
         Expert = 5
     }
 
+    public enum EnumSQStatus
+    {
+        PickUp=1,
+        Done=2
+    }
+
+    public enum EnumApprovalStatus
+    {
+        AwaitingFinalApproval=1,
+        FinalApproval=2
+    }
+
 }

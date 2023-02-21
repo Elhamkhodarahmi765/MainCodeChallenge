@@ -7,6 +7,9 @@
     IEnumerable<MainCodeChallenge.Models.Example> example = ViewData["ExampleChallenge"] as IEnumerable<MainCodeChallenge.Models.Example>;
     WebGrid gridch = new WebGrid(challengeApprovalStatus, canSort: true, canPage: true);
     WebGrid gridD = new WebGrid(example, canSort: true, canPage: true);
+    int Uid= (int)ViewData["Uid"];
+    bool ApprovalStatus = (bool)ViewData["ApprovalStatus"];
+    bool IsItPossibleToPickUp=(bool)ViewData["IsItPossibleToPickUp"];
 
 }
 
@@ -39,19 +42,27 @@
         text-transform: uppercase;
         width: 100px;
         line-height: 50px;
-        border-radius: 5px;
+       
         background: #00B000;
         text-align: center;
         box-shadow: inset 0 0 25px rgba(0,0,0,.25)
     }
-
    .gradientButton:hover {
         /*text-shadow: 1px 1px #336633;*/
         background: linear-gradient(to bottom right, LawnGreen 5%, green 80%);
    }
-    .blueBackground {
-        background-color:#F0F8FF 
+    .gradientButtonDisable {
+        color: white;
+        text-transform: uppercase;
+        width: 100px;
+        line-height: 50px;
+        background: #DCDCDC;
+        text-align: center;
+        box-shadow: inset 0 0 25px rgb(128, 128, 128)
     }
+   .blueBackground {
+        background-color:#F0F8FF 
+   }
 </style>
 
 
@@ -64,7 +75,19 @@
                 <h2>@Model.QName </h2>
             </td>
             <td style="direction:rtl">
-                <div class="gradientButton"> Pick up / @Model.QRpoint</div>
+                @if (!ApprovalStatus)
+                {
+                    if (IsItPossibleToPickUp)
+                    {
+                        <button class="gradientButton" onclick="location.href='@Url.Action("PickUpChallenge", "Challenge", new {Qid= Model.Qid ,Uid= Uid} )';return false;">Pick up / @Model.QRpoint</button>
+                    }
+                    else
+                    {
+                        <button class="gradientButtonDisable" disabled="disabled">Pick up / @Model.QRpoint</button>
+                    }
+
+                }
+
             </td>
         </tr>
     </table>
@@ -90,7 +113,7 @@
         </tr>
         <tr>
             <td class="blueBackground">
-                &nbsp;&nbsp;&nbsp;&nbsp; @item.EXInputModel
+                &nbsp;&nbsp;&nbsp; @item.EXInputModel
             </td>
         </tr>
         <tr>
@@ -100,7 +123,7 @@
         </tr>
         <tr>
             <td class="blueBackground">
-                &nbsp;&nbsp;&nbsp;&nbsp; @item.EXOutputModel
+                &nbsp;&nbsp;&nbsp; @item.EXOutputModel
             </td>
         </tr>
         <tr>
