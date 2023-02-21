@@ -18,5 +18,8 @@ namespace MainCodeChallenge.Models
         public int CountOfA { get; set; }
         public int LPointsRequired { get; set; }
         public int LPointReceived { get; set; }
+        public int QRpoint { get; set; }
+        public int QApoint { get; set; }
+
     }
 }

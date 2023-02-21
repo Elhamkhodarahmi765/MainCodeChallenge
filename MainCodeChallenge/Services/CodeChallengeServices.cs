@@ -62,6 +62,8 @@ namespace MainCodeChallenge.Services
                              ch.QLevel,
                              ch.Tbl_Level.LPointsRequired,
                              ch.Tbl_Level.LPointReceived,
+                             ch.QRpoint,
+                             ch.QApoint,
                              ch.QDescription,
                              Qid.SQId,
                              ch.Tbl_Category.CT_Name,
@@ -76,11 +78,13 @@ namespace MainCodeChallenge.Services
                              QDescription = grp.Key.QDescription,
                              QName = grp.Key.QName,
                              QLevel = (EnumLevel)grp.Key.QLevel,
-                             LPointReceived = (int)grp.Key.LPointReceived,
-                             LPointsRequired = (int)grp.Key.LPointsRequired,
+                             LPointReceived = (int?)grp.Key.LPointReceived ?? 0,
+                             LPointsRequired = (int?)grp.Key.LPointsRequired ??0,
+                             QRpoint=(int?)grp.Key.QRpoint ?? 0,
+                             QApoint=(int?)grp.Key.QApoint ?? 0,
                              CT_Name = grp.Key.CT_Name,
                              POwnerName = grp.Key.RP_FName + " " + grp.Key.RP_LName,
-                             QpersonOwner = (int)grp.Key.QpersonOwner,
+                             QpersonOwner = (int?)grp.Key.QpersonOwner ??0,
                              CountOfA = grp.Where(t => t.Qid.SQId != null).Count()
                          }).ToList();
 
@@ -104,6 +108,8 @@ namespace MainCodeChallenge.Services
                              ch.QLevel,
                              ch.Tbl_Level.LPointsRequired,
                              ch.Tbl_Level.LPointReceived,
+                             ch.QRpoint,
+                             ch.QApoint,
                              ch.QDescription,
                              Qid.SQId,
                              ch.Tbl_Category.CT_Name,
@@ -118,11 +124,13 @@ namespace MainCodeChallenge.Services
                              QDescription = grp.Key.QDescription,
                              QName = grp.Key.QName,
                              QLevel = (EnumLevel)grp.Key.QLevel,
-                             LPointReceived=(int)grp.Key.LPointReceived,
-                             LPointsRequired=(int)grp.Key.LPointsRequired,
+                             LPointReceived=(int?)grp.Key.LPointReceived ??0,
+                             LPointsRequired=(int?)grp.Key.LPointsRequired ??0,
                              CT_Name = grp.Key.CT_Name,
                              POwnerName=grp.Key.RP_FName + " " +grp.Key.RP_LName,
-                             QpersonOwner=(int)grp.Key.QpersonOwner, 
+                             QpersonOwner=(int?)grp.Key.QpersonOwner ??0,
+                             QRpoint = (int?)grp.Key.QRpoint ?? 0,
+                             QApoint = (int?)grp.Key.QApoint ?? 0,
                              CountOfA = grp.Where(t => t.Qid.SQId != null).Count()
                          }).ToList();
 
