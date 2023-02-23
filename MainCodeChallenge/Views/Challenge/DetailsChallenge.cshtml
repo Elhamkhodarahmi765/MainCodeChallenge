@@ -1,4 +1,4 @@
-﻿@model MainCodeChallenge.Models.ChallengeApprovalStatus
+﻿@*@model MainCodeChallenge.Models.ChallengeApprovalStatus*@
 
 @{
 
@@ -72,18 +72,18 @@
     <table width="100%">
         <tr>
             <td>
-                <h2>@Model.QName </h2>
+                <h2>@challengeApprovalStatus.First().QName </h2>
             </td>
             <td style="direction:rtl">
                 @if (!ApprovalStatus)
                 {
                     if (IsItPossibleToPickUp)
                     {
-                        <button class="gradientButton" onclick="location.href='@Url.Action("PickUpChallenge", "Challenge", new {Qid= Model.Qid ,Uid= Uid} )';return false;">Pick up / @Model.QRpoint</button>
+                        <button class="gradientButton" onclick="location.href='@Url.Action("PickUpChallenge", "Challenge", new {Qid= @challengeApprovalStatus.First().Qid ,Uid= Uid} )';return false;">Pick up / @challengeApprovalStatus.First().QRpoint</button>
                     }
                     else
                     {
-                        <button class="gradientButtonDisable" disabled="disabled">Pick up / @Model.QRpoint</button>
+            <button class="gradientButtonDisable" disabled="disabled">Pick up / @challengeApprovalStatus.First().QRpoint</button>
                     }
 
                 }
@@ -91,11 +91,11 @@
             </td>
         </tr>
     </table>
-    <h3>@Model.CT_Name / Difficulty: <span> @Model.QLevel.ToString() </span> </h3>
-    <h3>Question Owner: @Model.POwnerName / Number of volunteers: @Model.CountOfA  </h3>
+    <h3>@challengeApprovalStatus.First().CT_Name / Difficulty: <span> @challengeApprovalStatus.First().QLevel.ToString() </span> </h3>
+    <h3>Question Owner: @challengeApprovalStatus.First().POwnerName / Number of volunteers: @challengeApprovalStatus.First().CountOfA  </h3>
     <br />
     <p>
-        @Model.QDescription
+        @challengeApprovalStatus.First().QDescription
     </p>
     <br />
     <h3>

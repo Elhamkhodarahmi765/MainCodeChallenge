@@ -39,8 +39,9 @@ namespace MainCodeChallenge.Controllers
             ViewData["ExampleChallenge"] = example;
             ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
             ViewData["IsItPossibleToPickUp"] =service.IsItPossibleToPickUp(Qid,Uid);
+            ViewData["challengeApprovalStatus"] = challengeApprovalStatus;
             ViewData["Uid"] = Uid;
-            return View(challengeApprovalStatus.First());
+            return View();
         }
 
         public ActionResult PickUpChallenge(int Qid,int Uid)
