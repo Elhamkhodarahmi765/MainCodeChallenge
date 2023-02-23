@@ -33,10 +33,30 @@ namespace MainCodeChallenge.Controllers
                 //Mr Blukian Error Page 
                 
             }
+            int Uid = int.Parse(HttpContext.Session["UserID"].ToString());
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetChallengeDetailsById(Qid);
             List<Example> example = service.GetExampleByChallengeId(Qid);
             ViewData["ExampleChallenge"] = example;
+            ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
+            ViewData["IsItPossibleToPickUp"] =service.IsItPossibleToPickUp(Qid,Uid);
+            ViewData["Uid"] = Uid;
             return View(challengeApprovalStatus.First());
         }
+
+        public ActionResult PickUpChallenge(int Qid,int Uid)
+        {
+            
+            if(service.PickUpChallenge(Qid, Uid))
+            {
+                return RedirectToAction("DetailsChallenge", new { id = Qid });
+            }
+            else
+            {
+                return View();
+            }
+            
+
+        }
+
     }
 }

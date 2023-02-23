@@ -15,6 +15,10 @@ namespace MainCodeChallenge.Services
         List<ChallengeApprovalStatus> GetAllChallengeApprovalStatusCount();
         List<ChallengeApprovalStatus> GetChallengeDetailsById(int Id);
         List<Example> GetExampleByChallengeId(int Id);
+        UserInfo GetUserInfoByUId(int UID);
+        bool GetAllChallengeApprovalStatusPerson(int Qid, int Uid);
+        bool IsItPossibleToPickUp(int Qid, int Uid);
+        bool PickUpChallenge(int Qid, int Uid);
 
     }  
 }

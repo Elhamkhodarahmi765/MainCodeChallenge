@@ -35,9 +35,13 @@ namespace MainCodeChallenge
         public virtual ICollection<Tbl_ApprovalStatus> Tbl_ApprovalStatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_ApprovalStatus> Tbl_ApprovalStatus1 { get; set; }
-        public virtual Tbl_Role Tbl_Role { get; set; }
-        public virtual Tbl_User Tbl_User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_Challenge> Tbl_Challenge { get; set; }
+        public virtual Tbl_Role Tbl_Role { get; set; }
+        public virtual Tbl_User Tbl_User { get; set; }
+        public string getRealPersonFullname()
+        {
+            return (string)(this.RP_FName + " " + this.RP_LName);
+        }
     }
 }

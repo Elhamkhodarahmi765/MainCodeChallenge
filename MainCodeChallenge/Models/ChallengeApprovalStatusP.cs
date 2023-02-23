@@ -5,7 +5,7 @@ using System.Web;
 
 namespace MainCodeChallenge.Models
 {
-    public class ChallengeApprovalStatus
+    public class ChallengeApprovalStatusP
     {
         public int Qid { get; set; }
         public int QpersonOwner { get; set; }
@@ -20,6 +20,10 @@ namespace MainCodeChallenge.Models
         public int LPointReceived { get; set; }
         public int QRpoint { get; set; }
         public int QApoint { get; set; }
+        public float Qfactor { get; set; }
+
+
+        
 
     }
 }

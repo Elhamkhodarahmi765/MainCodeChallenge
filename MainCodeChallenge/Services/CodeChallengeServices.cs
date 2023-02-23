@@ -39,8 +39,6 @@ namespace MainCodeChallenge.Services
 
         public Tbl_User GetActionToGoFromLoginPage(string username)
         {
-            //search role in database
-            byte  role =0;
             CodeChallengeEntities db = new CodeChallengeEntities();
             var q = db.Tbl_User.Where(x => x.UuserName.Equals(username)).SingleOrDefault();
             return q;
@@ -62,6 +60,8 @@ namespace MainCodeChallenge.Services
                              ch.QLevel,
                              ch.Tbl_Level.LPointsRequired,
                              ch.Tbl_Level.LPointReceived,
+                             ch.QRpoint,
+                             ch.QApoint,
                              ch.QDescription,
                              Qid.SQId,
                              ch.Tbl_Category.CT_Name,
@@ -76,11 +76,13 @@ namespace MainCodeChallenge.Services
                              QDescription = grp.Key.QDescription,
                              QName = grp.Key.QName,
                              QLevel = (EnumLevel)grp.Key.QLevel,
-                             LPointReceived = (int)grp.Key.LPointReceived,
-                             LPointsRequired = (int)grp.Key.LPointsRequired,
+                             LPointReceived = (int?)grp.Key.LPointReceived ?? 0,
+                             LPointsRequired = (int?)grp.Key.LPointsRequired ??0,
+                             QRpoint=(int?)grp.Key.QRpoint ?? 0,
+                             QApoint=(int?)grp.Key.QApoint ?? 0,
                              CT_Name = grp.Key.CT_Name,
                              POwnerName = grp.Key.RP_FName + " " + grp.Key.RP_LName,
-                             QpersonOwner = (int)grp.Key.QpersonOwner,
+                             QpersonOwner = (int?)grp.Key.QpersonOwner ??0,
                              CountOfA = grp.Where(t => t.Qid.SQId != null).Count()
                          }).ToList();
 
@@ -104,6 +106,8 @@ namespace MainCodeChallenge.Services
                              ch.QLevel,
                              ch.Tbl_Level.LPointsRequired,
                              ch.Tbl_Level.LPointReceived,
+                             ch.QRpoint,
+                             ch.QApoint,
                              ch.QDescription,
                              Qid.SQId,
                              ch.Tbl_Category.CT_Name,
@@ -118,11 +122,13 @@ namespace MainCodeChallenge.Services
                              QDescription = grp.Key.QDescription,
                              QName = grp.Key.QName,
                              QLevel = (EnumLevel)grp.Key.QLevel,
-                             LPointReceived=(int)grp.Key.LPointReceived,
-                             LPointsRequired=(int)grp.Key.LPointsRequired,
+                             LPointReceived=(int?)grp.Key.LPointReceived ??0,
+                             LPointsRequired=(int?)grp.Key.LPointsRequired ??0,
                              CT_Name = grp.Key.CT_Name,
                              POwnerName=grp.Key.RP_FName + " " +grp.Key.RP_LName,
-                             QpersonOwner=(int)grp.Key.QpersonOwner, 
+                             QpersonOwner=(int?)grp.Key.QpersonOwner ??0,
+                             QRpoint = (int?)grp.Key.QRpoint ?? 0,
+                             QApoint = (int?)grp.Key.QApoint ?? 0,
                              CountOfA = grp.Where(t => t.Qid.SQId != null).Count()
                          }).ToList();
 
@@ -147,5 +153,170 @@ namespace MainCodeChallenge.Services
 
             return example.Where(c => c.EXQId == Id).ToList();
         }
+
+        public  UserInfo  GetUserInfoByUId(int UID)
+        {
+            CodeChallengeEntities db=new CodeChallengeEntities();
+            List<UserInfo> userInfo = (from u in db.Tbl_RealPerson
+                                 join p in db.Tbl_RealPesronPoint on u.RP_Userid equals p.PUserId into RealPersonPoint
+                                 from p2 in RealPersonPoint.DefaultIfEmpty()
+                                 select new UserInfo 
+                                 {
+                                        Uid=u.RP_id,
+                                        PersonelId=u.RP_PersonelId,
+                                        EmailAddress=u.RP_EmailAddress,
+                                        PhoneNumber=u.RP_PhoneNumber,
+                                        role=(EnumRoleS)u.RP_Role,
+                                        rolePage=(EnumRolePage)u.RP_Role,
+                                        //RealPersonFullname=u.getRealPersonFullname(),
+                                        RealPersonFullname = u.RP_FName + " " + u.RP_LName,
+                                        Ppoint =(int?)p2.PPoint ?? 0,
+                                        RP_id=u.RP_id
+
+                                 }).ToList();
+            return userInfo.First();
+            //Q Bluekian
+        }
+
+
+        public int GetPointById(int Uid)
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var pointperson = (from a in db.Tbl_RealPesronPoint
+                                  where a.PUserId  == Uid
+                                  select new
+                                  {
+                                      point=a.PPoint
+                                  }).ToList();
+            return (int?)pointperson.First().point ?? 0;
+        }
+
+
+
+
+
+
+       public bool GetAllChallengeApprovalStatusPerson(int Qid, int Uid)
+       {
+            UserInfo userInfo = GetUserInfoByUId(Uid);
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
+                       where a.SQId == Qid && a.SQPid == userInfo.Uid
+                                  select new
+                       {
+                          Qid=a.SQId
+                       }).ToList();
+            
+            if(ApprovalStatus.Count!=0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+       }
+
+        public bool PickUpChallenge(int Qid, int Uid)
+        {
+            UserInfo userInfo = GetUserInfoByUId(Uid);
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
+                                  where a.SQId == Qid && a.SQPid == userInfo.Uid
+                                  select new
+                                  {
+                                      Qid = a.SQId
+                                  }).ToList();
+            int Rpoint=0;
+            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).First();
+            Rpoint = ChallengeApprovalStatus.QRpoint;
+
+            if (ApprovalStatus.Count != 0)
+            {
+                return false;
+            }
+            else
+            {
+                UserInfo userinfo = GetUserInfoByUId(Uid);
+                if(IsItPossibleToPickUp(Qid,Uid))
+                {
+
+                   var trans =  db.Database.BeginTransaction();
+
+                    Tbl_ApprovalStatus Aps = new Tbl_ApprovalStatus();
+                    Aps.SQId=Qid;
+                    Aps.SQPid= userinfo.RP_id;
+                    Aps.SQStatus = (int)EnumSQStatus.PickUp ;
+                    Aps.SQDate = DateTime.Now;
+                    db.Tbl_ApprovalStatus.Add(Aps);
+                    db.SaveChanges();
+
+
+                    
+                    var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.PUserId ==Uid );
+                    if (result != null)
+                    {
+                        try
+                        {
+                            result.PPoint -= Rpoint;
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw;
+                        }
+                    }
+
+                    trans.Commit();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+
+        }
+
+        public bool IsItPossibleToPickUp(int Qid, int Uid)
+        {
+            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).First();
+            if(ChallengeApprovalStatus.QRpoint <= GetPointById(Uid))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public bool DoneChallenge(int Qid,int Uid, string AnsText)
+        {
+            CodeChallengeEntities db=new CodeChallengeEntities();
+            UserInfo userinfo = GetUserInfoByUId(Uid);
+            var result = db.Tbl_ApprovalStatus.SingleOrDefault(RP => RP.SQPid == userinfo.RP_id  && RP.SQId == Qid);
+            if (result != null)
+            {
+                try
+                {
+                    result.SQDate = DateTime.Now;
+                    result.SAnswer = AnsText;
+
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+            return false;
+        }
+
+
+
     }
 }
