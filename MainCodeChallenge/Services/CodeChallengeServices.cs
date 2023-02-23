@@ -228,6 +228,9 @@ namespace MainCodeChallenge.Services
                                   {
                                       Qid = a.SQId
                                   }).ToList();
+            int Rpoint=0;
+            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).First();
+            Rpoint = ChallengeApprovalStatus.QRpoint;
 
             if (ApprovalStatus.Count != 0)
             {
@@ -238,6 +241,9 @@ namespace MainCodeChallenge.Services
                 UserInfo userinfo = GetUserInfoByUId(Uid);
                 if(IsItPossibleToPickUp(Qid,Uid))
                 {
+
+                   var trans =  db.Database.BeginTransaction();
+
                     Tbl_ApprovalStatus Aps = new Tbl_ApprovalStatus();
                     Aps.SQId=Qid;
                     Aps.SQPid= userinfo.RP_id;
@@ -245,6 +251,24 @@ namespace MainCodeChallenge.Services
                     Aps.SQDate = DateTime.Now;
                     db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
+
+
+                    
+                    var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.PUserId ==Uid );
+                    if (result != null)
+                    {
+                        try
+                        {
+                            result.PPoint -= Rpoint;
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw;
+                        }
+                    }
+
+                    trans.Commit();
                     return true;
                 }
                 else
@@ -267,6 +291,29 @@ namespace MainCodeChallenge.Services
             {
                 return false;
             }
+        }
+
+
+        public bool DoneChallenge(int Qid,int Uid, string AnsText)
+        {
+            CodeChallengeEntities db=new CodeChallengeEntities();
+            UserInfo userinfo = GetUserInfoByUId(Uid);
+            var result = db.Tbl_ApprovalStatus.SingleOrDefault(RP => RP.SQPid == userinfo.RP_id  && RP.SQId == Qid);
+            if (result != null)
+            {
+                try
+                {
+                    result.SQDate = DateTime.Now;
+                    result.SAnswer = AnsText;
+
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+            return false;
         }
 
 
