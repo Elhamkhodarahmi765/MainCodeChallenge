@@ -294,7 +294,7 @@ namespace MainCodeChallenge.Services
         }
 
 
-        public bool DoneChallenge(int Qid,int Uid, string AnsText)
+        public bool DoneChallenge(int Qid,int Uid, string AnsText,int lan)
         {
             CodeChallengeEntities db=new CodeChallengeEntities();
             UserInfo userinfo = GetUserInfoByUId(Uid);
@@ -305,7 +305,9 @@ namespace MainCodeChallenge.Services
                 {
                     result.SQDate = DateTime.Now;
                     result.SAnswer = AnsText;
-
+                    result.SAnswerLanguage = lan;
+                    result.SQStatus = (int)EnumSQStatus.Done;
+                    result.SQDate=DateTime.Now;
                     db.SaveChanges();
                 }
                 catch (Exception ex)
@@ -315,6 +317,9 @@ namespace MainCodeChallenge.Services
             }
             return false;
         }
+
+
+
 
 
 
