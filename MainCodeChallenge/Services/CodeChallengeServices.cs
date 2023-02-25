@@ -268,6 +268,9 @@ namespace MainCodeChallenge.Services
                         }
                     }
 
+
+
+
                     trans.Commit();
                     return true;
                 }
@@ -309,6 +312,7 @@ namespace MainCodeChallenge.Services
                     result.SQStatus = (int)EnumSQStatus.Done;
                     result.SQDate=DateTime.Now;
                     db.SaveChanges();
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -319,7 +323,11 @@ namespace MainCodeChallenge.Services
         }
 
 
-
+        public int GetPidByUserId(int Uid)
+        {
+            UserInfo userInfo = GetUserInfoByUId(Uid);
+            return userInfo.RP_id;
+        }
 
 
 

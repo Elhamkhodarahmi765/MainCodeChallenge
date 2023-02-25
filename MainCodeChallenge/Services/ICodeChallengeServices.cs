@@ -19,6 +19,7 @@ namespace MainCodeChallenge.Services
         bool GetAllChallengeApprovalStatusPerson(int Qid, int Uid);
         bool IsItPossibleToPickUp(int Qid, int Uid);
         bool PickUpChallenge(int Qid, int Uid);
-
+        bool DoneChallenge(int Qid, int Uid, string AnsText, int lan);
+        int GetPidByUserId(int Uid);
     }  
 }

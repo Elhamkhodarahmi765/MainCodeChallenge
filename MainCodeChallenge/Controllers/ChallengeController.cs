@@ -35,13 +35,16 @@ namespace MainCodeChallenge.Controllers
             }
             int Uid = int.Parse(HttpContext.Session["UserID"].ToString());
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetChallengeDetailsById(Qid);
+            ApprovalStatus approvalStatus= new ApprovalStatus();
+            approvalStatus.SQPid = service.GetPidByUserId(Uid);
+            approvalStatus.SQId = Qid;
             List<Example> example = service.GetExampleByChallengeId(Qid);
             ViewData["ExampleChallenge"] = example;
             ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
             ViewData["IsItPossibleToPickUp"] =service.IsItPossibleToPickUp(Qid,Uid);
             ViewData["challengeApprovalStatus"] = challengeApprovalStatus;
             ViewData["Uid"] = Uid;
-            return View();
+            return View(approvalStatus);
         }
 
         public ActionResult PickUpChallenge(int Qid,int Uid)
