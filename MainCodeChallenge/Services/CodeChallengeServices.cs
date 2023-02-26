@@ -20,16 +20,24 @@ namespace MainCodeChallenge.Services
 
             using (CodeChallengeEntities db = new CodeChallengeEntities())
             {
-                Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
+                try
+                {
+                    Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
 
-                if (obj.Uid ==  null)
+                    if (obj.Uid == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                catch 
                 {
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
+
 
             }
           
@@ -323,15 +331,16 @@ namespace MainCodeChallenge.Services
             return false;
         }
 
-        public ApprovalStatus GetApprovalByUidQid(int Uid,int Qid)
+        public List<ApprovalStatus> GetApprovalByUidQid(int Uid,int Qid)
         {
             
             CodeChallengeEntities db = new CodeChallengeEntities();
             UserInfo userinfo = GetUserInfoByUId(Uid);
-            List<ApprovalStatus> approvalStatus = (from e in db.Tbl_ApprovalStatus
+           var lis =  (from e in db.Tbl_ApprovalStatus
+                    where e.SQId == Qid && e.Tbl_RealPerson1.RP_Userid == Uid
                                      select new ApprovalStatus
                                      {
-                                          SQId =(int)e.SQId,
+                                          SQId =e.SQId,
                                           SQPid =(int)e.SQPid,
                                           SQStatus =(int)e.SQStatus,
                                           SQDate =(DateTime)e.SQDate,
@@ -340,13 +349,10 @@ namespace MainCodeChallenge.Services
                                           ApprovalPID =(int)e.ApprovalPID,
                                           SAnswerLanguage =(int)e.SAnswerLanguage,
                                           SAnswer =e.SAnswer
-    }
-                                     ).ToList();
+                                     }).ToList();
 
-            return approvalStatus.Where(c => c.SQId == Qid && c.SQPid==Uid).ToList().First();
+            return lis;
 
-
-         
         }
 
 

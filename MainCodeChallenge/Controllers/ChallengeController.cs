@@ -38,9 +38,9 @@ namespace MainCodeChallenge.Controllers
             int Uid = int.Parse(HttpContext.Session["UserID"].ToString());
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetChallengeDetailsById(Qid);
             ApprovalStatus approvalStatus= new ApprovalStatus();
-            approvalStatus.SQPid = service.GetPidByUserId(Uid);
-            approvalStatus.SQId = Qid;
-            //approvalStatus.SAnswer = service.GetApprovalByUidQid(Uid,);
+            //approvalStatus.SQPid = service.GetPidByUserId(Uid);
+            //approvalStatus.SQId = Qid;
+            approvalStatus = service.GetApprovalByUidQid(Uid, Qid).LastOrDefault();
             List<Example> example = service.GetExampleByChallengeId(Qid);
             ViewData["ExampleChallenge"] = example;
             ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
@@ -71,12 +71,17 @@ namespace MainCodeChallenge.Controllers
         { 
             try
             {
+                if(Ans == "")
+                {
+
+                }
                 bool status = service.DoneChallenge(Qid, Uid, Ans, lan);
                
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
+                
                 return "error";
             
             }

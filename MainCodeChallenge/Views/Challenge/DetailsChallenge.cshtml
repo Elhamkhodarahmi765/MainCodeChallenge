@@ -11,7 +11,7 @@
     int Uid = (int)ViewData["Uid"];
     bool ApprovalStatus = (bool)ViewData["ApprovalStatus"];
     bool IsItPossibleToPickUp = (bool)ViewData["IsItPossibleToPickUp"];
-
+    
 }
 
 <h1>DetailsChallenge</h1>
@@ -100,9 +100,11 @@
         int Qid = challengeApprovalStatus.First().Qid;
         @Html.HiddenFor(model => model.SQId)
         @Html.HiddenFor(model => model.SQPid)
-        @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new {Id="DropLan"})
+        @Html.HiddenFor(model => model.SAnswer)
+        @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
         <br />
-        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%" })
+        string ans = Model.SAnswer;
+        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%", });
         <button id="submitB" Onclick="Submit()">submit</button>
 
 
@@ -117,20 +119,22 @@
                 var Uid =@Uid;
                 var textarea = document.getElementById('TxtAns').value;
                 var dropdown = document.getElementById('DropLan')
+
                 //debugger;
                 $.ajax({
-                    url: "/Challenge/SubmitChallenge",
+                    url: '@Url.Action("SubmitChallenge", "Challenge")',
                     type: "post",
                     data: { 'Uid': Uid, 'Qid': Qid, 'Ans': textarea, 'lan': dropdown.value } ,
                     cache: false,
                     success: function (savingStatus) {
                         //debugger;
-                        $("#hdnOrigComments").val($('#txtComments').val());
-                        $('#lblCommentsNotification').text(savingStatus);
+                        alert("success");
+
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         //debugger;
-                        $('#lblCommentsNotification').text("Error encountered while saving the comments.");
+                        alert("error");
+
                     }
                 });
             }
