@@ -238,9 +238,10 @@ namespace MainCodeChallenge.Services
                                       Qid = a.SQId
                                   }).ToList();
             int Rpoint=0;
-            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).First();
+            int Pid = 0;
+            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).FirstOrDefault();
             Rpoint = ChallengeApprovalStatus.QRpoint;
-
+            Pid = ChallengeApprovalStatus.QpersonOwner;
             if (ApprovalStatus.Count != 0)
             {
                 return false;
@@ -258,6 +259,7 @@ namespace MainCodeChallenge.Services
                     Aps.SQPid= userinfo.RP_id;
                     Aps.SQStatus = (int)EnumSQStatus.PickUp ;
                     Aps.SQDate = DateTime.Now;
+                    Aps.ApprovalPID = Pid;
                     db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
 
@@ -276,9 +278,6 @@ namespace MainCodeChallenge.Services
                             throw;
                         }
                     }
-
-
-
 
                     trans.Commit();
                     return true;

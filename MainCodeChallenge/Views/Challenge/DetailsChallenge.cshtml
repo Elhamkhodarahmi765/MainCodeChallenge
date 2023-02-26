@@ -103,7 +103,7 @@
         @Html.HiddenFor(model => model.SAnswer)
         @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
         <br />
-        string ans = Model.SAnswer;
+        //string ans = model.SAnswer;
         @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%", });
         <button id="submitB" Onclick="Submit()">submit</button>
 
