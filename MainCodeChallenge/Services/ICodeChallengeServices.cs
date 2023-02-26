@@ -21,5 +21,7 @@ namespace MainCodeChallenge.Services
         bool PickUpChallenge(int Qid, int Uid);
         bool DoneChallenge(int Qid, int Uid, string AnsText, int lan);
         int GetPidByUserId(int Uid);
+        ApprovalStatus GetApprovalByUidQid(int Uid, int Qid);
+        List<Language> GetLanguages();
     }  
 }

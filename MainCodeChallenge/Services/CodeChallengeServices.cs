@@ -160,6 +160,7 @@ namespace MainCodeChallenge.Services
             List<UserInfo> userInfo = (from u in db.Tbl_RealPerson
                                  join p in db.Tbl_RealPesronPoint on u.RP_Userid equals p.PUserId into RealPersonPoint
                                  from p2 in RealPersonPoint.DefaultIfEmpty()
+                                 where u.RP_Userid==UID
                                  select new UserInfo 
                                  {
                                         Uid=u.RP_id,
@@ -300,8 +301,8 @@ namespace MainCodeChallenge.Services
         public bool DoneChallenge(int Qid,int Uid, string AnsText,int lan)
         {
             CodeChallengeEntities db=new CodeChallengeEntities();
-            UserInfo userinfo = GetUserInfoByUId(Uid);
-            var result = db.Tbl_ApprovalStatus.SingleOrDefault(RP => RP.SQPid == userinfo.RP_id  && RP.SQId == Qid);
+            int PUid = GetPidByUserId(Uid);
+            var result = db.Tbl_ApprovalStatus.SingleOrDefault(RP => RP.SQPid == PUid && RP.SQId == Qid);
             if (result != null)
             {
                 try
@@ -322,6 +323,34 @@ namespace MainCodeChallenge.Services
             return false;
         }
 
+        public ApprovalStatus GetApprovalByUidQid(int Uid,int Qid)
+        {
+            
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            UserInfo userinfo = GetUserInfoByUId(Uid);
+            List<ApprovalStatus> approvalStatus = (from e in db.Tbl_ApprovalStatus
+                                     select new ApprovalStatus
+                                     {
+                                          SQId =(int)e.SQId,
+                                          SQPid =(int)e.SQPid,
+                                          SQStatus =(int)e.SQStatus,
+                                          SQDate =(DateTime)e.SQDate,
+                                          ApStatus =(int)e.ApprovalStatus,
+                                          ApprovalDate =(DateTime)e.ApprovalDate,
+                                          ApprovalPID =(int)e.ApprovalPID,
+                                          SAnswerLanguage =(int)e.SAnswerLanguage,
+                                          SAnswer =e.SAnswer
+    }
+                                     ).ToList();
+
+            return approvalStatus.Where(c => c.SQId == Qid && c.SQPid==Uid).ToList().First();
+
+
+         
+        }
+
+
+
 
         public int GetPidByUserId(int Uid)
         {
@@ -329,6 +358,21 @@ namespace MainCodeChallenge.Services
             return userInfo.RP_id;
         }
 
+
+        public  List<Language> GetLanguages()
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            List<Language> languages = (from e in db.Tbl_Language
+                                     select new Language
+                                     {
+                                         Lid =(int)e.Lid,
+                                         Lname =(string)e.Lname
+                                     }
+                                     ).ToList();
+
+            return languages;
+
+        }
 
 
     }

@@ -4,6 +4,8 @@ using MainCodeChallenge.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 
@@ -38,12 +40,14 @@ namespace MainCodeChallenge.Controllers
             ApprovalStatus approvalStatus= new ApprovalStatus();
             approvalStatus.SQPid = service.GetPidByUserId(Uid);
             approvalStatus.SQId = Qid;
+            //approvalStatus.SAnswer = service.GetApprovalByUidQid(Uid,);
             List<Example> example = service.GetExampleByChallengeId(Qid);
             ViewData["ExampleChallenge"] = example;
             ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
             ViewData["IsItPossibleToPickUp"] =service.IsItPossibleToPickUp(Qid,Uid);
             ViewData["challengeApprovalStatus"] = challengeApprovalStatus;
             ViewData["Uid"] = Uid;
+            ViewBag.Languages = service.GetLanguages();
             return View(approvalStatus);
         }
 
@@ -60,6 +64,24 @@ namespace MainCodeChallenge.Controllers
             }
             
 
+        }
+
+        [HttpPost]
+        public  string SubmitChallenge (int Qid, int Uid,string Ans, int lan )
+        { 
+            try
+            {
+                bool status = service.DoneChallenge(Qid, Uid, Ans, lan);
+               
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return "error";
+            
+            }
+            return "Ok";
+             
         }
 
     }

@@ -5,6 +5,7 @@
     ViewBag.Title = "DetailsChallenge";
     IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus> challengeApprovalStatus = ViewData["challengeApprovalStatus"] as IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus>;
     IEnumerable<MainCodeChallenge.Models.Example> example = ViewData["ExampleChallenge"] as IEnumerable<MainCodeChallenge.Models.Example>;
+    //IEnumerable<MainCodeChallenge.Models.Language> languages= ViewData["Languages"] as IEnumerable<MainCodeChallenge.Models.Language>;
     WebGrid gridch = new WebGrid(challengeApprovalStatus, canSort: true, canPage: true);
     WebGrid gridD = new WebGrid(example, canSort: true, canPage: true);
     int Uid = (int)ViewData["Uid"];
@@ -53,31 +54,41 @@
     </h3>
 
     <table style="width:100%">
-
-        @foreach (var item in example)
+        @if (example.Count() != 0)
+        {
+            foreach (var item in example)
+            {
+                <tr>
+                    <td>
+                        Input:
+                    </td>
+                </tr>
+                <tr>
+                    <td class="blueBackground">
+                        &nbsp;&nbsp;&nbsp; @item.EXInputModel
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Output:
+                    </td>
+                </tr>
+                <tr>
+                    <td class="blueBackground">
+                        &nbsp;&nbsp;&nbsp; @item.EXOutputModel
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>
-                    Input:
-                </td>
-            </tr>
-            <tr>
                 <td class="blueBackground">
-                    &nbsp;&nbsp;&nbsp; @item.EXInputModel
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Output:
-                </td>
-            </tr>
-            <tr>
-                <td class="blueBackground">
-                    &nbsp;&nbsp;&nbsp; @item.EXOutputModel
-                </td>
-            </tr>
-            <tr>
-                <td>
+                    ---------
                 </td>
             </tr>
         }
@@ -86,13 +97,48 @@
     <br />
     @if (ApprovalStatus)
     {
-        @Html.TextAreaFor(model => model.SAnswer, new { style = "width: 100%" })
+        int Qid = challengeApprovalStatus.First().Qid;
+        @Html.HiddenFor(model => model.SQId)
+        @Html.HiddenFor(model => model.SQPid)
+        @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new {Id="DropLan"})
+        <br />
+        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%" })
+        <button id="submitB" Onclick="Submit()">submit</button>
 
-        <button class="gradientButton" onclick="location.href='@Url.Action("PickUpChallenge", "Challenge", new {Qid= @challengeApprovalStatus.First().Qid ,Uid= Uid} )';return false;"> 
-            Submit
-        </button>
 
     }
+
+
+    @section scripts{
+        <script>
+            function Submit() {
+
+                var Qid =@challengeApprovalStatus.First().Qid;
+                var Uid =@Uid;
+                var textarea = document.getElementById('TxtAns').value;
+                var dropdown = document.getElementById('DropLan')
+                //debugger;
+                $.ajax({
+                    url: "/Challenge/SubmitChallenge",
+                    type: "post",
+                    data: { 'Uid': Uid, 'Qid': Qid, 'Ans': textarea, 'lan': dropdown.value } ,
+                    cache: false,
+                    success: function (savingStatus) {
+                        //debugger;
+                        $("#hdnOrigComments").val($('#txtComments').val());
+                        $('#lblCommentsNotification').text(savingStatus);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //debugger;
+                        $('#lblCommentsNotification').text("Error encountered while saving the comments.");
+                    }
+                });
+            }
+        </script>
+    }
+
+
+
 
 
 </div>
