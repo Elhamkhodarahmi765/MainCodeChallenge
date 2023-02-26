@@ -20,6 +20,7 @@
           <Property Name="SAnswerLanguage" Type="int" />
           <Property Name="SFileAddress" Type="nvarchar" MaxLength="500" />
           <Property Name="SAnswer" Type="nvarchar(max)" />
+          <Property Name="StatusRow" Type="int" />
         </EntityType>
         <EntityType Name="Tbl_Category">
           <Key>
@@ -101,6 +102,7 @@
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="PUserId" Type="int" />
           <Property Name="PPoint" Type="int" />
+          <Property Name="RP_id" Type="int" />
         </EntityType>
         <EntityType Name="Tbl_Role">
           <Key>
@@ -607,6 +609,7 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
           <Property Name="SAnswerLanguage" Type="Int32" />
           <Property Name="SFileAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="SAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatusRow" Type="Int32" />
           <NavigationProperty Name="Tbl_Challenge" Relationship="CodeChallengeModel.FK_ApprovalStatusChallenge" FromRole="Tbl_ApprovalStatus" ToRole="Tbl_Challenge" />
           <NavigationProperty Name="Tbl_Language" Relationship="CodeChallengeModel.FK_ApprovalStatusLanguage" FromRole="Tbl_ApprovalStatus" ToRole="Tbl_Language" />
           <NavigationProperty Name="Tbl_RealPerson" Relationship="CodeChallengeModel.FK_ApprovalStatusRealPerson" FromRole="Tbl_ApprovalStatus" ToRole="Tbl_RealPerson" />
@@ -709,6 +712,7 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="PUserId" Type="Int32" />
           <Property Name="PPoint" Type="Int32" />
+          <Property Name="RP_id" Type="Int32" />
           <NavigationProperty Name="Tbl_User" Relationship="CodeChallengeModel.FK_Tbl_RealPesronPointUser" FromRole="Tbl_RealPesronPoint" ToRole="Tbl_User" />
         </EntityType>
         <EntityType Name="Tbl_Role">
@@ -986,6 +990,7 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
           <EntitySetMapping Name="Tbl_ApprovalStatus">
             <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_ApprovalStatus">
               <MappingFragment StoreEntitySet="Tbl_ApprovalStatus">
+                <ScalarProperty Name="StatusRow" ColumnName="StatusRow" />
                 <ScalarProperty Name="SAnswer" ColumnName="SAnswer" />
                 <ScalarProperty Name="SFileAddress" ColumnName="SFileAddress" />
                 <ScalarProperty Name="SAnswerLanguage" ColumnName="SAnswerLanguage" />
@@ -1083,6 +1088,7 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
           <EntitySetMapping Name="Tbl_RealPesronPoint">
             <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_RealPesronPoint">
               <MappingFragment StoreEntitySet="Tbl_RealPesronPoint">
+                <ScalarProperty Name="RP_id" ColumnName="RP_id" />
                 <ScalarProperty Name="PPoint" ColumnName="PPoint" />
                 <ScalarProperty Name="PUserId" ColumnName="PUserId" />
                 <ScalarProperty Name="id" ColumnName="id" />

@@ -33,10 +33,11 @@ namespace MainCodeChallenge.Services
                         return true;
                     }
                 }
-                catch 
+                catch
                 {
                     return false;
                 }
+
 
 
             }
@@ -59,6 +60,7 @@ namespace MainCodeChallenge.Services
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
+                         where Qid.StatusRow==1 || Qid.StatusRow==null
                          group new { ch, Qid }
                          by new
                          {
@@ -71,11 +73,12 @@ namespace MainCodeChallenge.Services
                              ch.QRpoint,
                              ch.QApoint,
                              ch.QDescription,
-                             Qid.SQId,
+                             Qid.SQId,     
                              ch.Tbl_Category.CT_Name,
                              ch.Tbl_RealPerson.RP_FName,
                              ch.Tbl_RealPerson.RP_LName,
                              ch.QpersonOwner
+                             
                          } into grp
                          orderby grp.Key.Qid descending
                          select new ChallengeApprovalStatus
@@ -262,6 +265,7 @@ namespace MainCodeChallenge.Services
                     Aps.SQStatus = (int)EnumSQStatus.PickUp ;
                     Aps.SQDate = DateTime.Now;
                     Aps.ApprovalPID = Pid;
+                    Aps.StatusRow =(int) EnumStatusRow.MainRow;
                     db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
 
@@ -341,7 +345,10 @@ namespace MainCodeChallenge.Services
         {
             CodeChallengeEntities db=new CodeChallengeEntities();
             int PUid = GetPidByUserId(Uid);
-            var result = db.Tbl_ApprovalStatus.LastOrDefault(RP => RP.SQPid == PUid && RP.SQId == Qid);
+            //var result = db.Tbl_ApprovalStatus.Last(RP => RP.SQPid == PUid && RP.SQId == Qid);
+            //MR Blukian
+            var result = db.Tbl_ApprovalStatus.Where(RP => RP.SQPid == PUid && RP.SQId == Qid).OrderByDescending(RP => RP.SId).FirstOrDefault();
+
             if (result != null)
             {
                 if(result.SQStatus==(int)EnumSQStatus.PickUp )
@@ -370,15 +377,15 @@ namespace MainCodeChallenge.Services
                     Aps.SQDate = DateTime.Now;
                     Aps.ApprovalPID = result.ApprovalPID;
                     //editDone
-                    result.SQDate = DateTime.Now;
-                    result.SAnswer = AnsText;
-                    result.SAnswerLanguage = lan;
-                    result.SQStatus = (int)EnumSQStatus.Done;
-                    result.SQDate = DateTime.Now;
-
+                    Aps.SQDate = DateTime.Now;
+                    Aps.SAnswer = AnsText;
+                    Aps.SAnswerLanguage = lan;
+                    Aps.SQStatus = (int)EnumSQStatus.Done;
+                    Aps.SQDate = DateTime.Now;
+                    Aps.StatusRow =(int) EnumStatusRow.SubRow;
                     db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
-
+                    return true;
                 }
                
             }

@@ -25,6 +25,7 @@ namespace MainCodeChallenge
         public Nullable<int> SAnswerLanguage { get; set; }
         public string SFileAddress { get; set; }
         public string SAnswer { get; set; }
+        public Nullable<int> StatusRow { get; set; }
     
         public virtual Tbl_Challenge Tbl_Challenge { get; set; }
         public virtual Tbl_Language Tbl_Language { get; set; }

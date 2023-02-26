@@ -47,5 +47,10 @@ namespace MainCodeChallenge.Models
         Decrease =1,
         Increase=2
     }
+    public  enum EnumStatusRow
+    {
+        MainRow=1,
+        SubRow=2
+    }
 
 }

@@ -68,14 +68,15 @@ namespace MainCodeChallenge.Controllers
 
         [HttpPost]
         public  string SubmitChallenge (int Qid, int Uid,string Ans, int lan )
-        { 
+        {
+            bool status = service.DoneChallenge(Qid, Uid, Ans, lan);
             try
             {
                 if(Ans == "")
                 {
 
                 }
-                bool status = service.DoneChallenge(Qid, Uid, Ans, lan);
+                
                
             }
             catch (Exception ex)

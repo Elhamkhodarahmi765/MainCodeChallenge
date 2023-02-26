@@ -17,6 +17,7 @@ namespace MainCodeChallenge
         public int id { get; set; }
         public Nullable<int> PUserId { get; set; }
         public Nullable<int> PPoint { get; set; }
+        public Nullable<int> RP_id { get; set; }
     
         public virtual Tbl_User Tbl_User { get; set; }
     }
