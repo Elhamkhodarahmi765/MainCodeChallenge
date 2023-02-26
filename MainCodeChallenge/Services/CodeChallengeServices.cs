@@ -242,6 +242,8 @@ namespace MainCodeChallenge.Services
             ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).FirstOrDefault();
             Rpoint = ChallengeApprovalStatus.QRpoint;
             Pid = ChallengeApprovalStatus.QpersonOwner;
+
+
             if (ApprovalStatus.Count != 0)
             {
                 return false;
@@ -263,21 +265,8 @@ namespace MainCodeChallenge.Services
                     db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
 
-
-                    
-                    var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.PUserId ==Uid );
-                    if (result != null)
-                    {
-                        try
-                        {
-                            result.PPoint -= Rpoint;
-                            db.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            throw;
-                        }
-                    }
+                    //point
+                    ChangePoint(Uid, Rpoint,EnumPointParam.Decrease );
 
                     trans.Commit();
                     return true;
@@ -290,6 +279,49 @@ namespace MainCodeChallenge.Services
             }
 
         }
+
+        public void ChangePoint(int Uid,int point, EnumPointParam enumPointParam )
+        {
+            CodeChallengeEntities db=new CodeChallengeEntities();
+            var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.PUserId == Uid);
+            if (enumPointParam == EnumPointParam.Decrease)
+            {
+                if (result != null)
+                {
+                    try
+                    {
+                        result.PPoint -= point;
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                }
+            }
+            else
+            {
+                if (result != null)
+                {
+                    try
+                    {
+                        result.PPoint += point;
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
+
+
+
+        
+
+
 
         public bool IsItPossibleToPickUp(int Qid, int Uid)
         {
@@ -309,23 +341,46 @@ namespace MainCodeChallenge.Services
         {
             CodeChallengeEntities db=new CodeChallengeEntities();
             int PUid = GetPidByUserId(Uid);
-            var result = db.Tbl_ApprovalStatus.SingleOrDefault(RP => RP.SQPid == PUid && RP.SQId == Qid);
+            var result = db.Tbl_ApprovalStatus.LastOrDefault(RP => RP.SQPid == PUid && RP.SQId == Qid);
             if (result != null)
             {
-                try
+                if(result.SQStatus==(int)EnumSQStatus.PickUp )
                 {
+                    try
+                    {
+                        result.SQDate = DateTime.Now;
+                        result.SAnswer = AnsText;
+                        result.SAnswerLanguage = lan;
+                        result.SQStatus = (int)EnumSQStatus.Done;
+                        result.SQDate = DateTime.Now;
+                        db.SaveChanges();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                }else if (result.SQStatus == (int)EnumSQStatus.Done)
+                {
+
+
+                    Tbl_ApprovalStatus Aps = new Tbl_ApprovalStatus();
+                    Aps.SQId = Qid;
+                    Aps.SQPid = PUid;
+                    Aps.SQDate = DateTime.Now;
+                    Aps.ApprovalPID = result.ApprovalPID;
+                    //editDone
                     result.SQDate = DateTime.Now;
                     result.SAnswer = AnsText;
                     result.SAnswerLanguage = lan;
                     result.SQStatus = (int)EnumSQStatus.Done;
-                    result.SQDate=DateTime.Now;
+                    result.SQDate = DateTime.Now;
+
+                    db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
-                    return true;
+
                 }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+               
             }
             return false;
         }

@@ -42,4 +42,10 @@ namespace MainCodeChallenge.Models
         FinalApproval=2
     }
 
+    public  enum EnumPointParam
+    {
+        Decrease =1,
+        Increase=2
+    }
+
 }
