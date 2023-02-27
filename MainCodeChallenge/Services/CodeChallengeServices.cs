@@ -108,6 +108,7 @@ namespace MainCodeChallenge.Services
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
+                         where Qid.StatusRow == 1 || Qid.StatusRow == null
                          group new { ch, Qid }
                          by new
                          {
@@ -360,6 +361,7 @@ namespace MainCodeChallenge.Services
                         result.SAnswerLanguage = lan;
                         result.SQStatus = (int)EnumSQStatus.Done;
                         result.SQDate = DateTime.Now;
+                        result.ApprovalStatus = 1;
                         db.SaveChanges();
                         return true;
                     }
@@ -376,6 +378,7 @@ namespace MainCodeChallenge.Services
                     Aps.SQPid = PUid;
                     Aps.SQDate = DateTime.Now;
                     Aps.ApprovalPID = result.ApprovalPID;
+                    Aps.ApprovalStatus = 1;
                     //editDone
                     Aps.SQDate = DateTime.Now;
                     Aps.SAnswer = AnsText;
@@ -397,24 +400,60 @@ namespace MainCodeChallenge.Services
             
             CodeChallengeEntities db = new CodeChallengeEntities();
             UserInfo userinfo = GetUserInfoByUId(Uid);
-           var lis =  (from e in db.Tbl_ApprovalStatus
-                    where e.SQId == Qid && e.Tbl_RealPerson1.RP_Userid == Uid
+            var lis =  (from e in db.Tbl_ApprovalStatus
+                    where e.SQId == Qid && e.SQPid==userinfo.RP_id
                                      select new ApprovalStatus
                                      {
-                                          SQId =e.SQId,
-                                          SQPid =(int)e.SQPid,
-                                          SQStatus =(int)e.SQStatus,
+                                          SQId =(int?)e.SQId ??0,
+                                          SQPid =(int?)e.SQPid ??0,
+                                          SQStatus =(int?)e.SQStatus??0,
                                           SQDate =(DateTime)e.SQDate,
-                                          ApStatus =(int)e.ApprovalStatus,
+                                          ApStatus =(int?)e.ApprovalStatus??0,
                                           ApprovalDate =(DateTime)e.ApprovalDate,
-                                          ApprovalPID =(int)e.ApprovalPID,
-                                          SAnswerLanguage =(int)e.SAnswerLanguage,
-                                          SAnswer =e.SAnswer
+                                          ApprovalPID =(int?)e.ApprovalPID??0,
+                                          SAnswerLanguage =(int?)e.SAnswerLanguage??0,
+                                          SAnswer =e.SAnswer,
+                                          Lname = e.Tbl_Language.Lname,
+                                          approvalStatus=(EnumApprovalStatus)e.ApprovalStatus
                                      }).ToList();
+
+             return lis;
+
+        }
+
+
+
+        public List<ApprovalStatus> GetApprovalIsDoneByUidQid(int Uid, int Qid)
+        {
+
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            UserInfo userinfo = GetUserInfoByUId(Uid);
+            var lis = (from e in db.Tbl_ApprovalStatus
+                       where e.SQId == Qid && e.SQPid == userinfo.RP_id && e.SQStatus==2
+                       select new ApprovalStatus
+                       {
+                           SQId = (int?)e.SQId ?? 0,
+                           SQPid = (int?)e.SQPid ?? 0,
+                           SQStatus = (int?)e.SQStatus ?? 0,
+                           SQDate = (DateTime)e.SQDate,
+                           ApStatus = (int?)e.ApprovalStatus ?? 0,
+                           ApprovalDate = (DateTime)e.ApprovalDate,
+                           ApprovalPID = (int?)e.ApprovalPID ?? 0,
+                           SAnswerLanguage = (int?)e.SAnswerLanguage ?? 0,
+                           SAnswer = e.SAnswer,
+                           Lname = e.Tbl_Language.Lname,
+                           approvalStatus = (EnumApprovalStatus)e.ApprovalStatus
+                       }).ToList();
 
             return lis;
 
         }
+
+
+
+
+
+
 
 
 

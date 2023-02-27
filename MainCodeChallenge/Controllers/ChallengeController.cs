@@ -37,11 +37,12 @@ namespace MainCodeChallenge.Controllers
             }
             int Uid = int.Parse(HttpContext.Session["UserID"].ToString());
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetChallengeDetailsById(Qid);
+            List<ApprovalStatus> approvalDone = new List<ApprovalStatus>();
             ApprovalStatus approvalStatus= new ApprovalStatus();
-            //approvalStatus.SQPid = service.GetPidByUserId(Uid);
-            //approvalStatus.SQId = Qid;
             approvalStatus = service.GetApprovalByUidQid(Uid, Qid).LastOrDefault();
             List<Example> example = service.GetExampleByChallengeId(Qid);
+            approvalDone = service.GetApprovalIsDoneByUidQid(Uid,Qid);
+            ViewData["approvalDone"] = approvalDone;
             ViewData["ExampleChallenge"] = example;
             ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
             ViewData["IsItPossibleToPickUp"] =service.IsItPossibleToPickUp(Qid,Uid);
@@ -69,15 +70,10 @@ namespace MainCodeChallenge.Controllers
         [HttpPost]
         public  string SubmitChallenge (int Qid, int Uid,string Ans, int lan )
         {
-            bool status = service.DoneChallenge(Qid, Uid, Ans, lan);
+           
             try
             {
-                if(Ans == "")
-                {
-
-                }
-                
-               
+                bool status = service.DoneChallenge(Qid, Uid, Ans, lan);
             }
             catch (Exception ex)
             {

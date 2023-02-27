@@ -23,5 +23,6 @@ namespace MainCodeChallenge.Services
         int GetPidByUserId(int Uid);
         List<ApprovalStatus> GetApprovalByUidQid(int Uid, int Qid);
         List<Language> GetLanguages();
+        List<ApprovalStatus> GetApprovalIsDoneByUidQid(int Uid, int Qid);
     }  
 }

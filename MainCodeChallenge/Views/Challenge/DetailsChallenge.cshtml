@@ -5,14 +5,17 @@
     ViewBag.Title = "DetailsChallenge";
     IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus> challengeApprovalStatus = ViewData["challengeApprovalStatus"] as IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus>;
     IEnumerable<MainCodeChallenge.Models.Example> example = ViewData["ExampleChallenge"] as IEnumerable<MainCodeChallenge.Models.Example>;
+    IEnumerable<MainCodeChallenge.Models.ApprovalStatus> approvalDone = ViewData["approvalDone"] as IEnumerable<MainCodeChallenge.Models.ApprovalStatus>;
     //IEnumerable<MainCodeChallenge.Models.Language> languages= ViewData["Languages"] as IEnumerable<MainCodeChallenge.Models.Language>;
-    WebGrid gridch = new WebGrid(challengeApprovalStatus, canSort: true, canPage: true);
-    WebGrid gridD = new WebGrid(example, canSort: true, canPage: true);
+    WebGrid grid = new WebGrid(approvalDone, canSort: true);
     int Uid = (int)ViewData["Uid"];
     bool ApprovalStatus = (bool)ViewData["ApprovalStatus"];
     bool IsItPossibleToPickUp = (bool)ViewData["IsItPossibleToPickUp"];
-    
+
 }
+
+
+
 
 <h1>DetailsChallenge</h1>
 
@@ -100,7 +103,7 @@
         int Qid = challengeApprovalStatus.First().Qid;
         @Html.HiddenFor(model => model.SQId)
         @Html.HiddenFor(model => model.SQPid)
-        @Html.HiddenFor(model => model.SAnswer)
+        @*@Html.HiddenFor(model => model.SAnswer)*@
         @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
         <br />
         //string ans = model.SAnswer;
@@ -110,9 +113,22 @@
 
     }
 
+    @if(approvalDone.Count() != 0)
+    {
+        @grid.GetHtml(
+           columns: new[]
 
-    @section scripts{
-        <script>
+           {
+           grid.Column(columnName:"SAnswer",header:"solution",style:"webgrid"),
+           grid.Column(columnName:"Lname", header:"Language" ,style:"webgrid"),
+           grid.Column(columnName:"approvalStatus",header:"approvalStatus",style:"webgrid")
+
+           } )
+     }
+
+
+        @section scripts{
+            <script>
             function Submit() {
 
                 var Qid =@challengeApprovalStatus.First().Qid;
@@ -138,12 +154,8 @@
                     }
                 });
             }
-        </script>
-    }
+            </script>
+        }
 
-
-
-
-
-</div>
+    </div>
 
