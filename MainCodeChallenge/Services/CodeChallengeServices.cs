@@ -95,6 +95,7 @@ namespace MainCodeChallenge.Services
                              POwnerName = grp.Key.RP_FName + " " + grp.Key.RP_LName,
                              QpersonOwner = (int?)grp.Key.QpersonOwner ??0,
                              CountOfA = grp.Where(t => t.Qid.SQId != null).Count()
+                             
                          }).ToList();
 
             return challengeApprovalStatus;
@@ -102,7 +103,62 @@ namespace MainCodeChallenge.Services
 
 
 
-         public List<ChallengeApprovalStatus> GetChallengeDetailsById(int Id)
+        public List<ChallengeApprovalStatusP> GetAllChallengeApprovalStatusCountByUid(int Uid)
+        {
+            int Upid = GetPidByUserId(Uid);
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            List<ChallengeApprovalStatusP> challengeApprovalStatusP = (from ch in db.Tbl_Challenge
+                                                                     join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
+                                                                     from Qid in ChAps.DefaultIfEmpty()
+                                                                     where Qid.StatusRow == 1 || Qid.StatusRow == null
+                                                                     group new { ch, Qid }
+                                                                     by new
+                                                                     {
+                                                                         ch.Qid,
+                                                                         ch.QStatus,
+                                                                         ch.QName,
+                                                                         ch.QLevel,
+                                                                         ch.Tbl_Level.LPointsRequired,
+                                                                         ch.Tbl_Level.LPointReceived,
+                                                                         ch.QRpoint,
+                                                                         ch.QApoint,
+                                                                         ch.QDescription,
+                                                                         Qid.SQId,
+                                                                         ch.Tbl_Category.CT_Name,
+                                                                         ch.Tbl_RealPerson.RP_FName,
+                                                                         ch.Tbl_RealPerson.RP_LName,
+                                                                         ch.QpersonOwner
+
+                                                                     } into grp
+                                                                     orderby grp.Key.Qid descending
+                                                                     select new ChallengeApprovalStatusP
+                                                                     {
+                                                                         Qid = grp.Key.Qid,
+                                                                         QDescription = grp.Key.QDescription,
+                                                                         QName = grp.Key.QName,
+                                                                         QLevel = (EnumLevel)grp.Key.QLevel,
+                                                                         LPointReceived = (int?)grp.Key.LPointReceived ?? 0,
+                                                                         LPointsRequired = (int?)grp.Key.LPointsRequired ?? 0,
+                                                                         QRpoint = (int?)grp.Key.QRpoint ?? 0,
+                                                                         QApoint = (int?)grp.Key.QApoint ?? 0,
+                                                                         CT_Name = grp.Key.CT_Name,
+                                                                         POwnerName = grp.Key.RP_FName + " " + grp.Key.RP_LName,
+                                                                         QpersonOwner = (int?)grp.Key.QpersonOwner ?? 0,
+                                                                         CountOfA = grp.Where(t => t.Qid.SQId != null).Count(),
+                                                                         solved = grp.Any(t => t.Qid.SQPid == Upid && t.Qid.ApprovalStatus == 2)
+                                                                     }).ToList();
+
+            return challengeApprovalStatusP;
+        }
+
+
+
+
+
+
+
+
+        public List<ChallengeApprovalStatus> GetChallengeDetailsById(int Id)
          {
             CodeChallengeEntities db = new CodeChallengeEntities();
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge

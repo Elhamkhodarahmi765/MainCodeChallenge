@@ -107,7 +107,7 @@
         @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
         <br />
         //string ans = model.SAnswer;
-        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "max-width: 100%", });
+        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%", });
         <br />
 
         <button id="submitB" Onclick="Submit()" class="btn-login">submit</button>

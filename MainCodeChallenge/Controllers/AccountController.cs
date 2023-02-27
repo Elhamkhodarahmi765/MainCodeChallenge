@@ -64,8 +64,8 @@ namespace MainCodeChallenge.Controllers
             var user  = HttpContext.Session["UserID"].ToString();
             int UId = int.Parse(HttpContext.Session["UserID"].ToString());
             string fullName = service.GetUserInfoByUId(UId).RealPersonFullname;
-            List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetAllChallengeApprovalStatusCount();
-            return View(challengeApprovalStatus);
+            List<ChallengeApprovalStatusP> challengeApprovalStatusP = service.GetAllChallengeApprovalStatusCountByUid(UId);
+            return View(challengeApprovalStatusP);
         }
 
         [AllowAnonymous]
