@@ -61,6 +61,11 @@ table, th, td {
     padding: 2px;
     width:100%;
 }
+
+
+ textarea {
+    max - width: 100 %;
+}
 /*.center {
     margin: auto;
     width: 60%;

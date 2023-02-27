@@ -231,6 +231,11 @@ namespace MainCodeChallenge.Services
 
        }
 
+
+        
+
+
+
         public bool PickUpChallenge(int Qid, int Uid)
         {
             UserInfo userInfo = GetUserInfoByUId(Uid);
