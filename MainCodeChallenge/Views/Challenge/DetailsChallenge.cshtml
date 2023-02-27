@@ -1,89 +1,43 @@
-﻿@model MainCodeChallenge.Models.ChallengeApprovalStatus
+﻿@model MainCodeChallenge.Models.ApprovalStatus
 
 @{
 
     ViewBag.Title = "DetailsChallenge";
     IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus> challengeApprovalStatus = ViewData["challengeApprovalStatus"] as IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus>;
     IEnumerable<MainCodeChallenge.Models.Example> example = ViewData["ExampleChallenge"] as IEnumerable<MainCodeChallenge.Models.Example>;
-    WebGrid gridch = new WebGrid(challengeApprovalStatus, canSort: true, canPage: true);
-    WebGrid gridD = new WebGrid(example, canSort: true, canPage: true);
-    int Uid= (int)ViewData["Uid"];
+    IEnumerable<MainCodeChallenge.Models.ApprovalStatus> approvalDone = ViewData["approvalDone"] as IEnumerable<MainCodeChallenge.Models.ApprovalStatus>;
+    //IEnumerable<MainCodeChallenge.Models.Language> languages= ViewData["Languages"] as IEnumerable<MainCodeChallenge.Models.Language>;
+    WebGrid grid = new WebGrid(approvalDone, canSort: true);
+    int Uid = (int)ViewData["Uid"];
     bool ApprovalStatus = (bool)ViewData["ApprovalStatus"];
-    bool IsItPossibleToPickUp=(bool)ViewData["IsItPossibleToPickUp"];
+    bool IsItPossibleToPickUp = (bool)ViewData["IsItPossibleToPickUp"];
 
 }
 
+
+
+
 <h1>DetailsChallenge</h1>
 
-
-<style>
-    table, th, td {
-        padding: 2px;
-    }
-    .center {
-        margin: auto;
-        width: 90%;
-        /*border: 3px solid #4682B4;*/
-        padding: 10px;
-    }
-    .float-container {
-        border: 3px solid #fff;
-        padding: 20px;
-    }
-
-    .float-child {
-        width: 50%;
-        float: left;
-        padding: 20px;
-        border: 2px solid red;
-    }
-    .gradientButton {
-        color: white;
-        text-transform: uppercase;
-        width: 100px;
-        line-height: 50px;
-       
-        background: #00B000;
-        text-align: center;
-        box-shadow: inset 0 0 25px rgba(0,0,0,.25)
-    }
-   .gradientButton:hover {
-        /*text-shadow: 1px 1px #336633;*/
-        background: linear-gradient(to bottom right, LawnGreen 5%, green 80%);
-   }
-    .gradientButtonDisable {
-        color: white;
-        text-transform: uppercase;
-        width: 100px;
-        line-height: 50px;
-        background: #DCDCDC;
-        text-align: center;
-        box-shadow: inset 0 0 25px rgb(128, 128, 128)
-    }
-   .blueBackground {
-        background-color:#F0F8FF 
-   }
-</style>
-
-
+<link rel="Stylesheet" href="@Href("~/Content/ChD.css")" />
 
 
 <div class="center">
     <table width="100%">
         <tr>
             <td>
-                <h2>@Model.QName </h2>
+                <h2>@challengeApprovalStatus.First().QName </h2>
             </td>
             <td style="direction:rtl">
                 @if (!ApprovalStatus)
                 {
                     if (IsItPossibleToPickUp)
                     {
-                        <button class="gradientButton" onclick="location.href='@Url.Action("PickUpChallenge", "Challenge", new {Qid= Model.Qid ,Uid= Uid} )';return false;">Pick up / @Model.QRpoint</button>
+                        <button class="gradientButton" onclick="location.href='@Url.Action("PickUpChallenge", "Challenge", new {Qid= @challengeApprovalStatus.First().Qid ,Uid= Uid} )';return false;">Pick up / @challengeApprovalStatus.First().QRpoint</button>
                     }
                     else
                     {
-                        <button class="gradientButtonDisable" disabled="disabled">Pick up / @Model.QRpoint</button>
+                        <button class="gradientButtonDisable" disabled="disabled">Pick up / @challengeApprovalStatus.First().QRpoint</button>
                     }
 
                 }
@@ -91,11 +45,11 @@
             </td>
         </tr>
     </table>
-    <h3>@Model.CT_Name / Difficulty: <span> @Model.QLevel.ToString() </span> </h3>
-    <h3>Question Owner: @Model.POwnerName / Number of volunteers: @Model.CountOfA  </h3>
+    <h3>@challengeApprovalStatus.First().CT_Name / Difficulty: <span> @challengeApprovalStatus.First().QLevel.ToString() </span> </h3>
+    <h3>Question Owner: @challengeApprovalStatus.First().POwnerName / Number of volunteers: @challengeApprovalStatus.First().CountOfA  </h3>
     <br />
     <p>
-        @Model.QDescription
+        @challengeApprovalStatus.First().QDescription
     </p>
     <br />
     <h3>
@@ -103,47 +57,105 @@
     </h3>
 
     <table style="width:100%">
-
-        @foreach (var item in example)
+        @if (example.Count() != 0)
         {
-        <tr>
-            <td>
-                Input:
-            </td>
-        </tr>
-        <tr>
-            <td class="blueBackground">
-                &nbsp;&nbsp;&nbsp; @item.EXInputModel
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Output:
-            </td>
-        </tr>
-        <tr>
-            <td class="blueBackground">
-                &nbsp;&nbsp;&nbsp; @item.EXOutputModel
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <br />
-            </td>
-        </tr>
+            foreach (var item in example)
+            {
+                <tr>
+                    <td>
+                        Input:
+                    </td>
+                </tr>
+                <tr>
+                    <td class="blueBackground">
+                        &nbsp;&nbsp;&nbsp; @item.EXInputModel
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Output:
+                    </td>
+                </tr>
+                <tr>
+                    <td class="blueBackground">
+                        &nbsp;&nbsp;&nbsp; @item.EXOutputModel
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td class="blueBackground">
+                    ---------
+                </td>
+            </tr>
         }
     </table>
 
     <br />
+    @if (ApprovalStatus)
+    {
+        int Qid = challengeApprovalStatus.First().Qid;
+        @Html.HiddenFor(model => model.SQId)
+        @Html.HiddenFor(model => model.SQPid)
+        @*@Html.HiddenFor(model => model.SAnswer)*@
+        @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
+        <br />
+        //string ans = model.SAnswer;
+        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%", });
+        <button id="submitB" Onclick="Submit()">submit</button>
 
 
-        <div>
-            
-        </div>
+    }
+
+    @if(approvalDone.Count() != 0)
+    {
+        @grid.GetHtml(
+           columns: new[]
+
+           {
+           grid.Column(columnName:"SAnswer",header:"solution",style:"webgrid"),
+           grid.Column(columnName:"Lname", header:"Language" ,style:"webgrid"),
+           grid.Column(columnName:"approvalStatus",header:"approvalStatus",style:"webgrid")
+
+           } )
+     }
 
 
-</div>
+        @section scripts{
+            <script>
+            function Submit() {
 
+                var Qid =@challengeApprovalStatus.First().Qid;
+                var Uid =@Uid;
+                var textarea = document.getElementById('TxtAns').value;
+                var dropdown = document.getElementById('DropLan')
 
+                //debugger;
+                $.ajax({
+                    url: '@Url.Action("SubmitChallenge", "Challenge")',
+                    type: "post",
+                    data: { 'Uid': Uid, 'Qid': Qid, 'Ans': textarea, 'lan': dropdown.value } ,
+                    cache: false,
+                    success: function (savingStatus) {
+                        //debugger;
+                        alert("success");
 
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        //debugger;
+                        alert("error");
+
+                    }
+                });
+            }
+            </script>
+        }
+
+    </div>
 

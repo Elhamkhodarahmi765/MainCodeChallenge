@@ -42,4 +42,15 @@ namespace MainCodeChallenge.Models
         FinalApproval=2
     }
 
+    public  enum EnumPointParam
+    {
+        Decrease =1,
+        Increase=2
+    }
+    public  enum EnumStatusRow
+    {
+        MainRow=1,
+        SubRow=2
+    }
+
 }

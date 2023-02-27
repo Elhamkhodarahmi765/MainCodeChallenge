@@ -39,9 +39,5 @@ namespace MainCodeChallenge
         public virtual ICollection<Tbl_Challenge> Tbl_Challenge { get; set; }
         public virtual Tbl_Role Tbl_Role { get; set; }
         public virtual Tbl_User Tbl_User { get; set; }
-        public string getRealPersonFullname()
-        {
-            return (string)(this.RP_FName + " " + this.RP_LName);
-        }
     }
 }

@@ -20,16 +20,25 @@ namespace MainCodeChallenge.Services
 
             using (CodeChallengeEntities db = new CodeChallengeEntities())
             {
-                Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
+                try
+                {
+                    Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
 
-                if (obj.Uid ==  null)
+                    if (obj.Uid == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                catch
                 {
                     return false;
                 }
-                else
-                {
-                    return true;
-                }
+
+
 
             }
           
@@ -51,6 +60,7 @@ namespace MainCodeChallenge.Services
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
+                         where Qid.StatusRow==1 || Qid.StatusRow==null
                          group new { ch, Qid }
                          by new
                          {
@@ -63,11 +73,12 @@ namespace MainCodeChallenge.Services
                              ch.QRpoint,
                              ch.QApoint,
                              ch.QDescription,
-                             Qid.SQId,
+                             Qid.SQId,     
                              ch.Tbl_Category.CT_Name,
                              ch.Tbl_RealPerson.RP_FName,
                              ch.Tbl_RealPerson.RP_LName,
                              ch.QpersonOwner
+                             
                          } into grp
                          orderby grp.Key.Qid descending
                          select new ChallengeApprovalStatus
@@ -97,6 +108,7 @@ namespace MainCodeChallenge.Services
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
+                         where Qid.StatusRow == 1 || Qid.StatusRow == null
                          group new { ch, Qid }
                          by new
                          {
@@ -160,6 +172,7 @@ namespace MainCodeChallenge.Services
             List<UserInfo> userInfo = (from u in db.Tbl_RealPerson
                                  join p in db.Tbl_RealPesronPoint on u.RP_Userid equals p.PUserId into RealPersonPoint
                                  from p2 in RealPersonPoint.DefaultIfEmpty()
+                                 where u.RP_Userid==UID
                                  select new UserInfo 
                                  {
                                         Uid=u.RP_id,
@@ -229,8 +242,11 @@ namespace MainCodeChallenge.Services
                                       Qid = a.SQId
                                   }).ToList();
             int Rpoint=0;
-            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).First();
+            int Pid = 0;
+            ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).FirstOrDefault();
             Rpoint = ChallengeApprovalStatus.QRpoint;
+            Pid = ChallengeApprovalStatus.QpersonOwner;
+
 
             if (ApprovalStatus.Count != 0)
             {
@@ -249,24 +265,13 @@ namespace MainCodeChallenge.Services
                     Aps.SQPid= userinfo.RP_id;
                     Aps.SQStatus = (int)EnumSQStatus.PickUp ;
                     Aps.SQDate = DateTime.Now;
+                    Aps.ApprovalPID = Pid;
+                    Aps.StatusRow =(int) EnumStatusRow.MainRow;
                     db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
 
-
-                    
-                    var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.PUserId ==Uid );
-                    if (result != null)
-                    {
-                        try
-                        {
-                            result.PPoint -= Rpoint;
-                            db.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            throw;
-                        }
-                    }
+                    //point
+                    ChangePoint(Uid, Rpoint,EnumPointParam.Decrease );
 
                     trans.Commit();
                     return true;
@@ -279,6 +284,49 @@ namespace MainCodeChallenge.Services
             }
 
         }
+
+        public void ChangePoint(int Uid,int point, EnumPointParam enumPointParam )
+        {
+            CodeChallengeEntities db=new CodeChallengeEntities();
+            var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.PUserId == Uid);
+            if (enumPointParam == EnumPointParam.Decrease)
+            {
+                if (result != null)
+                {
+                    try
+                    {
+                        result.PPoint -= point;
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                }
+            }
+            else
+            {
+                if (result != null)
+                {
+                    try
+                    {
+                        result.PPoint += point;
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
+
+
+
+        
+
+
 
         public bool IsItPossibleToPickUp(int Qid, int Uid)
         {
@@ -294,28 +342,143 @@ namespace MainCodeChallenge.Services
         }
 
 
-        public bool DoneChallenge(int Qid,int Uid, string AnsText)
+        public bool DoneChallenge(int Qid,int Uid, string AnsText,int lan)
         {
             CodeChallengeEntities db=new CodeChallengeEntities();
-            UserInfo userinfo = GetUserInfoByUId(Uid);
-            var result = db.Tbl_ApprovalStatus.SingleOrDefault(RP => RP.SQPid == userinfo.RP_id  && RP.SQId == Qid);
+            int PUid = GetPidByUserId(Uid);
+            //var result = db.Tbl_ApprovalStatus.Last(RP => RP.SQPid == PUid && RP.SQId == Qid);
+            //MR Blukian
+            var result = db.Tbl_ApprovalStatus.Where(RP => RP.SQPid == PUid && RP.SQId == Qid).OrderByDescending(RP => RP.SId).FirstOrDefault();
+
             if (result != null)
             {
-                try
+                if(result.SQStatus==(int)EnumSQStatus.PickUp )
                 {
-                    result.SQDate = DateTime.Now;
-                    result.SAnswer = AnsText;
+                    try
+                    {
+                        result.SQDate = DateTime.Now;
+                        result.SAnswer = AnsText;
+                        result.SAnswerLanguage = lan;
+                        result.SQStatus = (int)EnumSQStatus.Done;
+                        result.SQDate = DateTime.Now;
+                        result.ApprovalStatus = 1;
+                        db.SaveChanges();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                }else if (result.SQStatus == (int)EnumSQStatus.Done)
+                {
 
+
+                    Tbl_ApprovalStatus Aps = new Tbl_ApprovalStatus();
+                    Aps.SQId = Qid;
+                    Aps.SQPid = PUid;
+                    Aps.SQDate = DateTime.Now;
+                    Aps.ApprovalPID = result.ApprovalPID;
+                    Aps.ApprovalStatus = 1;
+                    //editDone
+                    Aps.SQDate = DateTime.Now;
+                    Aps.SAnswer = AnsText;
+                    Aps.SAnswerLanguage = lan;
+                    Aps.SQStatus = (int)EnumSQStatus.Done;
+                    Aps.SQDate = DateTime.Now;
+                    Aps.StatusRow =(int) EnumStatusRow.SubRow;
+                    db.Tbl_ApprovalStatus.Add(Aps);
                     db.SaveChanges();
+                    return true;
                 }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+               
             }
             return false;
         }
 
+        public List<ApprovalStatus> GetApprovalByUidQid(int Uid,int Qid)
+        {
+            
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            UserInfo userinfo = GetUserInfoByUId(Uid);
+            var lis =  (from e in db.Tbl_ApprovalStatus
+                    where e.SQId == Qid && e.SQPid==userinfo.RP_id
+                                     select new ApprovalStatus
+                                     {
+                                          SQId =(int?)e.SQId ??0,
+                                          SQPid =(int?)e.SQPid ??0,
+                                          SQStatus =(int?)e.SQStatus??0,
+                                          SQDate =(DateTime)e.SQDate,
+                                          ApStatus =(int?)e.ApprovalStatus??0,
+                                          ApprovalDate =(DateTime)e.ApprovalDate,
+                                          ApprovalPID =(int?)e.ApprovalPID??0,
+                                          SAnswerLanguage =(int?)e.SAnswerLanguage??0,
+                                          SAnswer =e.SAnswer,
+                                          Lname = e.Tbl_Language.Lname,
+                                          approvalStatus=(EnumApprovalStatus)e.ApprovalStatus
+                                     }).ToList();
+
+             return lis;
+
+        }
+
+
+
+        public List<ApprovalStatus> GetApprovalIsDoneByUidQid(int Uid, int Qid)
+        {
+
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            UserInfo userinfo = GetUserInfoByUId(Uid);
+            var lis = (from e in db.Tbl_ApprovalStatus
+                       where e.SQId == Qid && e.SQPid == userinfo.RP_id && e.SQStatus==2
+                       select new ApprovalStatus
+                       {
+                           SQId = (int?)e.SQId ?? 0,
+                           SQPid = (int?)e.SQPid ?? 0,
+                           SQStatus = (int?)e.SQStatus ?? 0,
+                           SQDate = (DateTime)e.SQDate,
+                           ApStatus = (int?)e.ApprovalStatus ?? 0,
+                           ApprovalDate = (DateTime)e.ApprovalDate,
+                           ApprovalPID = (int?)e.ApprovalPID ?? 0,
+                           SAnswerLanguage = (int?)e.SAnswerLanguage ?? 0,
+                           SAnswer = e.SAnswer,
+                           Lname = e.Tbl_Language.Lname,
+                           approvalStatus = (EnumApprovalStatus)e.ApprovalStatus
+                       }).ToList();
+
+            return lis;
+
+        }
+
+
+
+
+
+
+
+
+
+
+        public int GetPidByUserId(int Uid)
+        {
+            UserInfo userInfo = GetUserInfoByUId(Uid);
+            return userInfo.RP_id;
+        }
+
+
+        public  List<Language> GetLanguages()
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            List<Language> languages = (from e in db.Tbl_Language
+                                     select new Language
+                                     {
+                                         Lid =(int)e.Lid,
+                                         Lname =(string)e.Lname
+                                     }
+                                     ).ToList();
+
+            return languages;
+
+        }
 
 
     }

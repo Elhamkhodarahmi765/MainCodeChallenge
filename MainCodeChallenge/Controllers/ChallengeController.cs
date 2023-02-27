@@ -4,6 +4,8 @@ using MainCodeChallenge.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 
@@ -35,12 +37,19 @@ namespace MainCodeChallenge.Controllers
             }
             int Uid = int.Parse(HttpContext.Session["UserID"].ToString());
             List<ChallengeApprovalStatus> challengeApprovalStatus = service.GetChallengeDetailsById(Qid);
+            List<ApprovalStatus> approvalDone = new List<ApprovalStatus>();
+            ApprovalStatus approvalStatus= new ApprovalStatus();
+            approvalStatus = service.GetApprovalByUidQid(Uid, Qid).LastOrDefault();
             List<Example> example = service.GetExampleByChallengeId(Qid);
+            approvalDone = service.GetApprovalIsDoneByUidQid(Uid,Qid);
+            ViewData["approvalDone"] = approvalDone;
             ViewData["ExampleChallenge"] = example;
             ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
             ViewData["IsItPossibleToPickUp"] =service.IsItPossibleToPickUp(Qid,Uid);
+            ViewData["challengeApprovalStatus"] = challengeApprovalStatus;
             ViewData["Uid"] = Uid;
-            return View(challengeApprovalStatus.First());
+            ViewBag.Languages = service.GetLanguages();
+            return View(approvalStatus);
         }
 
         public ActionResult PickUpChallenge(int Qid,int Uid)
@@ -56,6 +65,25 @@ namespace MainCodeChallenge.Controllers
             }
             
 
+        }
+
+        [HttpPost]
+        public  string SubmitChallenge (int Qid, int Uid,string Ans, int lan )
+        {
+           
+            try
+            {
+                bool status = service.DoneChallenge(Qid, Uid, Ans, lan);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                
+                return "error";
+            
+            }
+            return "Ok";
+             
         }
 
     }
