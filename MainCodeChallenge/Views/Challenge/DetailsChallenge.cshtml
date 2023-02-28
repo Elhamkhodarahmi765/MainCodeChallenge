@@ -11,7 +11,7 @@
     int Uid = (int)ViewData["Uid"];
     bool ApprovalStatus = (bool)ViewData["ApprovalStatus"];
     bool IsItPossibleToPickUp = (bool)ViewData["IsItPossibleToPickUp"];
-    
+
 
 }
 
@@ -22,7 +22,7 @@
 
 <link rel="Stylesheet" href="@Href("~/Content/ChD.css")" />
 
-<div>   @Html.ActionLink("Back to List", "ProfilePage","Account")</div>
+<div>   @Html.ActionLink("Back to List", "ProfilePage", "Account")</div>
 <div class="center">
     <table width="100%">
         <tr>
@@ -108,7 +108,7 @@
         @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
         <br />
         //string ans = model.SAnswer;
-        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%", });
+        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width:100% "});
         <br />
 
         <button id="submitB" Onclick="Submit()" class="btn">submit</button>
@@ -127,32 +127,27 @@
                grid.Column(columnName:"SAnswer",header:"solution",style:"grid100"),
                grid.Column(columnName:"Lname", header:"Language",style:"grid100"),
                grid.Column(columnName:"approvalStatus",header:"approvalStatus",style:"grid100"),
-               grid.Column(header: "Details",
-            format: (item) => new HtmlString("<a href=" + @Url.Action("detailsAnswer","Challenge",new { Sid = item.SId }  ) +
-            " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "
-                )
-              ),
+               //grid.Column(header: "Details", format: (item) => new HtmlString("<a href=" + @Url.Action("detailsAnswer","Challenge",new { Sid = item.SId }  ) +
+               //  " title='DetailsChallenge' ><i class='glyphicon glyphicon-search modal-link'> </i><span class='sr-only modal-link'>Detail</span> </a> ")),
 
-               grid.Column("", format: item => Html.ActionLink("detailsAnswer","detailsAnswer", "Challenge", new { Sid = item.SId }, new { target = "_blank" }))
+               grid.Column("", format: item => Html.ActionLink("detailsAnswer","detailsAnswer", "Challenge", new { Sid = item.SId }, new { target = "_blank" ,@class="modal-link" }),style:"grid100")
 
            })
     }
 
 
+</div>
 
 
 
+<div id="modal-container" class="modal fade"
+     tabindex="-1" role="dialog">
+    <div class="modal-content">
 
-    <div id="modal-container" class="modal fade"
-         tabindex="-1" role="dialog">
-        <div class="modal-content">
-        </div>
     </div>
-
-
-
-    @section scripts{
-        <script>
+</div>
+@section scripts{
+    <script>
             function Submit() {
 
                 var Qid =@challengeApprovalStatus.First().Qid;
@@ -179,12 +174,32 @@
 
 
 
+            $(function () {
+                // Initialize numeric spinner input boxes
+                //$(".numeric-spinner").spinedit();
+                // Initialize modal dialog
+                // attach modal-container bootstrap attributes to links with .modal-link class.
+                // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+                $('body').on('click', '.modal-link', function (e) {
+                    e.preventDefault();
+                    $(this).attr('data-target', '#modal-container');
+                    $(this).attr('data-toggle', 'modal');
+                });
+                // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+                $('body').on('click', '.modal-close-btn', function () {
+                    $('#modal-container').modal('hide');
+                });
+                //clear modal cache, so that new content can be loaded
+                $('#modal-container').on('hidden.bs.modal', function () {
+                    $(this).removeData('bs.modal');
+                });
+                $('#CancelModal').on('click', function () {
+                    return false;
+                });
+            });
+    </script>
 
 
 
-
-        </script>
-    }
-
-</div>
+}
 
