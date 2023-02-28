@@ -89,9 +89,6 @@ namespace MainCodeChallenge.Controllers
         [HttpGet]
         public RedirectResult success()
         {
-
-            
-         
           return  Redirect(Url.Action("ProfilePage", "Account"));
            
         }
