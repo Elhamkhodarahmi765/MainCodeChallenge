@@ -86,5 +86,27 @@ namespace MainCodeChallenge.Controllers
              
         }
 
+        [HttpGet]
+        public RedirectResult success()
+        {
+
+            
+         
+          return  Redirect(Url.Action("ProfilePage", "Account"));
+           
+        }
+
+
+        [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
+        public ActionResult CreateNewChallenge()
+        {
+            return View();
+        }
+
+
+
+
+
+
     }
 }

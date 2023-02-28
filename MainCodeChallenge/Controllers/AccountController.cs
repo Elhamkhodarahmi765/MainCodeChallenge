@@ -53,7 +53,9 @@ namespace MainCodeChallenge.Controllers
         [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
         public ActionResult AdminPage()
         {
-            List<ChallengeApprovalStatus> challengeApprovalStatus= service.GetAllChallengeApprovalStatusCount();
+            int UId = int.Parse(HttpContext.Session["UserID"].ToString());
+            int Pid=service.GetPidByUserId(UId);
+            List<ChallengeApprovalStatus> challengeApprovalStatus= service.GetAllChallengeApprovalStatusCount().Where(ch=>ch.QpersonOwner==Pid).ToList();
             return View(challengeApprovalStatus);
         }
 
@@ -73,12 +75,7 @@ namespace MainCodeChallenge.Controllers
         {
             return View();
         }
-
+        
     }
-
-
-   
-
-
 
 }

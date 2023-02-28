@@ -1,0 +1,14 @@
+﻿
+.table, th, td {
+    border: solid 1px #bbbbbb;
+    border-collapse: collapse;
+    padding: 2px;
+}
+
+
+
+.tnone {
+    border: solid 0px #bbbbbb;
+    border-collapse: collapse;
+    padding: 0px;
+}

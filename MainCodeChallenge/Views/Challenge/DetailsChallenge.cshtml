@@ -21,7 +21,7 @@
 
 <link rel="Stylesheet" href="@Href("~/Content/ChD.css")" />
 
-
+<div>   @Html.ActionLink("Back to List", "ProfilePage","Account")</div>
 <div class="center">
     <table width="100%">
         <tr>
@@ -110,7 +110,7 @@
         @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width: 100%", });
         <br />
 
-        <button id="submitB" Onclick="Submit()" class="btn-login">submit</button>
+        <button id="submitB" Onclick="Submit()" class="btn">submit</button>
 
 
     }
@@ -145,17 +145,33 @@
                     data: { 'Uid': Uid, 'Qid': Qid, 'Ans': textarea, 'lan': dropdown.value } ,
                     cache: false,
                     success: function (savingStatus) {
-                        //debugger;
                         alert("success");
-
+                        //success();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-                        //debugger;
                         alert("error");
 
                     }
                 });
-            }
+                }
+
+                @*function success() {
+
+                    $.ajax({
+                    url: '@Url.Action("success", "Challenge")',
+                    success: function (savingStatus) {
+                        debugger;
+                        alert("success");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        debugger;
+                        alert("error");
+
+                    }
+                });
+                }*@
+
+
             </script>
         }
 
