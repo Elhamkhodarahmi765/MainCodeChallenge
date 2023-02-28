@@ -100,10 +100,10 @@ namespace MainCodeChallenge.Controllers
             return View();
         }
 
-
-
-
-
-
+        public ActionResult detailsAnswer(int SId)
+        {
+            ApprovalStatus approvalStatus = service.GetApprovalStatusBySId(SId);
+            return View(approvalStatus);
+        }
     }
 }

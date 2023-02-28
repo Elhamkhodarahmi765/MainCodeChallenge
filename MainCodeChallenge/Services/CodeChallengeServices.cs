@@ -322,6 +322,7 @@ namespace MainCodeChallenge.Services
                    var trans =  db.Database.BeginTransaction();
 
                     Tbl_ApprovalStatus Aps = new Tbl_ApprovalStatus();
+
                     Aps.SQId=Qid;
                     Aps.SQPid= userinfo.RP_id;
                     Aps.SQStatus = (int)EnumSQStatus.PickUp ;
@@ -465,6 +466,7 @@ namespace MainCodeChallenge.Services
                     where e.SQId == Qid && e.SQPid==userinfo.RP_id
                                      select new ApprovalStatus
                                      {
+                                         SId=(int)e.SId,
                                           SQId =(int?)e.SQId ??0,
                                           SQPid =(int?)e.SQPid ??0,
                                           SQStatus =(int?)e.SQStatus??0,
@@ -475,7 +477,8 @@ namespace MainCodeChallenge.Services
                                           SAnswerLanguage =(int?)e.SAnswerLanguage??0,
                                           SAnswer =e.SAnswer,
                                           Lname = e.Tbl_Language.Lname,
-                                          approvalStatus=(EnumApprovalStatus)e.ApprovalStatus
+                                         QStatus = (EnumSQStatus?)e.SQStatus ?? 0,
+                                         approvalStatus =(EnumApprovalStatus)e.ApprovalStatus
                                      }).ToList();
 
              return lis;
@@ -493,6 +496,7 @@ namespace MainCodeChallenge.Services
                        where e.SQId == Qid && e.SQPid == userinfo.RP_id && e.SQStatus==2
                        select new ApprovalStatus
                        {
+                           SId=(int)e.SId,
                            SQId = (int?)e.SQId ?? 0,
                            SQPid = (int?)e.SQPid ?? 0,
                            SQStatus = (int?)e.SQStatus ?? 0,
@@ -512,7 +516,31 @@ namespace MainCodeChallenge.Services
 
 
 
+        public ApprovalStatus GetApprovalStatusBySId(int Sid)
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var lis = (from e in db.Tbl_ApprovalStatus
+                       where e.SId==Sid
+                       select new ApprovalStatus
+                       {
+                           SId = (int)e.SId,
+                           SQId = (int?)e.SQId ?? 0,
+                           SQPid = (int?)e.SQPid ?? 0,
+                           SQStatus = (int?)e.SQStatus ?? 0,
+                           QStatus = (EnumSQStatus?)e.SQStatus ??0,
+                           SQDate = (DateTime)e.SQDate,
+                           ApStatus = (int?)e.ApprovalStatus ?? 0,
+                           ApprovalDate = (DateTime)e.ApprovalDate,
+                           ApprovalPID = (int?)e.ApprovalPID ?? 0,
+                           SAnswerLanguage = (int?)e.SAnswerLanguage ?? 0,
+                           SAnswer = e.SAnswer,
+                           Lname = e.Tbl_Language.Lname,
+                           approvalStatus = (EnumApprovalStatus)e.ApprovalStatus
+                       }).ToList();
 
+            return lis.FirstOrDefault();
+
+        }
 
 
 
@@ -540,6 +568,8 @@ namespace MainCodeChallenge.Services
             return languages;
 
         }
+
+        
 
 
     }

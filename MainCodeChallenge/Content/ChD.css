@@ -11,7 +11,6 @@ table, th, td {
 }
 
 .float-container {
-    border: 3px solid #fff;
     padding: 20px;
 }
 
@@ -55,11 +54,23 @@ table, th, td {
     width: 100%;
 }
 
+
 .webgrid {
+    font-size: 1.2em;
+    width: 100%;
+}     
+.grid1 {
     border: solid 1px #bbbbbb;
     border-collapse: collapse;
     padding: 2px;
-    width:100%;
+    
+}
+
+.grid100 {
+    border: solid 1px #bbbbbb;
+    border-collapse: collapse;
+    padding: 2px;
+    width:100%
 }
 
 
@@ -81,4 +92,8 @@ table, th, td {
     padding: 0 16px;
     color: #ffffff;
     font-weight: 700;
+}
+.modal-content {
+    width: 600px !important;
+    margin: 30px auto !important;
 }

@@ -11,6 +11,7 @@
     int Uid = (int)ViewData["Uid"];
     bool ApprovalStatus = (bool)ViewData["ApprovalStatus"];
     bool IsItPossibleToPickUp = (bool)ViewData["IsItPossibleToPickUp"];
+    
 
 }
 
@@ -115,22 +116,43 @@
 
     }
 
-    @if(approvalDone.Count() != 0)
+    @if (approvalDone.Count() != 0)
     {
+
         @grid.GetHtml(
            columns: new[]
 
            {
-           grid.Column(columnName:"SAnswer",header:"solution",style:"webgrid"),
-           grid.Column(columnName:"Lname", header:"Language" ,style:"webgrid"),
-           grid.Column(columnName:"approvalStatus",header:"approvalStatus",style:"webgrid")
+               grid.Column( header: "RowNumber",format: item => item.WebGrid.Rows.IndexOf(item) + 1,style:"grid1"),
+               grid.Column(columnName:"SAnswer",header:"solution",style:"grid100"),
+               grid.Column(columnName:"Lname", header:"Language",style:"grid100"),
+               grid.Column(columnName:"approvalStatus",header:"approvalStatus",style:"grid100"),
+               grid.Column(header: "Details",
+            format: (item) => new HtmlString("<a href=" + @Url.Action("detailsAnswer","Challenge",new { Sid = item.SId }  ) +
+            " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "
+                )
+              ),
 
-           } )
-     }
+               grid.Column("", format: item => Html.ActionLink("detailsAnswer","detailsAnswer", "Challenge", new { Sid = item.SId }, new { target = "_blank" }))
+
+           })
+    }
 
 
-        @section scripts{
-            <script>
+
+
+
+
+    <div id="modal-container" class="modal fade"
+         tabindex="-1" role="dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+
+
+
+    @section scripts{
+        <script>
             function Submit() {
 
                 var Qid =@challengeApprovalStatus.First().Qid;
@@ -140,7 +162,7 @@
 
                 //debugger;
                 $.ajax({
-                    url: '@Url.Action("SubmitChallenge", "Challenge")',
+                url: '@Url.Action("SubmitChallenge", "Challenge")',
                     type: "post",
                     data: { 'Uid': Uid, 'Qid': Qid, 'Ans': textarea, 'lan': dropdown.value } ,
                     cache: false,
@@ -153,27 +175,16 @@
 
                     }
                 });
-                }
-
-                @*function success() {
-
-                    $.ajax({
-                    url: '@Url.Action("success", "Challenge")',
-                    success: function (savingStatus) {
-                        debugger;
-                        alert("success");
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        debugger;
-                        alert("error");
-
-                    }
-                });
-                }*@
+            }
 
 
-            </script>
-        }
 
-    </div>
+
+
+
+
+        </script>
+    }
+
+</div>
 

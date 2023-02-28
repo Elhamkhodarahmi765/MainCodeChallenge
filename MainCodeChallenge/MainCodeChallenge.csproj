@@ -274,6 +274,7 @@
     <Content Include="Views\Account\ErrorPage.cshtml" />
     <Content Include="Views\Challenge\DetailsChallenge.cshtml" />
     <Content Include="Views\Challenge\CreateNewChallenge.cshtml" />
+    <Content Include="Views\Challenge\detailsAnswer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

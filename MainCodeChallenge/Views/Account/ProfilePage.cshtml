@@ -35,7 +35,7 @@ columns: new[]
         grid.Column(columnName:"QRpoint",header:"QPoints Required"),
         grid.Column(columnName:"CountOfA",header:"Number of volunteers"),
         grid.Column(columnName:"Solved",header:"Approval Status"),
-        grid.Column(header: "Action",
+        grid.Column(header: "Details",
             format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallenge","Challenge",new { id = item.Qid }  ) +
             " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "
                 )
