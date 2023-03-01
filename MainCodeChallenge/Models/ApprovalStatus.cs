@@ -9,9 +9,11 @@ namespace MainCodeChallenge.Models
 {
     public class ApprovalStatus
     {
+        public int SId { get; set; }
         public int SQId { get; set; }
         public int SQPid { get; set; }
         public int SQStatus { get; set; }
+        public EnumSQStatus QStatus { get; set; }
         public DateTime? SQDate { get; set; }
         public int ApStatus { get; set; }
         public DateTime? ApprovalDate { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatus>
+﻿@model IEnumerable<MainCodeChallenge.Models.ChallengeApprovalStatusP>
 
 @{
     ViewBag.Title = "ProfilePage";
@@ -11,12 +11,7 @@
         border-collapse: collapse;
         padding: 2px;
     }
-    .center {
-        margin: auto;
-        width: 60%;
-        border: 3px solid #73AD21;
-        padding: 10px;
-    }
+
 </style>
 
 <h2>ProfilePage</h2>
@@ -34,11 +29,19 @@ columns: new[]
         grid.Column(columnName:"QLevel",header:"Question Level"),
         grid.Column(columnName:"QRpoint",header:"QPoints Required"),
         grid.Column(columnName:"CountOfA",header:"Number of volunteers"),
-        grid.Column(header: "Action",
+        grid.Column(columnName:"Solved",header:"Approval Status"),
+        grid.Column(header: "Details",
             format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallenge","Challenge",new { id = item.Qid }  ) +
             " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "
                 )
               )
+         //.Template(p => p.IsPublished).ClientTemplate(
+         // "# if(IsPublished.GetValueOrDefault(false)) { #" +
+         // "<img src='"+ Url.Content("~/Images/icon_true.gif") +"' alt='#= IsPublished #' />"+
+         // "# } else { #" +
+         // "<img src='"+ Url.Content("~/Images/false-icon.png") +"' alt='#= IsPublished #' />"+
+         // "# } #"
+         // );
 }
 )
 

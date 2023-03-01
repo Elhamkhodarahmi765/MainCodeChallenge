@@ -21,9 +21,9 @@ namespace MainCodeChallenge.Models
         public int QRpoint { get; set; }
         public int QApoint { get; set; }
         public float Qfactor { get; set; }
+        public bool solved { get; set; }
 
 
-        
 
     }
 }

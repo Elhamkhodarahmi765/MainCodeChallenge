@@ -1,0 +1,54 @@
+﻿@model MainCodeChallenge.Models.ApprovalStatus
+<link href="~/Content/ChDetail.css" rel="stylesheet" />
+<div>
+    <h4>ApprovalStatus</h4>
+
+    <hr />
+    <dl>
+
+        <dt>
+            status:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QStatus)
+        </dd>
+
+        <dt>
+            Approval Status:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.approvalStatus)
+        </dd>
+
+        @if ( Model.ApprovalDate != null)
+        {
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovalDate):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovalDate)
+        </dd>
+        }
+
+        <dt>
+            Programming language:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lname)
+        </dd>
+
+        <dt>
+            YourSolution:
+        </dt>
+
+        <dd>
+            @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", @readonly = true })
+        </dd>
+
+
+    </dl>
+</div>
