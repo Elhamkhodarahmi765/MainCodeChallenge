@@ -11,7 +11,6 @@
         border-collapse: collapse;
         padding: 2px;
     }
-
 </style>
 
 <h2>ProfilePage</h2>
@@ -24,24 +23,41 @@ columns: new[]
         grid.Column(columnName:"Qid",header:"Question ID"),
         grid.Column(columnName:"QName", header:"Question Name"),
         grid.Column(columnName:"CT_Name", header:"category"),
-        grid.Column(columnName:"QDescription", header:"Question Description",format: @<text>@item.QDescription.Substring(0, 180) .... </text>),
-        grid.Column(columnName:"POwnerName",header:"Question Owner"),
-        grid.Column(columnName:"QLevel",header:"Question Level"),
-        grid.Column(columnName:"QRpoint",header:"QPoints Required"),
-        grid.Column(columnName:"CountOfA",header:"Number of volunteers"),
-        grid.Column(columnName:"Solved",header:"Approval Status"),
-        grid.Column(header: "Details",
-            format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallenge","Challenge",new { id = item.Qid }  ) +
-            " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "
-                )
-              )
-         //.Template(p => p.IsPublished).ClientTemplate(
-         // "# if(IsPublished.GetValueOrDefault(false)) { #" +
-         // "<img src='"+ Url.Content("~/Images/icon_true.gif") +"' alt='#= IsPublished #' />"+
-         // "# } else { #" +
-         // "<img src='"+ Url.Content("~/Images/false-icon.png") +"' alt='#= IsPublished #' />"+
-         // "# } #"
-         // );
+        grid.Column(columnName:"QDescription", header:"Question Description",format:
+@<text>
+    @{
+                   string Ans = item.QDescription;
+
+                   if(Ans.Length>100)
+                   {
+                    Ans=item.QDescription.Substring(0, 100) + "....";
+                   } else
+                   {
+                    Ans=item.QDescription;
+                   }
+    }
+    @Ans
+</text>
+
+
+,style:"grid100"),
+grid.Column(columnName:"POwnerName",header:"Question Owner"),
+grid.Column(columnName:"QLevel",header:"Question Level"),
+grid.Column(columnName:"QRpoint",header:"QPoints Required"),
+grid.Column(columnName:"CountOfA",header:"Number of volunteers"),
+grid.Column(columnName:"Solved",header:"Approval Status"),
+grid.Column(header: "Details",
+format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallenge","Challenge",new { id = item.Qid }  ) +
+" title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "
+)
+)
+//.Template(p => p.IsPublished).ClientTemplate(
+// "# if(IsPublished.GetValueOrDefault(false)) { #" +
+// "<img src='"+ Url.Content("~/Images/icon_true.gif") +"' alt='#= IsPublished #' />"+
+// "# } else { #" +
+// "<img src='"+ Url.Content("~/Images/false-icon.png") +"' alt='#= IsPublished #' />"+
+// "# } #"
+// );
 }
 )
 
