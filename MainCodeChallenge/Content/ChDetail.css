@@ -5,9 +5,17 @@
     padding: initial;
     font-family: inherit;
     height: auto;
-    max-height: 30%;
+    max-height: 200px;
     overflow: auto;
     word-break: normal !important;
     word-wrap: normal !important;
     white-space: pre !important;
+
+
+
+
+}
+textarea {
+    width:100%;
+    min-width:100%;
 }

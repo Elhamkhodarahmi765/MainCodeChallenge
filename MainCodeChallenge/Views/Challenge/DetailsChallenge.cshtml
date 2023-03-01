@@ -23,7 +23,7 @@
 <link rel="Stylesheet" href="@Href("~/Content/ChD.css")" />
 
 <div>   @Html.ActionLink("Back to List", "ProfilePage", "Account")</div>
-<div class="center">
+<div>
     <table width="100%">
         <tr>
             <td>
@@ -108,7 +108,7 @@
         @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
         <br />
         //string ans = model.SAnswer;
-        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width:100% "});
+        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width:100%;"});
         <br />
 
         <button id="submitB" Onclick="Submit()" class="btn">submit</button>
@@ -141,7 +141,7 @@
 
 
 <div id="modal-container" class="modal fade"
-     tabindex="-1" role="dialog">
+     tabindex="-1" role="dialog" style="top:15%">
     <div class="modal-content">
 
     </div>

@@ -46,10 +46,8 @@
         </dt>
 
         <dd>
-            <pre>@Model.SAnswer</pre>
-            
+            @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", @readonly = true })
         </dd>
-
 
 
     </dl>
