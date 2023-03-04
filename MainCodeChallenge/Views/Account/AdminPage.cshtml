@@ -32,7 +32,7 @@ grid.Column(columnName:"QLevel",header:"Question Level"),
 grid.Column(columnName:"QRpoint",header:"QPoints Required"),
 grid.Column(columnName:"CountOfA",header:"Number of volunteers"),
 grid.Column(header: "Action",
-format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallengeAdmin","Challenge",new { id = item.Qid }  ) +
+format: (item) => new HtmlString("<a href=" + @Url.Action("DetailsChallengeAdmin","Challenge",new { Qid = item.Qid }  ) +
 " title='DetailsChallenge' ><i class='glyphicon glyphicon-search'> </i><span class='sr-only'>Detail</span> </a> "
 )
 )

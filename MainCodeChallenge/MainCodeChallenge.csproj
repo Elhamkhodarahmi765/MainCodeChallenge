@@ -217,6 +217,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ChCreate.css" />
     <Content Include="Content\ChD.css" />
     <Content Include="Content\ChDetail.css" />
     <Content Include="Content\StyleLogin.css" />
@@ -276,6 +277,8 @@
     <Content Include="Views\Challenge\DetailsChallenge.cshtml" />
     <Content Include="Views\Challenge\CreateNewChallenge.cshtml" />
     <Content Include="Views\Challenge\detailsAnswer.cshtml" />
+    <Content Include="Views\Challenge\DetailsChallengeAdmin.cshtml" />
+    <Content Include="Views\Challenge\detailsAnswerAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

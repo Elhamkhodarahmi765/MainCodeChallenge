@@ -1,0 +1,108 @@
+﻿@model IEnumerable<MainCodeChallenge.Models.ApprovalStatus>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonelName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SQDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lname)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.approvalStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApprovalDate)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.APpersonelName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonelName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SQDate)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Lname)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.approvalStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApprovalDate)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.APpersonelName)
+            </td>
+            <td>
+              
+                @Html.ActionLink("Details","detailsAnswerAdmin", "Challenge", new { Sid = item.SId }, new { target = "_blank" ,@class="modal-link" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<div id="modal-container" class="modal fade"
+     tabindex="-1" role="dialog" style="top:15%">
+    <div class="modal-content">
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+            // Initialize numeric spinner input boxes
+            //$(".numeric-spinner").spinedit();
+            // Initialize modal dialog
+            // attach modal-container bootstrap attributes to links with .modal-link class.
+            // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                $(this).attr('data-target', '#modal-container');
+                $(this).attr('data-toggle', 'modal');
+            });
+            // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+            $('body').on('click', '.modal-close-btn', function () {
+                $('#modal-container').modal('hide');
+            });
+            //clear modal cache, so that new content can be loaded
+            $('#modal-container').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+            $('#CancelModal').on('click', function () {
+                return false;
+            });
+        });
+    </script>
+}

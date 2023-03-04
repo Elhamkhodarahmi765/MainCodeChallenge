@@ -1,5 +1,4 @@
 ﻿@model MainCodeChallenge.Models.ApprovalStatus
-
 @{
 
     ViewBag.Title = "DetailsChallenge";
@@ -14,14 +13,8 @@
 
 
 }
-
-
-
-
 <h1>DetailsChallenge</h1>
-
 <link rel="Stylesheet" href="@Href("~/Content/ChD.css")" />
-
 <div>   @Html.ActionLink("Back to List", "ProfilePage", "Account")</div>
 <div>
     <table width="100%">
@@ -108,7 +101,7 @@
         @Html.DropDownList("MySkills", new SelectList(ViewBag.Languages, "Lid", "Lname"), new { Id = "DropLan" })
         <br />
         //string ans = model.SAnswer;
-        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width:100%;"});
+        @Html.TextAreaFor(model => model.SAnswer, new { Id = "TxtAns", style = "width:100%;" });
         <br />
 
         <button id="submitB" Onclick="Submit()" class="btn">submit</button>
@@ -124,15 +117,32 @@
 
            {
                grid.Column( header: "RowNumber",format: item => item.WebGrid.Rows.IndexOf(item) + 1,style:"grid1"),
-               grid.Column(columnName:"SAnswer",header:"solution",style:"grid100"),
-               grid.Column(columnName:"Lname", header:"Language",style:"grid100"),
-               grid.Column(columnName:"approvalStatus",header:"approvalStatus",style:"grid100"),
-               //grid.Column(header: "Details", format: (item) => new HtmlString("<a href=" + @Url.Action("detailsAnswer","Challenge",new { Sid = item.SId }  ) +
-               //  " title='DetailsChallenge' ><i class='glyphicon glyphicon-search modal-link'> </i><span class='sr-only modal-link'>Detail</span> </a> ")),
+               grid.Column(columnName:"SAnswer", header:"solution Description",format:
+               @<text>
+               @{ 
+                   string Ans = item.SAnswer;
 
-               grid.Column("", format: item => Html.ActionLink("detailsAnswer","detailsAnswer", "Challenge", new { Sid = item.SId }, new { target = "_blank" ,@class="modal-link" }),style:"grid100")
+                   if(Ans.Length>50)
+                   {
+                    Ans=item.SAnswer.Substring(0, 50) + "....";
+                   } else
+                   {
+                    Ans=item.SAnswer;
+                   }
+                   }
+                   @Ans 
+               </text>
 
-           })
+
+    ,style:"grid100"),
+
+    grid.Column(columnName:"Lname", header:"Language",style:"grid100"),
+    grid.Column(columnName:"approvalStatus",header:"approvalStatus",style:"grid100"),
+    //grid.Column(header: "Details", format: (item) => new HtmlString("<a href=" + @Url.Action("detailsAnswer","Challenge",new { Sid = item.SId }  ) +
+               //  " title='DetailsChallenge'><i class='glyphicon glyphicon-search modal-link'> </i><span class='sr-only modal-link'>Detail</span> </a> ")),
+    grid.Column("", format: item => Html.ActionLink("detailsAnswer","detailsAnswer", "Challenge", new { Sid = item.SId }, new { target = "_blank" ,@class="modal-link" }),style:"grid100")
+
+    })
     }
 
 

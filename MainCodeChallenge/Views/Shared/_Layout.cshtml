@@ -9,47 +9,76 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .float-container {
-            border: 3px solid #fff;
-            padding: 20px;
+
         }
 
-        .float-child {
-            width: 50%;
+        .float-childl {
+            width: 80%;
             float: left;
-            padding: 20px;
-            color: aliceblue
+     
+            
         }
+        .float-childr {
+            width: 20%;
+            float: right;
+          
+            
+        }  
     </style>
 </head>
 
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Main Code Challenge", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
 
-                <div dir="rtl">
-                    @*<button type="submit">
-                        <img src="~/img/Bexit.png" />
-                    </button>
-                    <img src="~/img/Bexit.png" />*@
+        <div class="container">
+            <div class="float-container">
+                <div class="float-childl">
+                    <div class="navbar-header">
+
+
+                        @try
+                        {
+                            string SR = (string)Session["UserRole"];
+                            if (SR == "AdminPage")
+                            {
+                                @Html.ActionLink("Main Code Challenge", "AdminPage", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                            }
+                            else if (SR == "ProfilePage")
+                            {
+                                @Html.ActionLink("Main Code Challenge", "ProfilePage", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Main Code Challenge", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                            }
+                        }
+                        catch
+                        {
+                            @Html.ActionLink("Main Code Challenge", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+                        }
+
+                    </div>
+                </div>
+                <div class="float-childr">
+
+                    @if (@Session["UserName"] != null)
+                    {
+                        <div style="color:darkgray;text-align:center" >
+                                
+                           
+                                @Session["UserName"]
+                           <br />
+                                * total Point : @Session["Point"] *
+                           <br />
+                                @Html.ActionLink("LogOut", "LogOutT", "Account")
+                           
+                        </div>
+                    }
+
+
                 </div>
             </div>
-           
         </div>
-       
     </div>
     <div class="container body-content">
         @RenderBody()

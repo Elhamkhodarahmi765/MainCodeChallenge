@@ -11,13 +11,12 @@ table, th, td {
 }
 
 .float-container {
-    padding: 20px;
 }
 
 .float-child {
     width: 50%;
     float: left;
-    padding: 20px;
+
     border: 2px solid red;
 }
 

@@ -40,5 +40,7 @@ namespace MainCodeChallenge
         public virtual DbSet<View_Challenge> View_Challenge { get; set; }
         public virtual DbSet<View_ChallengeApprovalStatus> View_ChallengeApprovalStatus { get; set; }
         public virtual DbSet<View_ChallengeApprovalStatusCount> View_ChallengeApprovalStatusCount { get; set; }
+
+        public System.Data.Entity.DbSet<MainCodeChallenge.Models.ApprovalStatus> ApprovalStatus { get; set; }
     }
 }

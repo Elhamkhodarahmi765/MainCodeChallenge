@@ -42,12 +42,23 @@ namespace MainCodeChallenge.Controllers
                 var user = service.GetActionToGoFromLoginPage(model.user);
                 Session["UserRole"] = user.getRole().ToString();
                 Session["UserID"] = user.Uid;
+                UserInfo userInfo = service.GetUserInfoByUId(user.Uid);
+                Session["UserName"] = userInfo.RealPersonFullname;
+                Session["Point"] = service.GetPointById(user.Uid);
+                HttpRuntime.Cache["OnLineUser"] = user.Uid;
                 return RedirectToAction(user.getRole().ToString());
             }
 
             ViewBag.ErrorMessage = "The username or password is incorrect.";
             return View(model);
 
+        }
+
+        public ActionResult LogOutT()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon();
+            return RedirectToAction("Login", "Account");
         }
 
         [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
