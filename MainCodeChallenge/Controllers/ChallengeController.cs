@@ -57,7 +57,9 @@ namespace MainCodeChallenge.Controllers
             
             if(service.PickUpChallenge(Qid, Uid))
             {
+                Session["Point"] = service.GetPointById(Uid);
                 return RedirectToAction("DetailsChallenge", new { id = Qid });
+                
             }
             else
             {
@@ -122,20 +124,38 @@ namespace MainCodeChallenge.Controllers
             ViewBag.levelD = new SelectList(level, "ID", "Name");
             return View();
         }
-
+       
+        [RestrictActionToRole(Roles = new string[] {  "ProfilePage" })]
         public ActionResult detailsAnswer(int SId)
         {
             ApprovalStatus approvalStatus = service.GetApprovalStatusBySId(SId);
             return View(approvalStatus);
         }
 
-
+        [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
         public ActionResult DetailsChallengeAdmin(int Qid)
         {
             List<ApprovalStatus> approvalStatuses= service.GetApprovalIsDoneByQid(Qid);
             return View(approvalStatuses);
         }
 
+
+        [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
+        public ActionResult detailsAnswerAdmin(int SId)
+        {
+            ApprovalStatus approvalStatus = service.GetApprovalStatusBySId(SId);
+            return View(approvalStatus);
+        }
+
+        [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
+        public ActionResult FinalApprovalAdmin(int SId)
+        {
+            int UId = int.Parse(HttpContext.Session["UserID"].ToString());
+            int Pid = service.GetPidByUserId(UId);
+            bool result = service.FinalApproval(SId,Pid);
+            int Qid = service.GetApprovalStatusBySId(SId).SQId;
+            return RedirectToAction("DetailsChallengeAdmin", "Challenge", new { Qid = Qid });
+        }
 
 
     }

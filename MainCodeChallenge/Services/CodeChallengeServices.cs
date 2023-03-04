@@ -178,7 +178,8 @@ namespace MainCodeChallenge.Services
                              ch.Tbl_Category.CT_Name,
                              ch.Tbl_RealPerson.RP_FName,
                              ch.Tbl_RealPerson.RP_LName,
-                             ch.QpersonOwner
+                             ch.QpersonOwner,
+                             ch.Qfactor,
                          } into grp
                          orderby grp.Key.Qid descending
                          select new ChallengeApprovalStatus
@@ -194,7 +195,8 @@ namespace MainCodeChallenge.Services
                              QpersonOwner=(int?)grp.Key.QpersonOwner ??0,
                              QRpoint = (int?)grp.Key.QRpoint ?? 0,
                              QApoint = (int?)grp.Key.QApoint ?? 0,
-                             CountOfA = grp.Where(t => t.Qid.SQId != null).Count()
+                             CountOfA = grp.Where(t => t.Qid.SQId != null).Count(),
+                             Qfactor= (int?)grp.Key.Qfactor ?? 0
                          }).ToList();
 
             return challengeApprovalStatus.Where(c => c.Qid == Id).ToList();
@@ -320,7 +322,7 @@ namespace MainCodeChallenge.Services
                     db.SaveChanges();
 
                     //point
-                    ChangePoint(Uid, Rpoint,EnumPointParam.Decrease );
+                    ChangePoint(userinfo.RP_id, Rpoint,EnumPointParam.Decrease );
 
                     trans.Commit();
                     return true;
@@ -337,7 +339,7 @@ namespace MainCodeChallenge.Services
         public void ChangePoint(int Uid,int point, EnumPointParam enumPointParam )
         {
             CodeChallengeEntities db=new CodeChallengeEntities();
-            var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.PUserId == Uid);
+            var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.RP_id == Uid);
             if (enumPointParam == EnumPointParam.Decrease)
             {
                 if (result != null)
@@ -607,7 +609,43 @@ namespace MainCodeChallenge.Services
 
         }
 
-       
+        public bool FinalApproval (int Sid, int Pid)
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var result = db.Tbl_ApprovalStatus.Where(RP => RP.SId == Sid ).FirstOrDefault();
+
+            if (result != null)
+            {
+                if (result.ApprovalStatus == (int)EnumApprovalStatus.AwaitingFinalApproval)
+                {
+                    try
+                    {
+                        result.ApprovalDate = DateTime.Now;
+                        result.ApprovalStatus = 2;
+                        result.ApprovalPID = Pid;
+                        db.SaveChanges();
+                        int Qid = (int)result.SQId;
+                        ChallengeApprovalStatus challengeApprovalStatus = GetChallengeDetailsById(Qid).FirstOrDefault();
+                        int point = challengeApprovalStatus.QRpoint * challengeApprovalStatus.Qfactor ;
+                        ChangePoint((int)result.SQPid, point, EnumPointParam.Increase);
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }else
+            {
+                return false;
+            }
+        }
 
     }
 }

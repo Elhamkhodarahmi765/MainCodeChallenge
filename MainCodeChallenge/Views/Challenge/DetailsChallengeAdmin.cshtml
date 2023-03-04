@@ -61,14 +61,24 @@
                 @Html.DisplayFor(modelItem => item.APpersonelName)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { Sid = item.SId })
+              
+                @Html.ActionLink("Details","detailsAnswerAdmin", "Challenge", new { Sid = item.SId }, new { target = "_blank" ,@class="modal-link" })
             </td>
         </tr>
     }
 
-
-
 </table>
+
+
+
+<div id="modal-container" class="modal fade"
+     tabindex="-1" role="dialog" style="top:15%">
+    <div class="modal-content">
+
+    </div>
+</div>
+
+
 @section scripts{
     <script>
         $(function () {

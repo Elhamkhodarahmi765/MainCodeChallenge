@@ -278,6 +278,7 @@
     <Content Include="Views\Challenge\CreateNewChallenge.cshtml" />
     <Content Include="Views\Challenge\detailsAnswer.cshtml" />
     <Content Include="Views\Challenge\DetailsChallengeAdmin.cshtml" />
+    <Content Include="Views\Challenge\detailsAnswerAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

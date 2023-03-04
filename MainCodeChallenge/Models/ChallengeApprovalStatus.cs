@@ -20,6 +20,7 @@ namespace MainCodeChallenge.Models
         public int LPointReceived { get; set; }
         public int QRpoint { get; set; }
         public int QApoint { get; set; }
+        public int Qfactor { get; set; }
         
 
     }

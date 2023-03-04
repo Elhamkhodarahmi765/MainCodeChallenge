@@ -28,5 +28,8 @@ namespace MainCodeChallenge.Services
         ApprovalStatus GetApprovalStatusBySId(int Sid);
         bool SaveChallenge(string CH, string CHName, int L, int Rpoint, int factor, int Pid);
         List<ApprovalStatus> GetApprovalIsDoneByQid(int Qid);
+      
+        bool FinalApproval(int Sid, int Pid);
+        int GetPointById(int Uid);
     }  
 }
