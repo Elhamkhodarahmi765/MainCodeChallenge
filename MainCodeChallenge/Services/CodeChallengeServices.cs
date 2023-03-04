@@ -440,7 +440,7 @@ namespace MainCodeChallenge.Services
         }
 
 
-        public bool SaveChallenge(string CH,string CHName, int L, int Rpoint, int factor,int Pid)
+        public bool SaveChallenge(string CH,string CHName, int L, int Rpoint, int factor,int Pid,int Cid)
         {
             try
             {
@@ -451,6 +451,8 @@ namespace MainCodeChallenge.Services
                 challenge.Qfactor = factor;
                 challenge.QRpoint = Rpoint;
                 challenge.QpersonOwner = Pid;
+                challenge.QDescription = CH;
+                challenge.QCId = (byte)Cid;
                 db.Tbl_Challenge.Add(challenge);
                 db.SaveChanges();
 
@@ -608,6 +610,32 @@ namespace MainCodeChallenge.Services
             return languages;
 
         }
+
+
+
+
+        public List<Category> Getcategory()
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            List<Category> Category = (from e in db.Tbl_Category
+                                        select new Category
+                                        {
+                                            CId = (int)e.CT_Id,
+                                            CName = (string)e.CT_Name
+                                        }
+                                     ).ToList();
+
+            return Category;
+
+        }
+
+
+
+
+
+
+
+
 
         public bool FinalApproval (int Sid, int Pid)
         {

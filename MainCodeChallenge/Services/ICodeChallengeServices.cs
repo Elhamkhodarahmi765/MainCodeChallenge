@@ -26,10 +26,11 @@ namespace MainCodeChallenge.Services
         List<ApprovalStatus> GetApprovalIsDoneByUidQid(int Uid, int Qid);
         List<ChallengeApprovalStatusP> GetAllChallengeApprovalStatusCountByUid(int Uid);
         ApprovalStatus GetApprovalStatusBySId(int Sid);
-        bool SaveChallenge(string CH, string CHName, int L, int Rpoint, int factor, int Pid);
+        bool SaveChallenge(string CH, string CHName, int L, int Rpoint, int factor, int Pid, int Cid);
         List<ApprovalStatus> GetApprovalIsDoneByQid(int Qid);
       
         bool FinalApproval(int Sid, int Pid);
         int GetPointById(int Uid);
+        List<Category> Getcategory();
     }  
 }

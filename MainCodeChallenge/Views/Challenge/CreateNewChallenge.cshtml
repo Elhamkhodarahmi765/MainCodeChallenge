@@ -15,11 +15,21 @@
     @*model.QpersonOwner*@
 
 
+    <br />
+
+
+
+
+
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.QName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.QName, new { htmlAttributes = new { @class = "form-control" }, Id = "txtChName" })
+
+
+            @Html.EditorFor(model => model.QName, new { htmlAttributes = new { @class = "form-control", Id = "txtQName" } })
+
             @Html.ValidationMessageFor(model => model.QName, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -31,6 +41,17 @@
             @Html.ValidationMessageFor(model => model.QDescription, "", new { @class = "text-danger" })
         </div>
     </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">category</label>
+        <div class="col-md-10">
+
+            @Html.DropDownList("category", new SelectList(ViewBag.category, "CId", "CName"), new { Id = "DropCat" })
+
+            @Html.ValidationMessageFor(model => model.QCId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.QLevel, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -77,29 +98,35 @@
 </div>
 
 
+
+
+
+
+
+
 @section scripts{
     <script>
         function SubmitCh() {
 
 
                 var txtD = document.getElementById('QDescription').value ;
-                var txtChName = document.getElementById('txtChName');
+                var txtChName = document.getElementById('txtQName').value;
                 var dropdown = document.getElementById('levelD');
                 var Point = document.getElementById('txtPoint').value;
                 var factor = document.getElementById('txtFactor').value;
-                //string CH,string CHName, int L, int Rpoint, int factor
-                //debugger;
-
+                var catId = document.getElementById('DropCat'); 
+   
             $.ajax({
-                url: '@Url.Action("SaveChallenge", "Challenge")',
+                 url: '@Url.Action("SaveNewChallenge", "Challenge")',
                     type: "post",
-                    data: { 'CH': txtD, 'CHName': txtChName, 'L': dropdown.value, 'Rpoint': Point, 'factor': factor } ,
+                    data: { 'CH': txtD, 'CHName': txtChName, 'L': dropdown.value, 'Rpoint': Point, 'factor': factor ,'Cid': catId.value} ,
                     cache: false,
                     success: function (savingStatus) {
                         alert("success");
                         //success();
                     },
-                    error: function (xhr, ajaxOptions, thrownError) {
+                error: function (xhr, ajaxOptions, thrownError) {
+
                         alert("error");
 
                     }
