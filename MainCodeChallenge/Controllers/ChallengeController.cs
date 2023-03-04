@@ -93,10 +93,33 @@ namespace MainCodeChallenge.Controllers
            
         }
 
+        [HttpPost]
+        [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
+        public string SaveChallenge(string CH,string CHName,int L, int Rpoint,int factor )
+        {
+            int UId = int.Parse(HttpContext.Session["UserID"].ToString());
+            int Pid = service.GetPidByUserId(UId);
+            try
+            {
+                bool status = service.SaveChallenge(CH,CHName, L, Rpoint, factor,Pid);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return "error";
+
+            }
+            return "Ok";
+        }
+
+
 
         [RestrictActionToRole(Roles = new string[] { "AdminPage" })]
         public ActionResult CreateNewChallenge()
         {
+            var level = from EnumLevel s in Enum.GetValues(typeof(EnumLevel))
+                           select new { ID = s, Name = s.ToString() };
+            ViewBag.levelD = new SelectList(level, "ID", "Name");
             return View();
         }
 
@@ -105,5 +128,15 @@ namespace MainCodeChallenge.Controllers
             ApprovalStatus approvalStatus = service.GetApprovalStatusBySId(SId);
             return View(approvalStatus);
         }
+
+
+        public ActionResult DetailsChallengeAdmin(int Qid)
+        {
+            List<ApprovalStatus> approvalStatuses= service.GetApprovalIsDoneByQid(Qid);
+            return View(approvalStatuses);
+        }
+
+
+
     }
 }

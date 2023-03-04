@@ -26,5 +26,7 @@ namespace MainCodeChallenge.Services
         List<ApprovalStatus> GetApprovalIsDoneByUidQid(int Uid, int Qid);
         List<ChallengeApprovalStatusP> GetAllChallengeApprovalStatusCountByUid(int Uid);
         ApprovalStatus GetApprovalStatusBySId(int Sid);
+        bool SaveChallenge(string CH, string CHName, int L, int Rpoint, int factor, int Pid);
+        List<ApprovalStatus> GetApprovalIsDoneByQid(int Qid);
     }  
 }

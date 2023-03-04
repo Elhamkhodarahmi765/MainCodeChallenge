@@ -3,13 +3,10 @@
 @{
     ViewBag.Title = "CreateNewChallenge";
 }
-
+<link href="~/Content/ChCreate.css" rel="stylesheet" />
 <h2>CreateNewChallenge</h2>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
 
 
@@ -17,12 +14,12 @@
     @*model.Qid*@
     @*model.QpersonOwner*@
 
-    
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.QName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.QName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.QName, new { htmlAttributes = new { @class = "form-control" }, Id = "txtChName" })
             @Html.ValidationMessageFor(model => model.QName, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -30,7 +27,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.QDescription, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.QDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.TextAreaFor(model => model.QDescription, new { Id = "QDescription", style = "width:100%;", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.QDescription, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -38,59 +35,79 @@
     <div class="form-group">
         @Html.LabelFor(model => model.QLevel, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.QLevel, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.QLevel, "", new { @class = "text-danger" })
+            @Html.DropDownList("levelD", null, new { Id = "levelD" })
+
+            <br />
+
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.QCId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.QCId, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.QCId, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.QStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.QStatus, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.QStatus, "", new { @class = "text-danger" })
-        </div>
-    </div>
+
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.QRpoint, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.QRpoint, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.QRpoint, new { htmlAttributes = new { @class = "form-control", Id = "txtPoint" } })
             @Html.ValidationMessageFor(model => model.QRpoint, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.QApoint, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.QApoint, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.QApoint, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Qfactor, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Qfactor, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Qfactor, new { htmlAttributes = new { @class = "form-control", Id = "txtFactor" } })
             @Html.ValidationMessageFor(model => model.Qfactor, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
+
+    <div class="col-md-offset-2 col-md-10">
+
+        <button id="Create" Onclick="SubmitCh()" class="btn">create</button>
     </div>
+
 </div>
-}
+
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("AdminPage", "AdminPage", "Account")
 </div>
+
+
+@section scripts{
+    <script>
+        function SubmitCh() {
+
+
+                var txtD = document.getElementById('QDescription').value ;
+                var txtChName = document.getElementById('txtChName');
+                var dropdown = document.getElementById('levelD');
+                var Point = document.getElementById('txtPoint').value;
+                var factor = document.getElementById('txtFactor').value;
+                //string CH,string CHName, int L, int Rpoint, int factor
+                //debugger;
+
+            $.ajax({
+                url: '@Url.Action("SaveChallenge", "Challenge")',
+                    type: "post",
+                    data: { 'CH': txtD, 'CHName': txtChName, 'L': dropdown.value, 'Rpoint': Point, 'factor': factor } ,
+                    cache: false,
+                    success: function (savingStatus) {
+                        alert("success");
+                        //success();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("error");
+
+                    }
+                });
+
+
+            }
+    </script>
+
+
+}

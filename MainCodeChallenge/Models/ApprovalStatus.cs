@@ -9,6 +9,7 @@ namespace MainCodeChallenge.Models
 {
     public class ApprovalStatus
     {
+        [Key]
         public int SId { get; set; }
         public int SQId { get; set; }
         public int SQPid { get; set; }
@@ -24,5 +25,8 @@ namespace MainCodeChallenge.Models
         public string SAnswer { get; set; }
         public string Lname { get; set; }
         public EnumApprovalStatus? approvalStatus { get; set; }
+        public string PersonelName { get; set; }
+        public string APpersonelName { get; set; }
+
     }
 }

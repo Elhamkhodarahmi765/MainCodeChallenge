@@ -103,6 +103,10 @@ namespace MainCodeChallenge.Services
 
 
 
+
+
+
+
         public List<ChallengeApprovalStatusP> GetAllChallengeApprovalStatusCountByUid(int Uid)
         {
             int Upid = GetPidByUserId(Uid);
@@ -150,13 +154,6 @@ namespace MainCodeChallenge.Services
 
             return challengeApprovalStatusP;
         }
-
-
-
-
-
-
-
 
         public List<ChallengeApprovalStatus> GetChallengeDetailsById(int Id)
          {
@@ -247,7 +244,6 @@ namespace MainCodeChallenge.Services
             //Q Bluekian
         }
 
-
         public int GetPointById(int Uid)
         {
             CodeChallengeEntities db = new CodeChallengeEntities();
@@ -259,10 +255,6 @@ namespace MainCodeChallenge.Services
                                   }).ToList();
             return (int?)pointperson.First().point ?? 0;
         }
-
-
-
-
 
 
        public bool GetAllChallengeApprovalStatusPerson(int Qid, int Uid)
@@ -286,11 +278,6 @@ namespace MainCodeChallenge.Services
             }
 
        }
-
-
-        
-
-
 
         public bool PickUpChallenge(int Qid, int Uid)
         {
@@ -383,13 +370,6 @@ namespace MainCodeChallenge.Services
             }
         }
 
-
-
-
-        
-
-
-
         public bool IsItPossibleToPickUp(int Qid, int Uid)
         {
             ChallengeApprovalStatus ChallengeApprovalStatus = GetChallengeDetailsById(Qid).First();
@@ -457,6 +437,35 @@ namespace MainCodeChallenge.Services
             return false;
         }
 
+
+        public bool SaveChallenge(string CH,string CHName, int L, int Rpoint, int factor,int Pid)
+        {
+            try
+            {
+                CodeChallengeEntities db = new CodeChallengeEntities();
+                Tbl_Challenge challenge = new Tbl_Challenge();
+                challenge.QLevel = L;
+                challenge.QName = CHName;
+                challenge.Qfactor = factor;
+                challenge.QRpoint = Rpoint;
+                challenge.QpersonOwner = Pid;
+                db.Tbl_Challenge.Add(challenge);
+                db.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+           
+
+           
+        }
+
+
+
+
         public List<ApprovalStatus> GetApprovalByUidQid(int Uid,int Qid)
         {
             
@@ -508,6 +517,35 @@ namespace MainCodeChallenge.Services
                            SAnswer = e.SAnswer,
                            Lname = e.Tbl_Language.Lname,
                            approvalStatus = (EnumApprovalStatus)e.ApprovalStatus
+                       }).ToList();
+
+            return lis;
+
+        }
+
+
+        public List<ApprovalStatus> GetApprovalIsDoneByQid( int Qid)
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var lis = (from e in db.Tbl_ApprovalStatus
+                       where e.SQId == Qid  && e.SQStatus == 2
+                       select new ApprovalStatus
+                       {
+                           SId = (int)e.SId,
+                           SQId = (int?)e.SQId ?? 0,
+                           SQPid = (int?)e.SQPid ?? 0,
+                           SQStatus = (int?)e.SQStatus ?? 0,
+                           SQDate = (DateTime)e.SQDate,
+                           ApStatus = (int?)e.ApprovalStatus ?? 0,
+                           ApprovalDate = (DateTime)e.ApprovalDate,
+                           ApprovalPID = (int?)e.ApprovalPID ?? 0,
+                           SAnswerLanguage = (int?)e.SAnswerLanguage ?? 0,
+                           SAnswer = e.SAnswer,
+                           Lname = e.Tbl_Language.Lname,
+                           approvalStatus = (EnumApprovalStatus)e.ApprovalStatus,
+                           PersonelName=e.Tbl_RealPerson.RP_FName + " " + e.Tbl_RealPerson.RP_LName,
+                           APpersonelName=e.Tbl_RealPerson1.RP_FName  + " " + e.Tbl_RealPerson1.RP_LName 
+
                        }).ToList();
 
             return lis;
@@ -569,8 +607,7 @@ namespace MainCodeChallenge.Services
 
         }
 
-        
-
+       
 
     }
 }
