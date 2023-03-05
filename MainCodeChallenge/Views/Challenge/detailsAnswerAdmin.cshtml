@@ -54,7 +54,18 @@
 
         </dd>
         <dd>
-            <button class="gradientButton" onclick="location.href='@Url.Action("FinalApprovalAdmin", "Challenge", new {Sid= Model.SId } )';return false;"> FinalApproval </button>
+
+
+            @if (Model.approvalStatus== MainCodeChallenge.Models.EnumApprovalStatus.AwaitingFinalApproval )
+            {
+                <button class="gradientButton" onclick="location.href='@Url.Action("FinalApprovalAdmin", "Challenge", new {Sid= Model.SId } )';return false;"> Final Approval </button>
+            }else
+            {
+                <p style="color:green">
+                    Final Approval
+                </p>
+            }
+
         </dd>
 
     </dl>

@@ -153,6 +153,7 @@
     </Compile>
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\ApprovalStatus.cs" />
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ChallengeApprovalStatusP.cs" />
     <Compile Include="Models\ChallengeApprovalStatus.cs" />
     <Compile Include="Models\Enums.cs" />
