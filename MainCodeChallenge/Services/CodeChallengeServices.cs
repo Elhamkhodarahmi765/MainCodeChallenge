@@ -57,8 +57,9 @@ namespace MainCodeChallenge.Services
                 {
                     principalContext = new PrincipalContext(ContextType.Domain);
 
-                    //isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                    //isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);TUPLE
                     userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                    
                     UserInfo userInfo = new UserInfo();
                     //txtResault.Text += "isAuthenticated:" + isAuthenticated + "\n";
                     if (userPrincipal != null)
@@ -75,7 +76,7 @@ namespace MainCodeChallenge.Services
 
                 }
             }
-            return new UserInfo();
+            return null;
         }
 
 
@@ -86,12 +87,25 @@ namespace MainCodeChallenge.Services
                 UserInfo userInfo = FindInActiveDirectory2(username);
                 CodeChallengeEntities db = new CodeChallengeEntities();
                 Tbl_User user = new Tbl_User();
-                user.UuserName = user.UuserName;
-                user.Role = 1;
-                user.UActiveStatus = true;
-                db.Tbl_User.Add(user);
-                db.SaveChanges();
-                return CreateRealPerson(userInfo ,user.Uid);
+                if (userInfo != null)
+                {
+                    var tr = db.Database.BeginTransaction();
+
+                    user.UuserName = userInfo.username;
+                    user.Role = 1;
+                    user.UActiveStatus = true;
+                    db.Tbl_User.Add(user);
+                    db.SaveChanges();
+                    var res =  CreateRealPerson(userInfo, user.Uid);
+                    if (res)
+                    {
+                        tr.Commit(); 
+                    }
+                    return res;
+                }
+
+
+                return false;
             }
             catch
             {
