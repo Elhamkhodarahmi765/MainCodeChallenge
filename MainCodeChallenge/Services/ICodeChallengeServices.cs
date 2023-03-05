@@ -32,5 +32,8 @@ namespace MainCodeChallenge.Services
         bool FinalApproval(int Sid, int Pid);
         int GetPointById(int Uid);
         List<Category> Getcategory();
+
+        bool AuthenticateInActiveDirectory(string username, string password);
+        bool AuthenticateAD(string username);
     }  
 }

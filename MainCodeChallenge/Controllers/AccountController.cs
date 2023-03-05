@@ -32,25 +32,34 @@ namespace MainCodeChallenge.Controllers
         public ActionResult Login(Account model )
         {
             if (!ModelState.IsValid)
-                return View(model);
-            //I have to add ActiveDirectoryCode (MR BBlukian)
-            bool result = service.Authenticate(model.user, model.password);
-            if (result == true)
             {
-                //Q Mr Blukian
-                FormsAuthentication.SetAuthCookie(model.user, false);
-                var user = service.GetActionToGoFromLoginPage(model.user);
-                Session["UserRole"] = user.getRole().ToString();
-                Session["UserID"] = user.Uid;
-                UserInfo userInfo = service.GetUserInfoByUId(user.Uid);
-                Session["UserName"] = userInfo.RealPersonFullname;
-                Session["Point"] = service.GetPointById(user.Uid);
-                HttpRuntime.Cache["OnLineUser"] = user.Uid;
-                return RedirectToAction(user.getRole().ToString());
+                return View(model);
             }
-
-            ViewBag.ErrorMessage = "The username or password is incorrect.";
-            return View(model);
+            bool resultAD = service.AuthenticateInActiveDirectory(model.user, model.password);
+            if(resultAD)
+            {
+                bool result = service.AuthenticateAD(model.user);
+                if (result == true)
+                {
+                    //Q Mr Blukian
+                    FormsAuthentication.SetAuthCookie(model.user, false);
+                    var user = service.GetActionToGoFromLoginPage(model.user);
+                    Session["UserRole"] = user.getRole().ToString();
+                    Session["UserID"] = user.Uid;
+                    UserInfo userInfo = service.GetUserInfoByUId(user.Uid);
+                    Session["UserName"] = userInfo.RealPersonFullname;
+                    Session["Point"] = service.GetPointById(user.Uid);
+                    HttpRuntime.Cache["OnLineUser"] = user.Uid;
+                    return RedirectToAction(user.getRole().ToString());
+                }
+                ViewBag.ErrorMessage = "The username or password is incorrect.";
+                return View(model);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "The username or password is incorrect.";
+                return View(model);
+            }
 
         }
 

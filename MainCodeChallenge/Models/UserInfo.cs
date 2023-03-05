@@ -16,5 +16,6 @@ namespace MainCodeChallenge.Models
         public EnumRoleS role { get; set; }
         public EnumRolePage rolePage { get; set; }
         public int Ppoint { get; set; }
+        public string username { get; set; }
     }
 }
