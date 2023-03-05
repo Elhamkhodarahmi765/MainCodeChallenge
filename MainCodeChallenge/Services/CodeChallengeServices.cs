@@ -595,8 +595,6 @@ namespace MainCodeChallenge.Services
                     }
                 }else if (result.SQStatus == (int)EnumSQStatus.Done)
                 {
-
-
                     Tbl_ApprovalStatus Aps = new Tbl_ApprovalStatus();
                     Aps.SQId = Qid;
                     Aps.SQPid = PUid;
