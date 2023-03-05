@@ -3,6 +3,7 @@ using MainCodeChallenge.Repositories;
 using MainCodeChallenge.Utilities;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +12,181 @@ namespace MainCodeChallenge.Services
     public class CodeChallengeServices : ICodeChallengeServices
     {
        
+        public bool AuthenticateInActiveDirectory(string username, string password)
+        {
+            PrincipalContext principalContext;//= new PrincipalContext(authenticationType);
+            bool isAuthenticated = false;
+            UserPrincipal userPrincipal = null;
+            string txtDomain = "";
+            //int AuturizeLevel = 1;
+            if (txtDomain.Equals(""))
+            {
+                try
+                {
+                    principalContext = new PrincipalContext(ContextType.Domain);
+                    isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                    userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                    if (userPrincipal != null && isAuthenticated)
+                    {
+                        return true;
+
+                    }else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception esException)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public UserInfo FindInActiveDirectory2(string username)
+        {
+            PrincipalContext principalContext;//= new PrincipalContext(authenticationType);
+            //bool isAuthenticated = false;
+            UserPrincipal userPrincipal = null;
+            string txtDomain = "";
+            //int AuturizeLevel = 1;
+
+            if (txtDomain.Equals(""))
+            {
+                try
+                {
+                    principalContext = new PrincipalContext(ContextType.Domain);
+
+                    //isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                    userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                    UserInfo userInfo = new UserInfo();
+                    //txtResault.Text += "isAuthenticated:" + isAuthenticated + "\n";
+                    if (userPrincipal != null)
+                    {
+                        userInfo.RealPersonFullname = userPrincipal.DisplayName;
+                        userInfo.EmailAddress = userPrincipal.EmailAddress;
+                        userInfo.username = username;
+                        return userInfo;
+
+                    }
+                }
+                catch (Exception esException)
+                {
+
+                }
+            }
+            return new UserInfo();
+        }
+
+
+        public bool CreateUser(string username)
+        {
+            try
+            {
+                UserInfo userInfo = FindInActiveDirectory2(username);
+                CodeChallengeEntities db = new CodeChallengeEntities();
+                Tbl_User user = new Tbl_User();
+                user.UuserName = user.UuserName;
+                user.Role = 1;
+                user.UActiveStatus = true;
+                db.Tbl_User.Add(user);
+                db.SaveChanges();
+                return CreateRealPerson(userInfo ,user.Uid);
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        public bool CreateRealPerson(UserInfo userInfo ,int Uid)
+        {
+            try
+            {
+                CodeChallengeEntities db = new CodeChallengeEntities();
+                Tbl_RealPerson realperson = new Tbl_RealPerson();
+                realperson.RP_Userid = Uid;
+                realperson.RP_Role = 1;
+                realperson.RP_FName = userInfo.RealPersonFullname;
+                realperson.RP_EmailAddress = userInfo.EmailAddress;
+                db.Tbl_RealPerson.Add(realperson);
+                db.SaveChanges();
+
+                int RP_id = realperson.RP_id;
+                return CreateRealPersonpoint(Uid, RP_id, 200); 
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point)
+        {
+            try
+            {
+                CodeChallengeEntities db = new CodeChallengeEntities();
+                Tbl_RealPesronPoint realpersonP = new Tbl_RealPesronPoint();
+                realpersonP.PUserId  = Uid;
+                realpersonP.RP_id = RP_id;
+                realpersonP.PPoint = Point;
+                db.Tbl_RealPesronPoint.Add(realpersonP);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
+        public bool AuthenticateAD(string username)
+        {
+            if (string.IsNullOrEmpty(username) )
+            {
+                return false;
+            }
+
+            using (CodeChallengeEntities db = new CodeChallengeEntities())
+            {
+                try
+                {
+                    Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
+
+                    if (obj.Uid == null)
+                    {
+                        
+                        return CreateUser(username);
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+
+
+
+            }
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
         public bool Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -26,6 +202,10 @@ namespace MainCodeChallenge.Services
 
                     if (obj.Uid == null)
                     {
+
+
+
+
                         return false;
                     }
                     else
