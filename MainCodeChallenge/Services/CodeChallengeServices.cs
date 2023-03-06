@@ -64,8 +64,9 @@ namespace MainCodeChallenge.Services
                     //txtResault.Text += "isAuthenticated:" + isAuthenticated + "\n";
                     if (userPrincipal != null)
                     {
-                        userInfo.RealPersonFullname = userPrincipal.DisplayName;
-                        userInfo.EmailAddress = userPrincipal.EmailAddress;
+                        userInfo.Fname = userPrincipal.GivenName;
+                        userInfo.Lname = userPrincipal.Surname;
+                        userInfo.EmailAddress = userPrincipal.UserPrincipalName;
                         userInfo.username = username;
                         return userInfo;
 
@@ -122,7 +123,8 @@ namespace MainCodeChallenge.Services
                 Tbl_RealPerson realperson = new Tbl_RealPerson();
                 realperson.RP_Userid = Uid;
                 realperson.RP_Role = 1;
-                realperson.RP_FName = userInfo.RealPersonFullname;
+                realperson.RP_FName = userInfo.Fname;
+                realperson.RP_LName=userInfo.Lname;
                 realperson.RP_EmailAddress = userInfo.EmailAddress;
                 db.Tbl_RealPerson.Add(realperson);
                 db.SaveChanges();
