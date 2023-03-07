@@ -18,7 +18,7 @@ namespace MainCodeChallenge.Services
             bool isAuthenticated = false;
             UserPrincipal userPrincipal = null;
             string txtDomain = "";
-            //int AuturizeLevel = 1;
+            int AuturizeLevel = 1;
             if (txtDomain.Equals(""))
             {
                 try
@@ -39,6 +39,59 @@ namespace MainCodeChallenge.Services
                 {
                     return false;
                 }
+            }else
+            {
+                try
+                {
+
+                    var validDomain = "";
+                    var validDomainContainer = "";
+
+                    if (validDomain != null && !validDomain.Equals(""))
+                    {
+
+                        if (validDomainContainer != null && !String.IsNullOrEmpty(validDomainContainer))
+                        {
+                            AuturizeLevel += 10;
+                            principalContext = new PrincipalContext(ContextType.Domain, validDomain, validDomainContainer);
+                            isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                            userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                            if (userPrincipal != null && isAuthenticated)
+                            {
+                                return true;
+
+                            }else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            AuturizeLevel += 25;
+                            principalContext = new PrincipalContext(ContextType.Domain, validDomain);
+                            isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                            userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                            if (userPrincipal != null && isAuthenticated )
+                            {
+                                return true;
+                            }else
+                            {
+                                return false;
+                            }
+                        }
+
+                    }
+
+
+
+                }
+                catch (Exception seExeptions)
+                {
+
+
+                }
+
+
             }
             return false;
         }
@@ -49,7 +102,7 @@ namespace MainCodeChallenge.Services
             //bool isAuthenticated = false;
             UserPrincipal userPrincipal = null;
             string txtDomain = "";
-            //int AuturizeLevel = 1;
+            int AuturizeLevel = 1;
 
             if (txtDomain.Equals(""))
             {
@@ -77,6 +130,61 @@ namespace MainCodeChallenge.Services
 
                 }
             }
+            try
+            {
+
+                var validDomain = "";
+                var validDomainContainer = "";
+
+                if (validDomain != null && !validDomain.Equals(""))
+                {
+
+                    if (validDomainContainer != null && !String.IsNullOrEmpty(validDomainContainer))
+                    {
+                        AuturizeLevel += 10;
+                        principalContext = new PrincipalContext(ContextType.Domain, validDomain, validDomainContainer);
+                        
+                        userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                        UserInfo userInfo = new UserInfo();
+                        if (userPrincipal != null )
+                        {
+                            userInfo.Fname = userPrincipal.GivenName;
+                            userInfo.Lname = userPrincipal.Surname;
+                            userInfo.EmailAddress = userPrincipal.UserPrincipalName;
+                            userInfo.username = username;
+                            return userInfo;
+
+                        }
+                        
+                    }
+                    else
+                    {
+                        AuturizeLevel += 25;
+                        principalContext = new PrincipalContext(ContextType.Domain, validDomain);
+                        userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                        UserInfo userInfo = new UserInfo();
+                        if (userPrincipal != null)
+                        {
+                            userInfo.Fname = userPrincipal.GivenName;
+                            userInfo.Lname = userPrincipal.Surname;
+                            userInfo.EmailAddress = userPrincipal.UserPrincipalName;
+                            userInfo.username = username;
+                            return userInfo;
+                        }
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception seExeptions)
+            {
+
+
+            }
+
+
             return null;
         }
 
@@ -841,7 +949,9 @@ namespace MainCodeChallenge.Services
                 if (result.ApprovalStatus == (int)EnumApprovalStatus.AwaitingFinalApproval)
                 {
                     try
+
                     {
+                        var trans = db.Database.BeginTransaction();
                         result.ApprovalDate = DateTime.Now;
                         result.ApprovalStatus = 2;
                         result.ApprovalPID = Pid;
@@ -850,6 +960,7 @@ namespace MainCodeChallenge.Services
                         ChallengeApprovalStatus challengeApprovalStatus = GetChallengeDetailsById(Qid).FirstOrDefault();
                         int point = challengeApprovalStatus.QRpoint * challengeApprovalStatus.Qfactor ;
                         ChangePoint((int)result.SQPid, point, EnumPointParam.Increase);
+                        trans.Commit();
                         return true;
                     }
                     catch (Exception ex)
