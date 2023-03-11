@@ -99,7 +99,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PUserId" Type="int" />
           <Property Name="PPoint" Type="int" />
           <Property Name="RP_id" Type="int" />
@@ -112,12 +112,6 @@
           <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
           <Property Name="RoleDescription" Type="nvarchar" MaxLength="200" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'CodeChallenge.dbo.Tbl_Status' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Tbl_Status">
-          <Property Name="StatusId" Type="int" />
-          <Property Name="StatusName" Type="nvarchar" MaxLength="50" />
-        </EntityType>-->
         <EntityType Name="Tbl_User">
           <Key>
             <PropertyRef Name="Uid" />
@@ -530,7 +524,6 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
           <EntitySet Name="Tbl_Level" EntityType="CodeChallengeModel.Tbl_Level" />
           <EntitySet Name="Tbl_PointIncDec" EntityType="CodeChallengeModel.Tbl_PointIncDec" />
           <EntitySet Name="Tbl_RealPerson" EntityType="CodeChallengeModel.Tbl_RealPerson" />
-          <EntitySet Name="Tbl_RealPesronPoint" EntityType="CodeChallengeModel.Tbl_RealPesronPoint" />
           <EntitySet Name="Tbl_Role" EntityType="CodeChallengeModel.Tbl_Role" />
           <EntitySet Name="Tbl_User" EntityType="CodeChallengeModel.Tbl_User" />
           <EntitySet Name="View_ApprovalStatus" EntityType="CodeChallengeModel.View_ApprovalStatus" />
@@ -585,13 +578,14 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
             <End Role="Tbl_User" EntitySet="Tbl_User" />
             <End Role="Tbl_RealPerson" EntitySet="Tbl_RealPerson" />
           </AssociationSet>
-          <AssociationSet Name="FK_Tbl_RealPesronPointUser" Association="CodeChallengeModel.FK_Tbl_RealPesronPointUser">
-            <End Role="Tbl_User" EntitySet="Tbl_User" />
-            <End Role="Tbl_RealPesronPoint" EntitySet="Tbl_RealPesronPoint" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserRole" Association="CodeChallengeModel.FK_UserRole">
             <End Role="Tbl_Role" EntitySet="Tbl_Role" />
             <End Role="Tbl_User" EntitySet="Tbl_User" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_RealPesronPoint" EntityType="CodeChallengeModel.Tbl_RealPesronPoint" />
+          <AssociationSet Name="FK_Tbl_RealPesronPointUser" Association="CodeChallengeModel.FK_Tbl_RealPesronPointUser">
+            <End Role="Tbl_User" EntitySet="Tbl_User" />
+            <End Role="Tbl_RealPesronPoint" EntitySet="Tbl_RealPesronPoint" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Tbl_ApprovalStatus">
@@ -705,16 +699,6 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
           <NavigationProperty Name="Tbl_Role" Relationship="CodeChallengeModel.FK_RealPersonRole" FromRole="Tbl_RealPerson" ToRole="Tbl_Role" />
           <NavigationProperty Name="Tbl_User" Relationship="CodeChallengeModel.FK_RealPersonUser" FromRole="Tbl_RealPerson" ToRole="Tbl_User" />
         </EntityType>
-        <EntityType Name="Tbl_RealPesronPoint">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="PUserId" Type="Int32" />
-          <Property Name="PPoint" Type="Int32" />
-          <Property Name="RP_id" Type="Int32" />
-          <NavigationProperty Name="Tbl_User" Relationship="CodeChallengeModel.FK_Tbl_RealPesronPointUser" FromRole="Tbl_RealPesronPoint" ToRole="Tbl_User" />
-        </EntityType>
         <EntityType Name="Tbl_Role">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -736,8 +720,8 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
           <Property Name="Role" Type="Byte" />
           <NavigationProperty Name="Tbl_PointIncDec" Relationship="CodeChallengeModel.FK_PointIncDecUser" FromRole="Tbl_User" ToRole="Tbl_PointIncDec" />
           <NavigationProperty Name="Tbl_RealPerson" Relationship="CodeChallengeModel.FK_RealPersonUser" FromRole="Tbl_User" ToRole="Tbl_RealPerson" />
-          <NavigationProperty Name="Tbl_RealPesronPoint" Relationship="CodeChallengeModel.FK_Tbl_RealPesronPointUser" FromRole="Tbl_User" ToRole="Tbl_RealPesronPoint" />
           <NavigationProperty Name="Tbl_Role" Relationship="CodeChallengeModel.FK_UserRole" FromRole="Tbl_User" ToRole="Tbl_Role" />
+          <NavigationProperty Name="Tbl_RealPesronPoint" Relationship="CodeChallengeModel.FK_Tbl_RealPesronPointUser" FromRole="Tbl_User" ToRole="Tbl_RealPesronPoint" />
         </EntityType>
         <EntityType Name="View_ApprovalStatus">
           <Key>
@@ -957,18 +941,6 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Tbl_RealPesronPointUser">
-          <End Type="CodeChallengeModel.Tbl_User" Role="Tbl_User" Multiplicity="0..1" />
-          <End Type="CodeChallengeModel.Tbl_RealPesronPoint" Role="Tbl_RealPesronPoint" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_User">
-              <PropertyRef Name="Uid" />
-            </Principal>
-            <Dependent Role="Tbl_RealPesronPoint">
-              <PropertyRef Name="PUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserRole">
           <End Type="CodeChallengeModel.Tbl_Role" Role="Tbl_Role" Multiplicity="0..1" />
           <End Type="CodeChallengeModel.Tbl_User" Role="Tbl_User" Multiplicity="*" />
@@ -978,6 +950,28 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
             </Principal>
             <Dependent Role="Tbl_User">
               <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_RealPesronPoint">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PUserId" Type="Int32" />
+          <Property Name="PPoint" Type="Int32" />
+          <Property Name="RP_id" Type="Int32" />
+          <NavigationProperty Name="Tbl_User" Relationship="CodeChallengeModel.FK_Tbl_RealPesronPointUser" FromRole="Tbl_RealPesronPoint" ToRole="Tbl_User" />
+        </EntityType>
+        <Association Name="FK_Tbl_RealPesronPointUser">
+          <End Type="CodeChallengeModel.Tbl_User" Role="Tbl_User" Multiplicity="0..1" />
+          <End Type="CodeChallengeModel.Tbl_RealPesronPoint" Role="Tbl_RealPesronPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_User">
+              <PropertyRef Name="Uid" />
+            </Principal>
+            <Dependent Role="Tbl_RealPesronPoint">
+              <PropertyRef Name="PUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1085,16 +1079,6 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tbl_RealPesronPoint">
-            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_RealPesronPoint">
-              <MappingFragment StoreEntitySet="Tbl_RealPesronPoint">
-                <ScalarProperty Name="RP_id" ColumnName="RP_id" />
-                <ScalarProperty Name="PPoint" ColumnName="PPoint" />
-                <ScalarProperty Name="PUserId" ColumnName="PUserId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tbl_Role">
             <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_Role">
               <MappingFragment StoreEntitySet="Tbl_Role">
@@ -1190,6 +1174,16 @@ warning 6002: The table/view 'CodeChallenge.dbo.View_ChallengeApprovalStatusCoun
                 <ScalarProperty Name="QName" ColumnName="QName" />
                 <ScalarProperty Name="QpersonOwner" ColumnName="QpersonOwner" />
                 <ScalarProperty Name="Qid" ColumnName="Qid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_RealPesronPoint">
+            <EntityTypeMapping TypeName="CodeChallengeModel.Tbl_RealPesronPoint">
+              <MappingFragment StoreEntitySet="Tbl_RealPesronPoint">
+                <ScalarProperty Name="RP_id" ColumnName="RP_id" />
+                <ScalarProperty Name="PPoint" ColumnName="PPoint" />
+                <ScalarProperty Name="PUserId" ColumnName="PUserId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

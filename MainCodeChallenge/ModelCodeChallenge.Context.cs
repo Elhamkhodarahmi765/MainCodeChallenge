@@ -33,14 +33,12 @@ namespace MainCodeChallenge
         public virtual DbSet<Tbl_Level> Tbl_Level { get; set; }
         public virtual DbSet<Tbl_PointIncDec> Tbl_PointIncDec { get; set; }
         public virtual DbSet<Tbl_RealPerson> Tbl_RealPerson { get; set; }
-        public virtual DbSet<Tbl_RealPesronPoint> Tbl_RealPesronPoint { get; set; }
         public virtual DbSet<Tbl_Role> Tbl_Role { get; set; }
         public virtual DbSet<Tbl_User> Tbl_User { get; set; }
         public virtual DbSet<View_ApprovalStatus> View_ApprovalStatus { get; set; }
         public virtual DbSet<View_Challenge> View_Challenge { get; set; }
         public virtual DbSet<View_ChallengeApprovalStatus> View_ChallengeApprovalStatus { get; set; }
         public virtual DbSet<View_ChallengeApprovalStatusCount> View_ChallengeApprovalStatusCount { get; set; }
-
-        public System.Data.Entity.DbSet<MainCodeChallenge.Models.ApprovalStatus> ApprovalStatus { get; set; }
+        public virtual DbSet<Tbl_RealPesronPoint> Tbl_RealPesronPoint { get; set; }
     }
 }

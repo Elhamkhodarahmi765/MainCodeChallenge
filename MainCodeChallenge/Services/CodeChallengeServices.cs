@@ -230,10 +230,10 @@ namespace MainCodeChallenge.Services
 
         public bool CreateRealPerson(UserInfo userInfo ,int Uid, CodeChallengeEntities db)
         {
-            //try
-            //{
-               
-                
+            try
+            {
+
+
                 Tbl_RealPerson realperson = new Tbl_RealPerson();
                 realperson.RP_Userid = Uid;
                 realperson.RP_Role = 1;
@@ -246,18 +246,18 @@ namespace MainCodeChallenge.Services
                 int RP_id = realperson.RP_id;
                 CreateRealPersonpoint(Uid, RP_id, 200,db);
             return true;
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
+        }
+            catch
+            {
+                return false;
+            }
         }
 
         public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point, CodeChallengeEntities db)
         {
-            //try
-            //{
-             
+            try
+            {
+
                 Tbl_RealPesronPoint realpersonP = new Tbl_RealPesronPoint();
                 realpersonP.PUserId  = Uid;
                 realpersonP.RP_id = RP_id;
@@ -266,11 +266,11 @@ namespace MainCodeChallenge.Services
                 db.SaveChanges();
   
                 return true;
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
+        }
+            catch
+            {
+                return false;
+            }
         }
 
 
@@ -562,7 +562,7 @@ namespace MainCodeChallenge.Services
                                   {
                                       point=a.PPoint
                                   }).ToList();
-            return (int?)pointperson.First().point ?? 0;
+            return (int?)pointperson.FirstOrDefault().point ?? 0;
         }
 
 

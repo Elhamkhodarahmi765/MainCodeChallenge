@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Level" Width="1.5" PointX="11.25" PointY="11.375" />
         <EntityTypeShape EntityType="CodeChallengeModel.Tbl_PointIncDec" Width="1.5" PointX="15.75" PointY="7.125" />
         <EntityTypeShape EntityType="CodeChallengeModel.Tbl_RealPerson" Width="1.5" PointX="8.25" PointY="6.625" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_RealPesronPoint" Width="1.5" PointX="5.25" PointY="7.375" />
         <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Role" Width="1.5" PointX="0.75" PointY="7.375" />
         <EntityTypeShape EntityType="CodeChallengeModel.Tbl_User" Width="1.5" PointX="3" PointY="7" />
         <EntityTypeShape EntityType="CodeChallengeModel.View_ApprovalStatus" Width="1.5" PointX="0.75" PointY="0.75" />
@@ -32,8 +31,9 @@
         <AssociationConnector Association="CodeChallengeModel.FK_PointIncDecUser" />
         <AssociationConnector Association="CodeChallengeModel.FK_RealPersonRole" />
         <AssociationConnector Association="CodeChallengeModel.FK_RealPersonUser" />
-        <AssociationConnector Association="CodeChallengeModel.FK_Tbl_RealPesronPointUser" />
         <AssociationConnector Association="CodeChallengeModel.FK_UserRole" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_RealPesronPoint" Width="1.5" PointX="5.25" PointY="7.375" />
+        <AssociationConnector Association="CodeChallengeModel.FK_Tbl_RealPesronPointUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

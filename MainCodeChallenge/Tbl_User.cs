@@ -33,10 +33,10 @@ namespace MainCodeChallenge
         public virtual ICollection<Tbl_PointIncDec> Tbl_PointIncDec { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_RealPerson> Tbl_RealPerson { get; set; }
+        public virtual Tbl_Role Tbl_Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_RealPesronPoint> Tbl_RealPesronPoint { get; set; }
-        public virtual Tbl_Role Tbl_Role { get; set; }
-
+        
         public EnumRolePage getRole()
         {
             return (EnumRolePage)this.Role;
