@@ -195,27 +195,32 @@ namespace MainCodeChallenge.Services
             {
                 UserInfo userInfo = FindInActiveDirectory2(username);
                 CodeChallengeEntities db = new CodeChallengeEntities();
-                Tbl_User user = new Tbl_User();
+                
                 if (userInfo != null)
                 {
                     var tr = db.Database.BeginTransaction();
-
+                    Tbl_User user = new Tbl_User();
                     user.UuserName = userInfo.username;
-                    user.Role = 1;
+                    user.Role = 2;
                     user.UActiveStatus = true;
                     db.Tbl_User.Add(user);
                     db.SaveChanges();
-                    var res =  CreateRealPerson(userInfo, user.Uid);
+
+                    var res =  CreateRealPerson(userInfo, user.Uid,db);
                     if (res)
                     {
-                        tr.Commit(); 
+                        tr.Commit();
+                    }
+                    else
+                    {
+                        tr.Rollback();
                     }
                     return res;
                 }
 
 
                 return false;
-            }
+        }
             catch
             {
                 return false;
@@ -223,11 +228,12 @@ namespace MainCodeChallenge.Services
 
         }
 
-        public bool CreateRealPerson(UserInfo userInfo ,int Uid)
+        public bool CreateRealPerson(UserInfo userInfo ,int Uid, CodeChallengeEntities db)
         {
-            try
-            {
-                CodeChallengeEntities db = new CodeChallengeEntities();
+            //try
+            //{
+               
+                
                 Tbl_RealPerson realperson = new Tbl_RealPerson();
                 realperson.RP_Userid = Uid;
                 realperson.RP_Role = 1;
@@ -238,38 +244,40 @@ namespace MainCodeChallenge.Services
                 db.SaveChanges();
 
                 int RP_id = realperson.RP_id;
-                return CreateRealPersonpoint(Uid, RP_id, 200); 
-            }
-            catch
-            {
-                return false;
-            }
+                CreateRealPersonpoint(Uid, RP_id, 200,db);
+            return true;
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
 
-        public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point)
+        public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point, CodeChallengeEntities db)
         {
-            try
-            {
-                CodeChallengeEntities db = new CodeChallengeEntities();
+            //try
+            //{
+             
                 Tbl_RealPesronPoint realpersonP = new Tbl_RealPesronPoint();
                 realpersonP.PUserId  = Uid;
                 realpersonP.RP_id = RP_id;
                 realpersonP.PPoint = Point;
                 db.Tbl_RealPesronPoint.Add(realpersonP);
                 db.SaveChanges();
+  
                 return true;
-            }
-            catch
-            {
-                return false;
-            }
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
 
 
 
         public bool AuthenticateAD(string username)
         {
-            if (string.IsNullOrEmpty(username) )
+            if (string.IsNullOrEmpty(username))
             {
                 return false;
             }
@@ -278,11 +286,11 @@ namespace MainCodeChallenge.Services
             {
                 try
                 {
-                    Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
+                    Tbl_User obj = db.Tbl_User.Where(x => x.UuserName == username).FirstOrDefault();
 
-                    if (obj.Uid == null)
+                    if (obj == null)
                     {
-                        
+
                         return CreateUser(username);
                     }
                     else
@@ -298,9 +306,7 @@ namespace MainCodeChallenge.Services
 
 
             }
-            return false;
         }
-
 
 
 
@@ -324,11 +330,8 @@ namespace MainCodeChallenge.Services
                 {
                     Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
 
-                    if (obj.Uid == null)
+                    if (obj == null)
                     {
-
-
-
 
                         return false;
                     }
