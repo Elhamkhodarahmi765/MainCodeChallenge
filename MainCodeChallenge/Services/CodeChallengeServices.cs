@@ -194,7 +194,7 @@ namespace MainCodeChallenge.Services
             try
             {
                 UserInfo userInfo = FindInActiveDirectory2(username);
-                CodeChallengeEntities db = new CodeChallengeEntities();
+                CodeChallengeEntitie db = new CodeChallengeEntitie();
                 
                 if (userInfo != null)
                 {
@@ -228,7 +228,7 @@ namespace MainCodeChallenge.Services
 
         }
 
-        public bool CreateRealPerson(UserInfo userInfo ,int Uid, CodeChallengeEntities db)
+        public bool CreateRealPerson(UserInfo userInfo ,int Uid, CodeChallengeEntitie db)
         {
             try
             {
@@ -253,7 +253,7 @@ namespace MainCodeChallenge.Services
             }
         }
 
-        public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point, CodeChallengeEntities db)
+        public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point, CodeChallengeEntitie db)
         {
             try
             {
@@ -282,7 +282,7 @@ namespace MainCodeChallenge.Services
                 return false;
             }
 
-            using (CodeChallengeEntities db = new CodeChallengeEntities())
+            using (CodeChallengeEntitie db = new CodeChallengeEntitie())
             {
                 try
                 {
@@ -322,7 +322,7 @@ namespace MainCodeChallenge.Services
                 return false;
             }
 
-            using (CodeChallengeEntities db = new CodeChallengeEntities())
+            using (CodeChallengeEntitie db = new CodeChallengeEntitie())
             {
                 try
                 {
@@ -353,7 +353,7 @@ namespace MainCodeChallenge.Services
 
         public Tbl_User GetActionToGoFromLoginPage(string username)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var q = db.Tbl_User.Where(x => x.UuserName.Equals(username)).SingleOrDefault();
             return q;
         }
@@ -361,7 +361,7 @@ namespace MainCodeChallenge.Services
       
         public List<ChallengeApprovalStatus> GetAllChallengeApprovalStatusCount()
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
@@ -415,7 +415,7 @@ namespace MainCodeChallenge.Services
         public List<ChallengeApprovalStatusP> GetAllChallengeApprovalStatusCountByUid(int Uid)
         {
             int Upid = GetPidByUserId(Uid);
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<ChallengeApprovalStatusP> challengeApprovalStatusP = (from ch in db.Tbl_Challenge
                                                                      join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                                                                      from Qid in ChAps.DefaultIfEmpty()
@@ -462,7 +462,7 @@ namespace MainCodeChallenge.Services
 
         public List<ChallengeApprovalStatus> GetChallengeDetailsById(int Id)
          {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
@@ -511,7 +511,7 @@ namespace MainCodeChallenge.Services
 
         public List<Example> GetExampleByChallengeId(int Id)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<Example> example = (from e in db.Tbl_Example
                                      select new Example
                                      {
@@ -528,7 +528,7 @@ namespace MainCodeChallenge.Services
 
         public  UserInfo  GetUserInfoByUId(int UID)
         {
-            CodeChallengeEntities db=new CodeChallengeEntities();
+            CodeChallengeEntitie db=new CodeChallengeEntitie();
             List<UserInfo> userInfo = (from u in db.Tbl_RealPerson
                                  join p in db.Tbl_RealPesronPoint on u.RP_Userid equals p.PUserId into RealPersonPoint
                                  from p2 in RealPersonPoint.DefaultIfEmpty()
@@ -553,7 +553,7 @@ namespace MainCodeChallenge.Services
 
         public int GetPointById(int Uid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var pointperson = (from a in db.Tbl_RealPesronPoint
                                   where a.PUserId  == Uid
                                   select new
@@ -567,7 +567,7 @@ namespace MainCodeChallenge.Services
        public bool GetAllChallengeApprovalStatusPerson(int Qid, int Uid)
        {
             UserInfo userInfo = GetUserInfoByUId(Uid);
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
                        where a.SQId == Qid && a.SQPid == userInfo.Uid
                                   select new
@@ -589,7 +589,7 @@ namespace MainCodeChallenge.Services
         public bool PickUpChallenge(int Qid, int Uid)
         {
             UserInfo userInfo = GetUserInfoByUId(Uid);
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
                                   where a.SQId == Qid && a.SQPid == userInfo.Uid
                                   select new
@@ -643,7 +643,7 @@ namespace MainCodeChallenge.Services
 
         public void ChangePoint(int Uid,int point, EnumPointParam enumPointParam )
         {
-            CodeChallengeEntities db=new CodeChallengeEntities();
+            CodeChallengeEntitie db=new CodeChallengeEntitie();
             var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.RP_id == Uid);
             if (enumPointParam == EnumPointParam.Decrease)
             {
@@ -693,7 +693,7 @@ namespace MainCodeChallenge.Services
 
         public bool DoneChallenge(int Qid,int Uid, string AnsText,int lan)
         {
-            CodeChallengeEntities db=new CodeChallengeEntities();
+            CodeChallengeEntitie db=new CodeChallengeEntitie();
             int PUid = GetPidByUserId(Uid);
             //var result = db.Tbl_ApprovalStatus.Last(RP => RP.SQPid == PUid && RP.SQId == Qid);
             //MR Blukian
@@ -748,7 +748,7 @@ namespace MainCodeChallenge.Services
         {
             try
             {
-                CodeChallengeEntities db = new CodeChallengeEntities();
+                CodeChallengeEntitie db = new CodeChallengeEntitie();
                 Tbl_Challenge challenge = new Tbl_Challenge();
                 challenge.QLevel = L;
                 challenge.QName = CHName;
@@ -776,7 +776,7 @@ namespace MainCodeChallenge.Services
         public List<ApprovalStatus> GetApprovalByUidQid(int Uid,int Qid)
         {
             
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             UserInfo userinfo = GetUserInfoByUId(Uid);
             var lis =  (from e in db.Tbl_ApprovalStatus
                     where e.SQId == Qid && e.SQPid==userinfo.RP_id
@@ -806,7 +806,7 @@ namespace MainCodeChallenge.Services
         public List<ApprovalStatus> GetApprovalIsDoneByUidQid(int Uid, int Qid)
         {
 
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             UserInfo userinfo = GetUserInfoByUId(Uid);
             var lis = (from e in db.Tbl_ApprovalStatus
                        where e.SQId == Qid && e.SQPid == userinfo.RP_id && e.SQStatus==2
@@ -833,7 +833,7 @@ namespace MainCodeChallenge.Services
 
         public List<ApprovalStatus> GetApprovalIsDoneByQid( int Qid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var lis = (from e in db.Tbl_ApprovalStatus
                        where e.SQId == Qid  && e.SQStatus == 2
                        select new ApprovalStatus
@@ -863,7 +863,7 @@ namespace MainCodeChallenge.Services
 
         public ApprovalStatus GetApprovalStatusBySId(int Sid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var lis = (from e in db.Tbl_ApprovalStatus
                        where e.SId==Sid
                        select new ApprovalStatus
@@ -901,7 +901,7 @@ namespace MainCodeChallenge.Services
 
         public  List<Language> GetLanguages()
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<Language> languages = (from e in db.Tbl_Language
                                      select new Language
                                      {
@@ -919,7 +919,7 @@ namespace MainCodeChallenge.Services
 
         public List<Category> Getcategory()
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<Category> Category = (from e in db.Tbl_Category
                                         select new Category
                                         {
@@ -942,7 +942,7 @@ namespace MainCodeChallenge.Services
 
         public bool FinalApproval (int Sid, int Pid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var result = db.Tbl_ApprovalStatus.Where(RP => RP.SId == Sid ).FirstOrDefault();
 
             if (result != null)

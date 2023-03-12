@@ -7,8 +7,8 @@ namespace MainCodeChallenge.Repositories
 {
     public class CodeChallengeRepository:ICodeChallengeRepository
     {
-        private CodeChallengeEntities _context ;
-        public CodeChallengeRepository(CodeChallengeEntities context)
+        private CodeChallengeEntitie _context ;
+        public CodeChallengeRepository(CodeChallengeEntitie context)
         {
             this._context = context;
         }

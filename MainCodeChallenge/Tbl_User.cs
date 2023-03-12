@@ -36,7 +36,8 @@ namespace MainCodeChallenge
         public virtual Tbl_Role Tbl_Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_RealPesronPoint> Tbl_RealPesronPoint { get; set; }
-        
+
+
         public EnumRolePage getRole()
         {
             return (EnumRolePage)this.Role;
