@@ -52,12 +52,12 @@ namespace MainCodeChallenge.Controllers
                     HttpRuntime.Cache["OnLineUser"] = user.Uid;
                     return RedirectToAction(user.getRole().ToString());
                 }
-                ViewBag.ErrorMessage = "The username or password is incorrect.";
+                ViewBag.ErrorMessage = "The username or password is incorrectAAA.";
                 return View(model);
             }
             else
             {
-                ViewBag.ErrorMessage = "The username or password is incorrect.";
+                ViewBag.ErrorMessage = "The username or password is incorrect (ELSE AuthenticateAD).";
                 return View(model);
             }
 

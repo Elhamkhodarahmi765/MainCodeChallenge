@@ -287,10 +287,8 @@ namespace MainCodeChallenge.Services
                 try
                 {
                     Tbl_User obj = db.Tbl_User.Where(x => x.UuserName == username).FirstOrDefault();
-
                     if (obj == null)
                     {
-
                         return CreateUser(username);
                     }
                     else
