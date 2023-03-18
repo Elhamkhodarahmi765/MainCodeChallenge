@@ -808,7 +808,33 @@ namespace MainCodeChallenge.Services
         }
 
 
+        public List<ApprovalStatus> GetAllApprovalAnswer(int Qid)
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            var languages = GetLanguages();
+            var model = (from e in db.Tbl_ApprovalStatus
+                         where e.SQId == Qid && e.ApprovalStatus == (int)EnumApprovalStatus.FinalApproval
 
+                         select new ApprovalStatus()
+                         {
+                             SId = (int)e.SId,
+                             SQId = (int?)e.SQId ?? 0,
+                             SQPid = (int?)e.SQPid ?? 0,
+                             SQStatus = (int?)e.SQStatus ?? 0,
+                             QStatus = (EnumSQStatus?)e.SQStatus ?? 0,
+                             SQDate = (DateTime)e.SQDate,
+                             ApStatus = (int?)e.ApprovalStatus ?? 0,
+                             ApprovalDate = (DateTime)e.ApprovalDate,
+                             ApprovalPID = (int?)e.ApprovalPID ?? 0,
+                             SAnswerLanguage = (int?)e.SAnswerLanguage ?? 0,
+                             Language = e.Tbl_Language.Lname,
+                             SAnswer = e.SAnswer,
+                             Lname = e.Tbl_Language.Lname,
+                             approvalStatus = (EnumApprovalStatus)e.ApprovalStatus
+                         }).ToList();
+            return model;
+
+        }
 
 
 

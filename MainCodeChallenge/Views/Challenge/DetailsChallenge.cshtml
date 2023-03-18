@@ -15,7 +15,13 @@
 }
 <h1>DetailsChallenge</h1>
 <link rel="Stylesheet" href="@Href("~/Content/ChD.css")" />
-<div>   @Html.ActionLink("Back to List", "ProfilePage", "Account")</div>
+<div>
+    @Html.ActionLink("Back to List", "ProfilePage", "Account")
+    @if (ApprovalStatus)
+    {
+        <text>|</text> @Html.ActionLink("Show all approve answer", "ShowAnswer", "Challenge", new { Qid = challengeApprovalStatus.First().Qid }, new { })
+    }
+</div>
 <div>
     <table width="100%">
         <tr>

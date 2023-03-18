@@ -1,0 +1,40 @@
+﻿@using MainCodeChallenge.Models
+@model List<ApprovalStatus>
+@{
+    ViewBag.Title = "ShowAnswer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>All approval Challenge</h1>
+<hr />
+<div>@Html.ActionLink("Back to Challenge", "DetailsChallenge", "Challenge", new { id = ViewBag.Qid }, null)</div>
+@if (Model.Any())
+{
+    <table style="border:1px solid black; width:100%;">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Language</th>
+                <th>Solution</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ var count = 1;}
+            @foreach (var approval in Model)
+            {
+                <tr>
+                    <td>@(count++)</td>
+                    <td>@approval.Language</td>
+                    <td>
+                        <p>@approval.SAnswer</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There is no approved solution to this challenge</p>
+}
+

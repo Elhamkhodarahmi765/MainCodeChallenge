@@ -23,7 +23,7 @@ namespace MainCodeChallenge.Controllers
         [AllowAnonymous]
         public ActionResult login()
         {
-            return View();
+            return View(new Account());
         }
 
 

@@ -20,6 +20,7 @@ namespace MainCodeChallenge.Models
         public DateTime? ApprovalDate { get; set; }
         public int ApprovalPID { get; set; }
         public int SAnswerLanguage { get; set; }
+        public string Language { get; set; }
         [DataType(DataType.MultilineText)]
         [DisplayName("Body:")]
         public string SAnswer { get; set; }

@@ -35,5 +35,6 @@ namespace MainCodeChallenge.Services
 
         bool AuthenticateInActiveDirectory(string username, string password);
         bool AuthenticateAD(string username);
+        List<ApprovalStatus> GetAllApprovalAnswer(int Qid);
     }  
 }

@@ -3,6 +3,7 @@ using MainCodeChallenge.Models;
 using MainCodeChallenge.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -154,6 +155,18 @@ namespace MainCodeChallenge.Controllers
             return RedirectToAction("DetailsChallengeAdmin", "Challenge", new { Qid = Qid });
         }
 
+        public ActionResult ShowAnswer([Required] int? Qid)
+        {
+            if (ModelState.IsValid)
+            {
 
+                ViewBag.Qid = Qid;
+                return View(service.GetAllApprovalAnswer(Qid.Value));
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }
