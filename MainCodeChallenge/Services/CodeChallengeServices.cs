@@ -3,6 +3,7 @@ using MainCodeChallenge.Repositories;
 using MainCodeChallenge.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Web;
@@ -449,7 +450,6 @@ namespace MainCodeChallenge.Services
                        {
                           Qid=a.SQId
                        }).ToList();
-            
             if(ApprovalStatus.Count!=0)
             {
                 return true;
@@ -814,7 +814,6 @@ namespace MainCodeChallenge.Services
             var languages = GetLanguages();
             var model = (from e in db.Tbl_ApprovalStatus
                          where e.SQId == Qid && e.ApprovalStatus == (int)EnumApprovalStatus.FinalApproval
-
                          select new ApprovalStatus()
                          {
                              SId = (int)e.SId,
@@ -831,15 +830,20 @@ namespace MainCodeChallenge.Services
                              SAnswer = e.SAnswer,
                              Lname = e.Tbl_Language.Lname,
                              approvalStatus = (EnumApprovalStatus)e.ApprovalStatus
-                         }).ToList();
+                         }).AsNoTracking().ToList();
             return model;
 
         }
 
-
-
-
-
+        public bool IsChallengeApproveByAdmin(int challengeId,int loginUserId)
+        {
+            CodeChallengeEntities db = new CodeChallengeEntities();
+            UserInfo userinfo = GetUserInfoByUId(loginUserId);
+            return db.Tbl_ApprovalStatus.Where(ch => ch.SQId == challengeId && 
+                                                     ch.SQPid == userinfo.RP_id && 
+                                                     ch.ApprovalStatus == (int)EnumApprovalStatus.FinalApproval)
+                                        .Count() > 0;
+        }
 
         public bool FinalApproval (int Sid, int Pid)
         {

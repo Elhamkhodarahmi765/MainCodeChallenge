@@ -27,3 +27,19 @@ select {
     background-color: #777;
     border-color: #fff
 }
+
+.padding-x10{
+    padding-left:10px;
+    padding-right:10px;
+}
+.padding-y10{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+.table-answer {
+    background-color: #efefef;
+    border-radius: 3px;
+    margin: 10px;
+    padding: 10px;
+    width: 98%;
+}

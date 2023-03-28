@@ -17,7 +17,7 @@
 <link rel="Stylesheet" href="@Href("~/Content/ChD.css")" />
 <div>
     @Html.ActionLink("Back to List", "ProfilePage", "Account")
-    @if (ApprovalStatus)
+    @if ((bool)(ViewData["isChallengeApproved"])  == true)
     {
         <text>|</text> @Html.ActionLink("Show all approve answer", "ShowAnswer", "Challenge", new { Qid = challengeApprovalStatus.First().Qid }, new { })
     }

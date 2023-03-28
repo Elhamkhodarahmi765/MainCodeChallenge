@@ -7,31 +7,34 @@
 
 <h1>All approval Challenge</h1>
 <hr />
-<div>@Html.ActionLink("Back to Challenge", "DetailsChallenge", "Challenge", new { id = ViewBag.Qid }, null)</div>
+<div>@Html.ActionLink("Back to Challenge", "DetailsChallenge", "Challenge", new { id = ViewBag.Qid }, new { style="margin-bottom:5px; display:inline-block;"})</div>
 @if (Model.Any())
 {
-    <table style="border:1px solid black; width:100%;">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Language</th>
-                <th>Solution</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{ var count = 1;}
-            @foreach (var approval in Model)
-            {
-                <tr>
-                    <td>@(count++)</td>
-                    <td>@approval.Language</td>
-                    <td>
-                        <p>@approval.SAnswer</p>
+    var count = 1;
+    foreach (var approval in Model)
+    {
+        <table style="border:1px solid black; width:100%; margin-bottom:10px;">
+            <thead>
+                <tr style="background-color: black;color: white;">
+                    <th class="padding-x10 padding-y10">#</th>
+                    <th class="padding-x10 padding-y10">Language</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background-color: #efefef;">
+                    <td class="padding-x10 padding-y10">@(count++)</td>
+                    <td class="padding-x10 padding-y10">@approval.Language</td>
+                </tr>
+                <tr  style="background-color: lightgray">
+                    <td colspan="2">
+                        <h4 style="margin:10px;">solution:</h4>
+                        @Html.TextAreaFor(m => m[count-2].SAnswer, new { @class = "table-answer" })                        
                     </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    }
+
 }
 else
 {

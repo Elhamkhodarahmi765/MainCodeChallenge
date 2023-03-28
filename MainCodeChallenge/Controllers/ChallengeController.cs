@@ -44,6 +44,7 @@ namespace MainCodeChallenge.Controllers
             List<Example> example = service.GetExampleByChallengeId(Qid);
             approvalDone = service.GetApprovalIsDoneByUidQid(Uid,Qid);
             ViewData["approvalDone"] = approvalDone;
+            ViewData["isChallengeApproved"] = service.IsChallengeApproveByAdmin(challengeId: Qid,loginUserId: Uid);
             ViewData["ExampleChallenge"] = example;
             ViewData["ApprovalStatus"] = service.GetAllChallengeApprovalStatusPerson(Qid,Uid);
             ViewData["IsItPossibleToPickUp"] =service.IsItPossibleToPickUp(Qid,Uid);
@@ -159,7 +160,6 @@ namespace MainCodeChallenge.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 ViewBag.Qid = Qid;
                 return View(service.GetAllApprovalAnswer(Qid.Value));
             }
