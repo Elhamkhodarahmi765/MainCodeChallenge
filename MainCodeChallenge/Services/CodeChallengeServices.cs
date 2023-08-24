@@ -18,7 +18,7 @@ namespace MainCodeChallenge.Services
             bool isAuthenticated = false;
             UserPrincipal userPrincipal = null;
             string txtDomain = "";
-            //int AuturizeLevel = 1;
+            int AuturizeLevel = 1;
             if (txtDomain.Equals(""))
             {
                 try
@@ -39,6 +39,59 @@ namespace MainCodeChallenge.Services
                 {
                     return false;
                 }
+            }else
+            {
+                try
+                {
+
+                    var validDomain = "";
+                    var validDomainContainer = "";
+
+                    if (validDomain != null && !validDomain.Equals(""))
+                    {
+
+                        if (validDomainContainer != null && !String.IsNullOrEmpty(validDomainContainer))
+                        {
+                            AuturizeLevel += 10;
+                            principalContext = new PrincipalContext(ContextType.Domain, validDomain, validDomainContainer);
+                            isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                            userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                            if (userPrincipal != null && isAuthenticated)
+                            {
+                                return true;
+
+                            }else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            AuturizeLevel += 25;
+                            principalContext = new PrincipalContext(ContextType.Domain, validDomain);
+                            isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                            userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                            if (userPrincipal != null && isAuthenticated )
+                            {
+                                return true;
+                            }else
+                            {
+                                return false;
+                            }
+                        }
+
+                    }
+
+
+
+                }
+                catch (Exception seExeptions)
+                {
+
+
+                }
+
+
             }
             return false;
         }
@@ -49,7 +102,7 @@ namespace MainCodeChallenge.Services
             //bool isAuthenticated = false;
             UserPrincipal userPrincipal = null;
             string txtDomain = "";
-            //int AuturizeLevel = 1;
+            int AuturizeLevel = 1;
 
             if (txtDomain.Equals(""))
             {
@@ -57,14 +110,16 @@ namespace MainCodeChallenge.Services
                 {
                     principalContext = new PrincipalContext(ContextType.Domain);
 
-                    //isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);
+                    //isAuthenticated = principalContext.ValidateCredentials(username, password, ContextOptions.Negotiate);TUPLE
                     userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                    
                     UserInfo userInfo = new UserInfo();
                     //txtResault.Text += "isAuthenticated:" + isAuthenticated + "\n";
                     if (userPrincipal != null)
                     {
-                        userInfo.RealPersonFullname = userPrincipal.DisplayName;
-                        userInfo.EmailAddress = userPrincipal.EmailAddress;
+                        userInfo.Fname = userPrincipal.GivenName;
+                        userInfo.Lname = userPrincipal.Surname;
+                        userInfo.EmailAddress = userPrincipal.UserPrincipalName;
                         userInfo.username = username;
                         return userInfo;
 
@@ -75,7 +130,62 @@ namespace MainCodeChallenge.Services
 
                 }
             }
-            return new UserInfo();
+            try
+            {
+
+                var validDomain = "";
+                var validDomainContainer = "";
+
+                if (validDomain != null && !validDomain.Equals(""))
+                {
+
+                    if (validDomainContainer != null && !String.IsNullOrEmpty(validDomainContainer))
+                    {
+                        AuturizeLevel += 10;
+                        principalContext = new PrincipalContext(ContextType.Domain, validDomain, validDomainContainer);
+                        
+                        userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                        UserInfo userInfo = new UserInfo();
+                        if (userPrincipal != null )
+                        {
+                            userInfo.Fname = userPrincipal.GivenName;
+                            userInfo.Lname = userPrincipal.Surname;
+                            userInfo.EmailAddress = userPrincipal.UserPrincipalName;
+                            userInfo.username = username;
+                            return userInfo;
+
+                        }
+                        
+                    }
+                    else
+                    {
+                        AuturizeLevel += 25;
+                        principalContext = new PrincipalContext(ContextType.Domain, validDomain);
+                        userPrincipal = UserPrincipal.FindByIdentity(principalContext, username);
+                        UserInfo userInfo = new UserInfo();
+                        if (userPrincipal != null)
+                        {
+                            userInfo.Fname = userPrincipal.GivenName;
+                            userInfo.Lname = userPrincipal.Surname;
+                            userInfo.EmailAddress = userPrincipal.UserPrincipalName;
+                            userInfo.username = username;
+                            return userInfo;
+                        }
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception seExeptions)
+            {
+
+
+            }
+
+
+            return null;
         }
 
 
@@ -84,15 +194,33 @@ namespace MainCodeChallenge.Services
             try
             {
                 UserInfo userInfo = FindInActiveDirectory2(username);
-                CodeChallengeEntities db = new CodeChallengeEntities();
-                Tbl_User user = new Tbl_User();
-                user.UuserName = user.UuserName;
-                user.Role = 1;
-                user.UActiveStatus = true;
-                db.Tbl_User.Add(user);
-                db.SaveChanges();
-                return CreateRealPerson(userInfo ,user.Uid);
-            }
+                CodeChallengeEntitie db = new CodeChallengeEntitie();
+                
+                if (userInfo != null)
+                {
+                    var tr = db.Database.BeginTransaction();
+                    Tbl_User user = new Tbl_User();
+                    user.UuserName = userInfo.username;
+                    user.Role = 2;
+                    user.UActiveStatus = true;
+                    db.Tbl_User.Add(user);
+                    db.SaveChanges();
+
+                    var res =  CreateRealPerson(userInfo, user.Uid,db);
+                    if (res)
+                    {
+                        tr.Commit();
+                    }
+                    else
+                    {
+                        tr.Rollback();
+                    }
+                    return res;
+                }
+
+
+                return false;
+        }
             catch
             {
                 return false;
@@ -100,41 +228,45 @@ namespace MainCodeChallenge.Services
 
         }
 
-        public bool CreateRealPerson(UserInfo userInfo ,int Uid)
+        public bool CreateRealPerson(UserInfo userInfo ,int Uid, CodeChallengeEntitie db)
         {
             try
             {
-                CodeChallengeEntities db = new CodeChallengeEntities();
+
+
                 Tbl_RealPerson realperson = new Tbl_RealPerson();
                 realperson.RP_Userid = Uid;
                 realperson.RP_Role = 1;
-                realperson.RP_FName = userInfo.RealPersonFullname;
+                realperson.RP_FName = userInfo.Fname;
+                realperson.RP_LName=userInfo.Lname;
                 realperson.RP_EmailAddress = userInfo.EmailAddress;
                 db.Tbl_RealPerson.Add(realperson);
                 db.SaveChanges();
 
                 int RP_id = realperson.RP_id;
-                return CreateRealPersonpoint(Uid, RP_id, 200); 
-            }
+                CreateRealPersonpoint(Uid, RP_id, 200,db);
+            return true;
+        }
             catch
             {
                 return false;
             }
         }
 
-        public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point)
+        public Boolean CreateRealPersonpoint(int Uid, int RP_id, int Point, CodeChallengeEntitie db)
         {
             try
             {
-                CodeChallengeEntities db = new CodeChallengeEntities();
+
                 Tbl_RealPesronPoint realpersonP = new Tbl_RealPesronPoint();
                 realpersonP.PUserId  = Uid;
                 realpersonP.RP_id = RP_id;
                 realpersonP.PPoint = Point;
                 db.Tbl_RealPesronPoint.Add(realpersonP);
                 db.SaveChanges();
+  
                 return true;
-            }
+        }
             catch
             {
                 return false;
@@ -145,20 +277,18 @@ namespace MainCodeChallenge.Services
 
         public bool AuthenticateAD(string username)
         {
-            if (string.IsNullOrEmpty(username) )
+            if (string.IsNullOrEmpty(username))
             {
                 return false;
             }
 
-            using (CodeChallengeEntities db = new CodeChallengeEntities())
+            using (CodeChallengeEntitie db = new CodeChallengeEntitie())
             {
                 try
                 {
-                    Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
-
-                    if (obj.Uid == null)
+                    Tbl_User obj = db.Tbl_User.Where(x => x.UuserName == username).FirstOrDefault();
+                    if (obj == null)
                     {
-                        
                         return CreateUser(username);
                     }
                     else
@@ -174,9 +304,7 @@ namespace MainCodeChallenge.Services
 
 
             }
-            return false;
         }
-
 
 
 
@@ -194,17 +322,14 @@ namespace MainCodeChallenge.Services
                 return false;
             }
 
-            using (CodeChallengeEntities db = new CodeChallengeEntities())
+            using (CodeChallengeEntitie db = new CodeChallengeEntitie())
             {
                 try
                 {
                     Tbl_User obj = db.Tbl_User.First(x => x.UuserName == username);
 
-                    if (obj.Uid == null)
+                    if (obj == null)
                     {
-
-
-
 
                         return false;
                     }
@@ -228,7 +353,7 @@ namespace MainCodeChallenge.Services
 
         public Tbl_User GetActionToGoFromLoginPage(string username)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var q = db.Tbl_User.Where(x => x.UuserName.Equals(username)).SingleOrDefault();
             return q;
         }
@@ -236,7 +361,7 @@ namespace MainCodeChallenge.Services
       
         public List<ChallengeApprovalStatus> GetAllChallengeApprovalStatusCount()
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
@@ -290,7 +415,7 @@ namespace MainCodeChallenge.Services
         public List<ChallengeApprovalStatusP> GetAllChallengeApprovalStatusCountByUid(int Uid)
         {
             int Upid = GetPidByUserId(Uid);
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<ChallengeApprovalStatusP> challengeApprovalStatusP = (from ch in db.Tbl_Challenge
                                                                      join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                                                                      from Qid in ChAps.DefaultIfEmpty()
@@ -337,7 +462,7 @@ namespace MainCodeChallenge.Services
 
         public List<ChallengeApprovalStatus> GetChallengeDetailsById(int Id)
          {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<ChallengeApprovalStatus> challengeApprovalStatus = (from ch in db.Tbl_Challenge
                          join Aps in db.Tbl_ApprovalStatus on ch.Qid equals Aps.SQId into ChAps
                          from Qid in ChAps.DefaultIfEmpty()
@@ -386,7 +511,7 @@ namespace MainCodeChallenge.Services
 
         public List<Example> GetExampleByChallengeId(int Id)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<Example> example = (from e in db.Tbl_Example
                                      select new Example
                                      {
@@ -403,7 +528,7 @@ namespace MainCodeChallenge.Services
 
         public  UserInfo  GetUserInfoByUId(int UID)
         {
-            CodeChallengeEntities db=new CodeChallengeEntities();
+            CodeChallengeEntitie db=new CodeChallengeEntitie();
             List<UserInfo> userInfo = (from u in db.Tbl_RealPerson
                                  join p in db.Tbl_RealPesronPoint on u.RP_Userid equals p.PUserId into RealPersonPoint
                                  from p2 in RealPersonPoint.DefaultIfEmpty()
@@ -428,21 +553,21 @@ namespace MainCodeChallenge.Services
 
         public int GetPointById(int Uid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var pointperson = (from a in db.Tbl_RealPesronPoint
                                   where a.PUserId  == Uid
                                   select new
                                   {
                                       point=a.PPoint
                                   }).ToList();
-            return (int?)pointperson.First().point ?? 0;
+            return (int?)pointperson.FirstOrDefault().point ?? 0;
         }
 
 
        public bool GetAllChallengeApprovalStatusPerson(int Qid, int Uid)
        {
             UserInfo userInfo = GetUserInfoByUId(Uid);
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
                        where a.SQId == Qid && a.SQPid == userInfo.Uid
                                   select new
@@ -464,7 +589,7 @@ namespace MainCodeChallenge.Services
         public bool PickUpChallenge(int Qid, int Uid)
         {
             UserInfo userInfo = GetUserInfoByUId(Uid);
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var ApprovalStatus = (from a in db.Tbl_ApprovalStatus
                                   where a.SQId == Qid && a.SQPid == userInfo.Uid
                                   select new
@@ -518,7 +643,7 @@ namespace MainCodeChallenge.Services
 
         public void ChangePoint(int Uid,int point, EnumPointParam enumPointParam )
         {
-            CodeChallengeEntities db=new CodeChallengeEntities();
+            CodeChallengeEntitie db=new CodeChallengeEntitie();
             var result = db.Tbl_RealPesronPoint.SingleOrDefault(RP => RP.RP_id == Uid);
             if (enumPointParam == EnumPointParam.Decrease)
             {
@@ -568,7 +693,7 @@ namespace MainCodeChallenge.Services
 
         public bool DoneChallenge(int Qid,int Uid, string AnsText,int lan)
         {
-            CodeChallengeEntities db=new CodeChallengeEntities();
+            CodeChallengeEntitie db=new CodeChallengeEntitie();
             int PUid = GetPidByUserId(Uid);
             //var result = db.Tbl_ApprovalStatus.Last(RP => RP.SQPid == PUid && RP.SQId == Qid);
             //MR Blukian
@@ -623,7 +748,7 @@ namespace MainCodeChallenge.Services
         {
             try
             {
-                CodeChallengeEntities db = new CodeChallengeEntities();
+                CodeChallengeEntitie db = new CodeChallengeEntitie();
                 Tbl_Challenge challenge = new Tbl_Challenge();
                 challenge.QLevel = L;
                 challenge.QName = CHName;
@@ -651,7 +776,7 @@ namespace MainCodeChallenge.Services
         public List<ApprovalStatus> GetApprovalByUidQid(int Uid,int Qid)
         {
             
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             UserInfo userinfo = GetUserInfoByUId(Uid);
             var lis =  (from e in db.Tbl_ApprovalStatus
                     where e.SQId == Qid && e.SQPid==userinfo.RP_id
@@ -681,7 +806,7 @@ namespace MainCodeChallenge.Services
         public List<ApprovalStatus> GetApprovalIsDoneByUidQid(int Uid, int Qid)
         {
 
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             UserInfo userinfo = GetUserInfoByUId(Uid);
             var lis = (from e in db.Tbl_ApprovalStatus
                        where e.SQId == Qid && e.SQPid == userinfo.RP_id && e.SQStatus==2
@@ -708,7 +833,7 @@ namespace MainCodeChallenge.Services
 
         public List<ApprovalStatus> GetApprovalIsDoneByQid( int Qid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var lis = (from e in db.Tbl_ApprovalStatus
                        where e.SQId == Qid  && e.SQStatus == 2
                        select new ApprovalStatus
@@ -738,7 +863,7 @@ namespace MainCodeChallenge.Services
 
         public ApprovalStatus GetApprovalStatusBySId(int Sid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var lis = (from e in db.Tbl_ApprovalStatus
                        where e.SId==Sid
                        select new ApprovalStatus
@@ -776,7 +901,7 @@ namespace MainCodeChallenge.Services
 
         public  List<Language> GetLanguages()
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<Language> languages = (from e in db.Tbl_Language
                                      select new Language
                                      {
@@ -794,7 +919,7 @@ namespace MainCodeChallenge.Services
 
         public List<Category> Getcategory()
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             List<Category> Category = (from e in db.Tbl_Category
                                         select new Category
                                         {
@@ -817,7 +942,7 @@ namespace MainCodeChallenge.Services
 
         public bool FinalApproval (int Sid, int Pid)
         {
-            CodeChallengeEntities db = new CodeChallengeEntities();
+            CodeChallengeEntitie db = new CodeChallengeEntitie();
             var result = db.Tbl_ApprovalStatus.Where(RP => RP.SId == Sid ).FirstOrDefault();
 
             if (result != null)
@@ -825,7 +950,9 @@ namespace MainCodeChallenge.Services
                 if (result.ApprovalStatus == (int)EnumApprovalStatus.AwaitingFinalApproval)
                 {
                     try
+
                     {
+                        var trans = db.Database.BeginTransaction();
                         result.ApprovalDate = DateTime.Now;
                         result.ApprovalStatus = 2;
                         result.ApprovalPID = Pid;
@@ -834,6 +961,7 @@ namespace MainCodeChallenge.Services
                         ChallengeApprovalStatus challengeApprovalStatus = GetChallengeDetailsById(Qid).FirstOrDefault();
                         int point = challengeApprovalStatus.QRpoint * challengeApprovalStatus.Qfactor ;
                         ChangePoint((int)result.SQPid, point, EnumPointParam.Increase);
+                        trans.Commit();
                         return true;
                     }
                     catch (Exception ex)

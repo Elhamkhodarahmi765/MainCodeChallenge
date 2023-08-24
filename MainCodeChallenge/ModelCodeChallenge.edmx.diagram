@@ -4,36 +4,36 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="47c1c7c135af4e6889536cb67806746c" Name="Diagram1">
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_ApprovalStatus" Width="1.5" PointX="10.5" PointY="6.25" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Category" Width="1.5" PointX="11.25" PointY="3" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Challenge" Width="1.5" PointX="13.5" PointY="6.25" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Example" Width="1.5" PointX="15.75" PointY="10.375" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Language" Width="1.5" PointX="8.25" PointY="3.75" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Level" Width="1.5" PointX="11.25" PointY="11.375" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_PointIncDec" Width="1.5" PointX="15.75" PointY="7.125" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_RealPerson" Width="1.5" PointX="8.25" PointY="6.625" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_RealPesronPoint" Width="1.5" PointX="5.25" PointY="7.375" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Role" Width="1.5" PointX="0.75" PointY="7.375" />
-        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_User" Width="1.5" PointX="3" PointY="7" />
-        <EntityTypeShape EntityType="CodeChallengeModel.View_ApprovalStatus" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CodeChallengeModel.View_Challenge" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CodeChallengeModel.View_ChallengeApprovalStatus" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CodeChallengeModel.View_ChallengeApprovalStatusCount" Width="1.5" PointX="0.75" PointY="10.75" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusChallenge" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusLanguage" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusRealPerson" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusRealPerson2" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ChallengeCategory" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ChallengeLevel" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ChallengeRealPerson" />
-        <AssociationConnector Association="CodeChallengeModel.FK_ExampleChallenge" />
-        <AssociationConnector Association="CodeChallengeModel.FK_PointIncChallenge" />
-        <AssociationConnector Association="CodeChallengeModel.FK_PointIncDecUser" />
-        <AssociationConnector Association="CodeChallengeModel.FK_RealPersonRole" />
-        <AssociationConnector Association="CodeChallengeModel.FK_RealPersonUser" />
-        <AssociationConnector Association="CodeChallengeModel.FK_Tbl_RealPesronPointUser" />
-        <AssociationConnector Association="CodeChallengeModel.FK_UserRole" />
+      <Diagram DiagramId="3cd0d40c3f954eb69f0f5983b7d18a93" Name="Diagram1">
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_ApprovalStatus" Width="1.5" PointX="7.5" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Category" Width="1.5" PointX="8.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Challenge" Width="1.5" PointX="10.5" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Example" Width="1.5" PointX="12.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Language" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Level" Width="1.5" PointX="8.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_PointIncDec" Width="1.5" PointX="12.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_RealPerson" Width="1.5" PointX="5.25" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_RealPesronPoint" Width="1.5" PointX="5.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_Role" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.Tbl_User" Width="1.5" PointX="3" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.View_ApprovalStatus" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.View_Challenge" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.View_ChallengeApprovalStatus" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CodeChallengeModel.View_ChallengeApprovalStatusCount" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusChallenge" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusLanguage" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusRealPerson" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ApprovalStatusRealPerson2" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ChallengeCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ChallengeLevel" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ChallengeRealPerson" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_ExampleChallenge" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_PointIncChallenge" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_PointIncDecUser" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_RealPersonRole" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_RealPersonUser" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_Tbl_RealPesronPointUser" ManuallyRouted="false" />
+        <AssociationConnector Association="CodeChallengeModel.FK_UserRole" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

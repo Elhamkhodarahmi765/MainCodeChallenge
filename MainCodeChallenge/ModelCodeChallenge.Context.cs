@@ -13,10 +13,10 @@ namespace MainCodeChallenge
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class CodeChallengeEntities : DbContext
+    public partial class CodeChallengeEntitie : DbContext
     {
-        public CodeChallengeEntities()
-            : base("name=CodeChallengeEntities")
+        public CodeChallengeEntitie()
+            : base("name=CodeChallengeEntitie")
         {
         }
     
@@ -40,7 +40,5 @@ namespace MainCodeChallenge
         public virtual DbSet<View_Challenge> View_Challenge { get; set; }
         public virtual DbSet<View_ChallengeApprovalStatus> View_ChallengeApprovalStatus { get; set; }
         public virtual DbSet<View_ChallengeApprovalStatusCount> View_ChallengeApprovalStatusCount { get; set; }
-
-        public System.Data.Entity.DbSet<MainCodeChallenge.Models.ApprovalStatus> ApprovalStatus { get; set; }
     }
 }

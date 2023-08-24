@@ -41,9 +41,22 @@
                         <input class="btn-login" type="submit" value="Login" />
                         @* <a href="#">Forgotten password?</a>*@
                         @*<button class="btn-new">Create new Account</button>*@
-                    }
-                </div>
 
+
+                    }
+                    <p>
+
+                        @{
+                            if (ViewBag.ErrorMessage != null)
+                            {
+                                <div>
+                                    @ViewBag.ErrorMessage
+                                </div>
+                            }
+                        }
+                    </p>
+                </div>
+                
             </div>
         </div>
     </main>
